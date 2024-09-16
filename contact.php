@@ -44,14 +44,14 @@ include_once('./header.php');
     <div class="line"></div>
     <p>FOLLOW US ON SOCIAL MEDIA</p>
     <div class="mediarow d-flex gap-3">
-      <img src="./assets/icon/Social Media Icon Square/Facebook.png" alt="" />
-      <img src="./assets/icon/Social Media Icon Square/Instagram.png" alt="" />
-      <img src="./assets/icon/Social Media Icon Square/LinkedIn.png" alt="" />
-      <img src="./assets/icon/Social Media Icon Square/Twitter.png" alt="" />
-      <img src="./assets/icon/Social Media Icon Square/YouTube.png" alt="" />
+      <img height="24px" width="24px" src="./assets/icon/Social Media Icon Square/Facebook.png" alt="" />
+      <img height="24px" width="24px" src="./assets/icon/Social Media Icon Square/Instagram.png" alt="" />
+      <img height="24px" width="24px" src="./assets/icon/Social Media Icon Square/LinkedIn.png" alt="" />
+      <img height="24px" width="24px" src="./assets/icon/Social Media Icon Square/Twitter.png" alt="" />
+      <img height="24px" width="24px" src="./assets/icon/Social Media Icon Square/YouTube.png" alt="" />
     </div>
   </div>
-  <div class="contactban-img col-18 col-lg-6 d-flex justify-content-center align-items-center">
+  <div class="contactban-img col-18 col-lg-6 d-flex justify-content-center align-items-center justify-content-lg-start">
     <img class="img-fluid" src="./assets/img/airbuds.png" alt="" />
   </div>
 </section>
@@ -71,7 +71,7 @@ include_once('./header.php');
     <div class="col-12 col-lg-6 d-flex flex-column gap-4">
       <div class="d-flex row flex-column align-items-center align-items-lg-start text-center text-lg-start gap-2">
         <div class="d-flex row  justify-content-center justify-content-lg-start">
-          <img width="24px" height="24px" class="img-fluid col-1" src="./assets/icon/location.png" alt="" />
+          <img width="24px" height="38px" class="col-1" src="./assets/icon/location.png" alt="" />
           <h5 class="fs-4 col-11" style="color: #0f6290">ADDRESS</h5>
         </div>
         <div class="d-flex flex-column ms-5">
@@ -82,17 +82,17 @@ include_once('./header.php');
       </div>
       <div class="d-flex row flex-column align-items-center align-items-lg-start text-center text-lg-start gap-2">
         <div class="d-flex row  justify-content-center justify-content-lg-start">
-          <img class="img-fluid col-1" width="24px" height="24px" src="./assets/icon/phone.png" alt="" />
+          <img class="col-1" width="24px" height="38px" src="./assets/icon/phone.png" alt="" />
           <h5 class="fs-4 col-11" style="color: #0f6290">PHONE</h5>
         </div>
         <div class="d-flex flex-column ms-5">
-          <p class="fs-5 mb-0">Mobile: +91 8548569854</p>
-          <p class="fs-5">Hotline: 20054 254184</p>
+          <p class="fs-5  mb-0">Mobile: <a class="link-underline text-dark link-underline-opacity-0" href="tel:+">+91 8548569854</a></p>
+          <p class="fs-5 ">Hotline: <a class="link-underline text-dark link-underline-opacity-0" href="tel:+">20054 254184</a></p>
         </div>
       </div>
       <div class="d-flex row flex-column align-items-center align-items-lg-start text-center text-lg-start gap-2">
         <div class="d-flex row  justify-content-center justify-content-lg-start">
-          <img class="img-fluid col-1" width="24px" height="24px" src="./assets/icon/Clcok.png" alt="" />
+          <img class="col-1" width="24px" height="34px" src="./assets/icon/Clcok.png" alt="" />
           <h5 class="fs-4 col-11" style="color: #0f6290">WORKING TIME</h5>
         </div>
         <div class="d-flex flex-column ms-5">

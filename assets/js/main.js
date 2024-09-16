@@ -27,12 +27,6 @@ function countdownTimer(endDate) {
     const now = new Date();
     const difference = endTime - now;
 
-    // if (difference <= 0) {
-    //   timer.innerHTML = "Offer Ended!";
-    //   clearInterval(intervalId);
-    //   return;
-    // }
-
     const seconds = Math.floor((difference / 1000) % 60);
     const minutes = Math.floor((difference / (1000 * 60)) % 60);
     const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
@@ -45,26 +39,11 @@ function countdownTimer(endDate) {
   };
 
   updateTimer();
-  const intervalId = setInterval(updateTimer, 1000);
+  // setInterval(updateTimer, 1000);
 }
-countdownTimer("2024-12-31T23:59:59");
+countdownTimer("2024-11-24");
 
-// video
-const playButton = document.getElementById("playButton");
-const pauseButton = document.getElementById("pauseButton");
-let vid = document.getElementById("myVideo");
 
-playButton.addEventListener("click", () => {
-  vid.play();
-  playButton.classList.add("d-none");
-  pauseButton.classList.remove("d-none");
-});
-
-pauseButton.addEventListener("click", () => {
-  vid.pause();
-  playButton.classList.remove("d-none");
-  pauseButton.classList.add("d-none");
-});
 
 // playButton.addEventListener("mouseover", function () {
 //   vid.play();

@@ -109,7 +109,7 @@ include_once('./header.php');
             <i class="bi bi-search"></i></span>
 
 
-          <input type="search" style="border-color: #001e2f" name="bloginput" class="py-2 text-start border-start-0 rounded-0 input-group-text bg-transparent" placeholder="search product" id="">
+          <input type="search" style="border-color: #001e2f" name="bloginput" class="py-2 text-start border-start-0 rounded-0 input-group-text bg-transparent" placeholder="search blogs category" id="" required>
           <button style="background-color: #0f6290; border-color: #001e2f" type="submit" class="border-0  text-white py-2 px-3" name="blogsubmit">Search</button>
 
         </form>

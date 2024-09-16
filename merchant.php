@@ -21,7 +21,8 @@ if (isset($_POST['merchantSubmit'])) {
     $merchantEmail = $_POST["merchant_email"];
 
     $merchantPhone = $_POST["merchant_phone"];
-
+    $merchantpass = $_POST["merchantpass"];
+    $merchantRepass = $_POST["merchantRepass"];
 
     $errors = array();
 
@@ -34,40 +35,21 @@ if (isset($_POST['merchantSubmit'])) {
     if ($rowCount > 0) {
         array_push($errors, "Email already exists!");
     }
-    if (empty($merchantName) or empty($businessName) or empty($merchantEmail) or empty($merchantPhone)) {
+    if (empty($merchantName) or empty($businessName) or empty($merchantEmail) or empty($merchantPhone) or empty($merchantpass) or empty($merchantRepass)) {
         array_push($errors, "All fields are required");
     }
     if (!filter_var($merchantEmail, FILTER_VALIDATE_EMAIL)) {
         array_push($errors, "Email is not valid");
     }
+    if (strlen($merchantpass) < 8) {
+        array_push($errors, "Password must be at least 8 charactes long");
+    }
+    if ($merchantpass !== $merchantRepass) {
+        array_push($errors, "Password does not match");
+    }
     if (strlen($merchantPhone) < 10) {
         // echo strlen($merchantPhone);
         array_push($errors, "Mobile number must be 10 charactes ");
-    }
-    if (count($errors) > 0) {
-        foreach ($errors as  $error) {
-            echo "<div class='alert alert-danger'>$error</div>";
-        }
-    } else {
-        // echo "checking success";
-?>
-        <!-- <script>
-            const merchantForm = document.getElementById("merchantForm");
-
-            function merchant() {
-                merchantForm.classList.add('d-none')
-            }
-        </script> -->
-<?php
-        $query = mysqli_query($config, "INSERT INTO merchants (merchant_id,merchant_name,business_name,merchant_email,merchant_phone,userid) VALUES('$merchantId','$merchantName','$businessName','$merchantEmail','$merchantPhone','$userId')");
-        echo "<script>alert('Application successful');</script>";
-        echo "<script>window.location.href='./login.php'</script>";
-        //     echo "  <div class='alert alert-success' role='alert'>
-        //         Application sent successfully!
-        //     </div>
-        //     <a href='./index.html' class='btn btn-primary'>Back to Home</a>
-        // </div>";
-        //     echo "<script>merchant()</script>";
     }
 }
 ?>
@@ -86,7 +68,19 @@ include_once('./header.php');
 <div class="row d-flex justify-content-center my-5">
     <h3 class="text-center">Application for Merchant</h3>
     <form id="merchantForm" method="post" class="col-5 mt-4">
+        <?php
+        if (count($errors) > 0) {
+            foreach ($errors as  $error) {
+                echo "<div class='alert alert-danger'>$error</div>";
+            }
+        } else {
+            // echo "checking success";
 
+            $query = mysqli_query($config, "INSERT INTO merchants (merchant_id,merchant_name,business_name,merchant_email,merchant_phone,merchant_pass,userid) VALUES('$merchantId','$merchantName','$businessName','$merchantEmail','$merchantPhone','$merchantRepass','$userId')");
+            echo "<script>alert('Your Application was successful');</script>";
+            echo "<script>window.location.href='./index.php'</script>";
+        }
+        ?>
         <div class="mb-3">
             <label for="merchant_name" class="form-label">Merchant Name</label>
             <input style="  border: 1px solid #001e2f; " placeholder="Enter the sellers name" type="text" class="form-control rounded-0" id="merchant_name"
@@ -113,6 +107,18 @@ include_once('./header.php');
             <input style="  border: 1px solid #001e2f; " placeholder="Enter the mobile number" type="number" class="form-control rounded-0" id="merchant_phone" name="merchant_phone" value="<?php if (isset($merchantPhone)) {
                                                                                                                                                                                                     echo $merchantPhone;
                                                                                                                                                                                                 } ?>" required>
+        </div>
+        <div class="mb-3">
+            <label for="merchantpass" class="form-label">Set password</label>
+            <input style="  border: 1px solid #001e2f; " placeholder="Set your admin password" type="password" class="form-control rounded-0" id="merchantpass" name="merchantpass" value="<?php if (isset($merchantPhone)) {
+                                                                                                                                                                                                echo $merchantPhone;
+                                                                                                                                                                                            } ?>" required>
+        </div>
+        <div class="mb-3">
+            <label for="merchantRepass" class="form-label">Re enter password</label>
+            <input style="  border: 1px solid #001e2f; " placeholder="Re enter your admin password" type="password" class="form-control rounded-0" id="merchantRepass" name="merchantRepass" value="<?php if (isset($merchantPhone)) {
+                                                                                                                                                                                                        echo $merchantPhone;
+                                                                                                                                                                                                    } ?>" required>
         </div>
         <div class="row d-flex justify-content-between mt-5">
             <div class="col-3">

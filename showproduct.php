@@ -224,7 +224,7 @@ include_once('./header.php');
                                               } ?></span>
       </p>
       <p class="fs-3">
-        &#8377;<?php echo $productPrice * $discount; ?> <del class="text-black ms-3 fs-5">&#8377;<?php echo $productPrice; ?></del></span>
+        &#8377;<?php echo $productPrice * (1 - $discount); ?> <del class="text-black ms-3 fs-5">&#8377;<?php echo $productPrice; ?></del></span>
       </p>
       <div class="product-btn mt-5">
         <form action="" method="post">
@@ -327,7 +327,7 @@ include_once('./header.php');
                 <p style="height: 35px; overflow: hidden;" class="fw-medium fs-5 text-black"><?php echo $row['product_name']; ?></p>
               </div>
               <div class="row">
-                <h5 style="color: #0f6290;" class=" fs-3">&#8377;<?php echo $row['product_price'] * $row['discount_percent']; ?> <del class="text-black ms-3 fs-5">&#8377;<?php echo $row['product_price']; ?></del></h5>
+                <h5 style="color: #0f6290;" class=" fs-3">&#8377;<?php echo $row['product_price'] * (1 - $row['discount_percent']); ?> <del class="text-black ms-3 fs-5">&#8377;<?php echo $row['product_price']; ?></del></h5>
               </div>
               <div class="row">
                 <p style="height: 50px; overflow: hidden;" class="productDesc text-secondary">

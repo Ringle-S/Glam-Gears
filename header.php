@@ -55,7 +55,7 @@
                     </ul>
 
                     <div class="d-flex gap-3 position-relative">
-                        <button id="searchBtn" class="w-100 bg-transparent border-0 p-0">
+                        <button id="searchBtn" class="w-100 bg-transparent border-0 p-0 d-none">
                             <img class="img-fluid" src="./assets/icon/Search.svg" alt="searcico" />
                         </button>
                         <a class="d-lg-block d-none w-100" href="./wishlist.php">
@@ -74,7 +74,7 @@
 
                                 require_once "./config.php";
 
-                                $sql = "SELECT * FROM merchants WHERE merchant_id = ?";
+                                $sql = "SELECT * FROM merchants WHERE merchant_id = ? AND merchant_status=1;";
                                 $stmt = $config->prepare($sql);
                                 $stmt->bind_param("s", $userId);
                                 $stmt->execute();
@@ -99,7 +99,7 @@
                                       </li>
                            
                                       <li>
-                                        <a style='color: #001E2F;' class='link-underline link-underline-opacity-0' href='./Dashboard/dashboard.php'><img class='img-fluid me-3' src='./assets/icon/vuesax/vuesax/outline/status-up.png' alt='' />Dashboard</a>
+                                        <a target='_blank' style='color: #001E2F;' class='link-underline link-underline-opacity-0' href='./admin/dashboard.php'><img class='img-fluid me-3' src='./assets/icon/vuesax/vuesax/outline/status-up.png' alt='' />Dashboard</a>
                                            </li>
                                            <li>
                                         <a style='color: #001E2F;' class='link-underline link-underline-opacity-0' href='./orders.php'><img class='img-fluid me-3' src='./assets/icon/vuesax/vuesax/outline/bag-2.png' alt='' />Orders</a>
@@ -140,6 +140,7 @@
                                    <li>
                                        <a style='color: #001E2F;' class='link-underline link-underline-opacity-0' href='./orders.php'><img class='img-fluid me-3' src='./assets/icon/vuesax/vuesax/outline/bag-2.png' alt='' />Orders</a>
                                    </li>
+                                   
                                    <li>
                                        <a style='color: #001E2F;' class='link-underline link-underline-opacity-0' href='./merchant.php'><img class='img-fluid me-3' src='./assets/icon/vuesax/vuesax/outline/wallet-add.png' alt='' />Start Sales</a>
                                    </li>

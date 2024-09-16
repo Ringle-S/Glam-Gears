@@ -71,7 +71,7 @@ include_once('./header.php');
   <div class="row">
     <?php
     require_once "./config.php";
-    $sql = " SELECT COUNT(*) AS total_rows FROM cart WHERE `user_id` = ?";
+    $sql = " SELECT COUNT(*) AS total_rows FROM cart WHERE `user_id` = ? ";
     $stmt = $config->prepare($sql);
     $stmt->bind_param("s", $userId);
     $stmt->execute();
@@ -166,7 +166,7 @@ include_once('./header.php');
               <div class="col-12 col-lg-2">
                 <div class="d-flex align-items-center justify-content-between justify-content-lg-center">
                   <p class="mb-0 d-lg-none">SUBTOTAL:</p>
-                  <p class="mb-0 text-center">&#8377;<?php echo ($productRow['productPrice'] * $productRow['discountpercent']) * $productRow['quantity'];
+                  <p class="mb-0 text-center">&#8377;<?php echo ($productRow['productPrice'] * (1 - $productRow['discountpercent']) * $productRow['quantity']);
                                                       ?></p>
                 </div>
               </div>
@@ -233,7 +233,7 @@ include_once('./header.php');
       $productStmt->close();
 
       // 
-      $productSql = "SELECT SUM(products.product_price* cart.quantity - products.product_price*products.discount_percent * cart.quantity) AS total_price FROM cart INNER JOIN products ON cart.product_id = products.product_id WHERE cart.user_id = ?";
+      $productSql = "SELECT SUM(products.product_price* cart.quantity - products.product_price*products.discount_percent * cart.quantity) AS total_price1 FROM cart INNER JOIN products ON cart.product_id = products.product_id WHERE cart.user_id = ?";
       $productStmt = $config->prepare($productSql);
       $productStmt->bind_param("i", $userId);
       $productStmt->execute();
@@ -242,7 +242,7 @@ include_once('./header.php');
       if ($productResult->num_rows > 0) {
         $productRow = $productResult->fetch_assoc();
         // $totalCart = round_to_2dp($productRow['total_price']);
-        $disTotal = round($productRow['total_price'], 2);
+        $disTotal = round($productRow['total_price1'], 2);
         $discount = $subTotal - $disTotal;
       }
 
@@ -282,21 +282,13 @@ include_once('./header.php');
           <div class="d-flex justify-content-between align-items-center">
             <p class="mb-0">Discount</p>
             <div class=" d-flex align-items-center w-25">
-              &#8377;<input type="number" class="form-control bg-transparent border-0 text-white text-end" value="<?php if (isset($_POST['couponSubmit'])) {
-                                                                                                                    echo $disTotal + ($totalCart * $couponDiscount);
-                                                                                                                  } else {
-                                                                                                                    echo $disTotal;
-                                                                                                                  } ?>" />
+              &#8377;<input type="number" class="form-control bg-transparent border-0 text-white text-end" value="<?php echo $totalCart; ?>" />
             </div>
           </div>
           <div class="d-flex justify-content-between align-items-center">
             <p class="mb-0">Total Amount</p>
             <div class=" d-flex align-items-center w-25">
-              &#8377;<input type="number" class="form-control bg-transparent border-0 text-white text-end" value="<?php if (isset($_POST['couponSubmit'])) {
-                                                                                                                    echo $totalCart * (1 - $couponDiscount);
-                                                                                                                  } else {
-                                                                                                                    echo $totalCart;
-                                                                                                                  } ?>" />
+              &#8377;<input type="number" class="form-control bg-transparent border-0 text-white text-end" value="<?php echo $disTotal; ?>" />
             </div>
           </div>
         </div>

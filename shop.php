@@ -65,11 +65,11 @@ include_once('./header.php');
     <div class="line my-3"></div>
     <form class="d-flex flex-column gap-2" method="post" action="">
       <div class="list-group d-flex flex-column gap-2 mb-3">
-        <h4>Sort by</h4>
+        <h5>Sort by</h5>
 
         <div class="row d-flex  gap-3">
           <label><input type="radio" name="price" class="common_selector sort" value="ASC"> Price Low - High</label>
-          <label><input type="radio" name="price" class="common_selector sort" value="DESC"> Price High - LOW</label>
+          <label><input type="radio" name="price" class="common_selector sort" value="DESC"> Price High - Low</label>
         </div>
 
       </div>

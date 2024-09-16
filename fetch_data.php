@@ -37,12 +37,12 @@ if (isset($_POST["action"])) {
     $brand_filter = implode("','", $_POST["brand_name"]);
     $query .= "AND brand_name IN('" . $brand_filter . "')";
   }
-  
+
   if (isset($_POST["category_name"])) {
     $category_filter = implode("','", $_POST["category_name"]);
     $query .= "AND category_name IN('" . $category_filter . "')";
   }
-  
+
   if (isset($_POST["sort"])) {
     $sort = $_POST["sort"];
 
@@ -69,13 +69,13 @@ if (isset($_POST["action"])) {
                    <input class='d-none' type='text' name='productid' value='" . $row['product_id'] . "'>
                     <a href='./showproduct.php?productID=" . $row['product_id'] . "' class='link-underline d-flex flex-column gap-1 justify-content-center link-underline-opacity-0 card-seller'>
                   <div class='row'>
-                    <img class='img-fluid' src='./uploads/" . $row['main_image_name'] . '.' . $row['main_img_extension'] . "' alt='' />
+                    <img height='330px' class='object-fit-cover' src='./uploads/" . $row['main_image_name'] . '.' . $row['main_img_extension'] . "' alt='' />
                   </div>
                  <div class='row mt-2'>
                   <p style='height: 35px; overflow: hidden;' class='fw-medium fs-5 text-black'>" . $row['product_name'] . "</p>
                    </div>
                    <div class='row'>
-                     <h5 style='color: #0f6290;' class=' fs-3'>&#8377;" . $row['product_price'] * $row['discount_percent'] . "<del class='text-black ms-3      fs-5'>&#8377;" . $row['product_price'] . "</del></h5>
+                     <h5 style='color: #0f6290;' class=' fs-3'>&#8377;" . $row['product_price'] * (1 - $row['discount_percent']) . "<del class='text-black ms-3      fs-5'>&#8377;" . $row['product_price'] . "</del></h5>
                    </div>
                    <div class='row'>
                      <p style='height: 50px; overflow: hidden;' class='productDesc text-secondary'>

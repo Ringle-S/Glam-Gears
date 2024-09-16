@@ -58,7 +58,7 @@ if (isset($_POST['placeOrder'])) {
   $cardname = $_POST['nameOnCard'];
   $expDate = $_POST['expiryDate'];
 
-  echo $shipPaymentMode . "<br>";
+  // echo $shipPaymentMode . "<br>";
   if ($shipPaymentMode == "card") {
     include_once('./config.php');
     $sql = "INSERT INTO payments (order_id, cardnumber, cardname, expire_date) VALUES (?, ?, ?, ?)";
@@ -116,6 +116,10 @@ if (isset($_POST['placeOrder'])) {
             die('Execute failed3: ' . $stmt3->error);
           } else {
             $_SESSION['message'] = "Order placed successfully";
+            $productSql = "DELETE FROM cart WHERE user_id = ?";
+            $stmt = $config->prepare($productSql);
+            $stmt->bind_param("i", $userId);
+            $stmt->execute();
             header('Location: ./orders.php');
             die();
           }
@@ -124,7 +128,7 @@ if (isset($_POST['placeOrder'])) {
       }
     }
   } else {
-    include_once('./config.php');
+    // include_once('./config.php');
     $insert_query = "INSERT INTO orders (`tracking_no`,`user_id`,`fname`,`lname`,`email`,`address`,`state`,`city`,`zipcode`,`phone`,`total_amount`,`coupon_code`,`payment_mode`) VALUES ('$trackid','$userId','$fname','$lname','$shipMail','$shipAddress','$shipState','$shipCity','$shipCode','$shipMobile','$shipTotalAmount','$couponCode','$shipPaymentMode')";
     $stmt2 = $config->prepare($insert_query);
 
@@ -134,33 +138,38 @@ if (isset($_POST['placeOrder'])) {
     if (!$stmt2->execute()) {
       die('Execute failed2: ' . $stmt2->error);
     } else {
-      include_once('./config.php');
+      // include_once('./config.php');
       $productSql = "SELECT order_id FROM orders WHERE tracking_no = ?";
       $stmt = $config->prepare($productSql);
       $stmt->bind_param("i", $trackid);
       $stmt->execute();
       $result = $stmt->get_result();
 
-      while ($row = $result->fetch_assoc()) {
-        $orderId = $row['order_id'];
-      }
+      // while ($row = $result->fetch_assoc()) {
+      // $orderId = $row['order_id'];
+      // }
+      $row = $result->fetch_assoc();
+      $orderId = $row['order_id'];
+
 
       $productSql = "SELECT products.product_id, cart.quantity, products.product_price, products.product_name FROM cart INNER JOIN products ON cart.product_id = products.product_id WHERE cart.user_id = ?";
+      // echo "<script>alert($sql);</script>";
       $stmt = $config->prepare($productSql);
       $stmt->bind_param("i", $userId);
       $stmt->execute();
-      $result = $stmt->get_result();
+      $result_new = $stmt->get_result();
 
       // print_r($result);
-      while ($row = $result->fetch_assoc()) {
+      while ($row = $result_new->fetch_assoc()) {
         $productId = $row['product_id'];
         $productQuantity = $row['quantity'];
         $productPrice = $row['product_price'];
         $productName = $row['product_name'];
-        // echo $productId;
-        // echo $productQuantity;
-        // echo $productPrice;
-        // echo $productName;
+        // echo $productId . "<br>";
+        // echo $productQuantity . "<br>";
+        // echo $productPrice . "<br>";
+        // echo $productName . "<br>";
+        // echo "<br>";
         $order_item_sql = "INSERT INTO order_items (product_id, order_id, quantity, price, product_name) VALUES (?, ?, ?, ?, ?)";
         $stmt3 = $config->prepare($order_item_sql);
         $stmt3->bind_param("iiids", $productId, $orderId, $productQuantity, $productPrice, $productName);
@@ -171,9 +180,11 @@ if (isset($_POST['placeOrder'])) {
         if (!$stmt3->execute()) {
           die('Execute failed3: ' . $stmt3->error);
         } else {
-          $_SESSION['message'] = "Order placed successfully";
+          $delproductSql = "DELETE FROM cart WHERE user_id = ?";
+          $stmt3 = $config->prepare($delproductSql);
+          $stmt3->bind_param("i", $userId);
+          $stmt3->execute();
           header('Location: ./orders.php');
-          die();
         }
         $stmt3->close();
       }
@@ -307,11 +318,6 @@ if (isset($_POST['couponSubmit'])) {
       $productResult = $productStmt->get_result();
       if ($productResult->num_rows > 0) {
         while ($productRow = $productResult->fetch_assoc()) {
-          // $productRow = $productResult->fetch_assoc();
-          // $totalCart = round_to_2dp($productRow['total_price']);
-
-          // $productprice = round($productRow['productPrice'], 2);
-          // echo $productprice . "<br>";
 
 
       ?>
@@ -437,9 +443,9 @@ if (isset($_POST['couponSubmit'])) {
         <h5 class="mb-0 fw-semibold">Discount</h5>
         <div class=" d-flex align-items-center justify-content-end w-25 h5">
           &#8377;<input disabled type="number" class="form-control bg-transparent border-0 fw-semibold pt-3 text-dark text-end h5" value="<?php if (isset($_POST['couponSubmit'])) {
-                                                                                                                                            echo $discount + ($disTotal * $couponDiscount);
+                                                                                                                                            echo $disTotal + ($discount * $couponDiscount);
                                                                                                                                           } else {
-                                                                                                                                            echo $discount;
+                                                                                                                                            echo $disTotal;
                                                                                                                                           } ?>" />
         </div>
       </div>
@@ -449,9 +455,9 @@ if (isset($_POST['couponSubmit'])) {
           <h5 class="fw-semibold">Total Amount</h5>
           <div class=" d-flex align-items-center justify-content-end w-25 h5">
             &#8377;<input type="number" name="totalCost" class="form-control bg-transparent border-0 fw-semibold pt-3 text-dark text-end h5" value="<?php if (isset($_POST['couponSubmit'])) {
-                                                                                                                                                      echo $disTotal - ($disTotal * $couponDiscount);
+                                                                                                                                                      echo $discount - (($discount * $couponDiscount));
                                                                                                                                                     } else {
-                                                                                                                                                      echo $disTotal;
+                                                                                                                                                      echo $discount;
                                                                                                                                                     } ?>" />
           </div>
         </div>

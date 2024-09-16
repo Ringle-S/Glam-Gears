@@ -7,7 +7,7 @@ if (isset($_POST["logsubmit"])) {
 
     require_once "./config.php";
 
-    $sql = "SELECT * FROM users WHERE email = ?";
+    $sql = "SELECT * FROM merchants WHERE merchant_email = ?";
     $stmt = $config->prepare($sql);
     $stmt->bind_param("s", $logemail);
     $stmt->execute();
@@ -21,21 +21,38 @@ if (isset($_POST["logsubmit"])) {
             $errorMsg = 'Invalid email format';
         } else if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
-            $userId = $row['id'];
-            $actualEmail = $row['email'];
-            $actualPassword = $row['password'];
+            $userId = $row['merchant_id'];
+            $actualEmail = $row['merchant_email'];
+            $actualPassword = $row['merchant_pass'];
             // echo $userId;
             // echo $userId;
             // echo $userId;
             if ($logemail == $actualEmail && $logpassword == $actualPassword) {
 
-                // echo "<div class='alert alert-success'>Login successful</div>";
 
+                require_once "./config.php";
+                $sql2 = "SELECT * FROM merchants WHERE merchant_id = ? AND merchant_status='1'";
+                $stmt = $config->prepare($sql2);
+                $stmt->bind_param("s", $userId);
+                $stmt->execute();
+
+                $result = $stmt->get_result();
 
                 session_start();
 
-                $_SESSION['user'] = $userId;
-                echo "<script>window.location.href='./index.php'</script>";
+                if ($result->num_rows > 0) {
+                    echo "<div class='alert alert-success'>Login successful</div>";
+                    $row = $result->fetch_assoc();
+
+                    $merchantId = $userId;
+
+
+                    $_SESSION['user'] = $merchantId;
+                    echo $_SESSION['user'];
+                    echo "<script> window.location.href = './admin/dashboard.php'</script>";
+                } else {
+                    $errorMsg = 'Your account was inactive.(Send a request to glamgears@gmail.com to activate)';
+                }
             } else {
                 // echo "<div class='alert alert-danger'>Incorrect password</div>";
                 $errorMsg = 'Incorrect password';
@@ -65,12 +82,12 @@ include_once('./header.php');
 ?>
 
 
-<a class="fs-5 link-underline link-underline-opacity-0 fw-semibold px-5 text-end d-block" style="color: #0F6290;" href="./adminlogin.php">
-    <p class="mt-5 me-4">Admin Login</p>
+<a class="fs-5 link-underline link-underline-opacity-0 fw-semibold px-5 text-end d-block" style="color: #0F6290;" href="./login.php">
+    <p class="mt-5 me-4">User Login</p>
 </a>
 <div style="padding: 100px 0;" id="loginModal" class="row login mt-4 px-lg-5 d-flex justify-content-center">
     <div class="col-4">
-        <h2 class="text-center">Log in to Glam Gears</h2>
+        <h2 class="text-center">Log in to Admin Dashboard</h2>
 
 
 
@@ -104,9 +121,9 @@ include_once('./header.php');
                                                                                                                                                                                 } ?>">
                 </div>
             </div>
-            <div class="row">
+            <!-- <div class="row">
                 <a style="color: #0F6290;" class=" link-underline link-underline-opacity-0 fw-medium text-end" href="./frgtpass.php">Forgot password?</a>
-            </div>
+            </div> -->
             <div class="row d-flex justify-content-center mt-3">
                 <div class="col-6 ">
                     <button type="submit" name="logsubmit" class="bte w-100">Login</button>
@@ -117,9 +134,9 @@ include_once('./header.php');
             <div style="width: 100%; height:2px;" class="col bg-secondary"></div>
 
         </div>
-        <div class="row mt-3">
+        <!-- <div class="row mt-3">
             <p class="text-center">New User? <a style="color: #0F6290;" id="regRedirect" href="./signup.php" class=" fw-semibold link-underline link-underline-opacity-0">Register</a></p>
-        </div>
+        </div> -->
     </div>
 </div>
 

@@ -15,6 +15,7 @@ use PHPMailer\PHPMailer\Exception;
         </div>
         <div class="col-5 col-lg-3">
             <ul class="list-unstyled d-flex flex-column gap-4">
+                <p class="fw-bold">Quick links</p>
 
                 <li>
                     <a href="./index.php" class="link-light link-underline-opacity-0">HOME</a>
@@ -35,6 +36,7 @@ use PHPMailer\PHPMailer\Exception;
         </div>
         <div class="col-5 col-lg-3">
             <ul class="list-unstyled d-flex flex-column gap-4">
+                <p class="fw-bold">Our Support</p>
                 <li>
                     <a href="" class="link-light link-underline-opacity-0">HELP</a>
                 </li>
@@ -50,7 +52,7 @@ use PHPMailer\PHPMailer\Exception;
             </ul>
         </div>
         <div class="col-11 col-lg-3 order-2 order-lg-last">
-            <p>NEWSLETTER</p>
+            <p class="fw-bold">NEWSLETTER</p>
 
             <?php
             $errors = [];
@@ -120,7 +122,7 @@ use PHPMailer\PHPMailer\Exception;
 
             ?>
             <form class="flex flex-column flex-lg-row align-items-center" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
-                <input placeholder="Enter Your Email Address" type="email" name="newsEmail" class="bg-transparent text-light border-bottom border-light placeholder-glow border-top-0 border-start-0 border-end-0" />
+                <input placeholder="Enter Your Email Address" type="email" name="newsEmail" class="bg-transparent text-light border-bottom border-light placeholder-glow border-top-0 border-start-0 border-end-0" required />
                 <button type="submit" name="subscribe" class="bg-transparent text-light border-bottom border-top-0 border-start-0 border-end-0">
                     SUBSCRIBE
                 </button>
@@ -140,6 +142,7 @@ use PHPMailer\PHPMailer\Exception;
 <script src="./assets/js/shop.js"></script>
 <script src="./assets/js/location.js"></script>
 <script src="./assets/js/showCase.js"></script>
+<script src="./assets/js/play.js"></script>
 <!-- <script src="./assets/js/contactform.js"></script> -->
 <script src="./assets/js/jquery-1.10.2.min.js"></script>
 <script src="./assets/js/jquery-ui.js"></script>

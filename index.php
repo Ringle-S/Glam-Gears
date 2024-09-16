@@ -145,13 +145,13 @@ include_once('./header.php');
             <input class="d-none" type="text" name="productid" value="<?php echo $row['product_id']; ?>">
             <a href="./showproduct.php?productID=<?php echo $row['product_id']; ?>" class="link-underline d-flex flex-column gap-1 justify-content-center link-underline-opacity-0 card-seller">
               <div class="row">
-                <img class="img-fluid" src="./uploads/<?php echo $row['main_image_name'] . '.' . $row['main_img_extension']; ?>" alt="" />
+                <img height="330px" class=" object-fit-cover" src="./uploads/<?php echo $row['main_image_name'] . '.' . $row['main_img_extension']; ?>" alt="" />
               </div>
               <div class="row mt-2">
                 <p style="height: 35px; overflow: hidden;" class="fw-medium fs-5 text-black"><?php echo $row['product_name']; ?></p>
               </div>
               <div class="row">
-                <h5 style="color: #0f6290;" class=" fs-3">&#8377;<?php echo $row['product_price'] * $row['discount_percent']; ?> <del class="text-black ms-3 fs-5">&#8377;<?php echo $row['product_price']; ?></del></h5>
+                <h5 style="color: #0f6290;" class=" fs-3">&#8377;<?php echo $row['product_price'] * (1 - $row['discount_percent']); ?> <del class="text-black ms-3 fs-5">&#8377;<?php echo $row['product_price']; ?></del></h5>
               </div>
               <div class="row">
                 <p style="height: 50px; overflow: hidden;" class="productDesc text-secondary">
@@ -221,13 +221,13 @@ include_once('./header.php');
             <input class="d-none" type="text" name="productid" value="<?php echo $row['product_id']; ?>">
             <a href="./showproduct.php?productID=<?php echo $row['product_id']; ?>" class="link-underline d-flex flex-column gap-1 justify-content-center link-underline-opacity-0 card-seller">
               <div class="row">
-                <img class="img-fluid" src="./uploads/<?php echo $row['main_image_name'] . '.' . $row['main_img_extension']; ?>" alt="" />
+                <img height="330px" class=" object-fit-cover" src="./uploads/<?php echo $row['main_image_name'] . '.' . $row['main_img_extension']; ?>" alt="" />
               </div>
               <div class="row mt-2">
                 <p style="height: 35px; overflow: hidden;" class="fw-medium fs-5 text-black"><?php echo $row['product_name']; ?></p>
               </div>
               <div class="row">
-                <h5 style="color: #0f6290;" class=" fs-3">&#8377;<?php echo $row['product_price'] * $row['discount_percent']; ?> <del class="text-black ms-3 fs-5">&#8377;<?php echo $row['product_price']; ?></del></h5>
+                <h5 style="color: #0f6290;" class=" fs-3">&#8377;<?php echo $row['product_price'] * (1 - $row['discount_percent']); ?> <del class="text-black ms-3 fs-5">&#8377;<?php echo $row['product_price']; ?></del></h5>
               </div>
               <div class="row">
                 <p style="height: 50px; overflow: hidden;" class="productDesc text-secondary">
@@ -251,7 +251,7 @@ include_once('./header.php');
 </section>
 
 <!-- timer section -->
-<section class="timer row d-flex align-items-center justify-content-center">
+<section class="timer row d-flex align-items-center justify-content-center mt-5">
   <div class="col-11 col-lg-5 d-flex justify-content-center align-items-center">
     <img class="img-fluid" src="./assets/img/countTv.png" alt="" />
   </div>

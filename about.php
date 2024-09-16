@@ -46,7 +46,7 @@ include_once('./header.php');
     of tech enthusiasts.
   </p>
   <h4>Some of Glam Gears’s impressive features :</h4>
-  <ul class="list-unstyled">
+  <ul class="">
     <li>Diverse digital gadgets for purchase in cash or installments</li>
     <li>
       A blog with reviews and articles about the latest technology and
@@ -77,7 +77,7 @@ include_once('./header.php');
 
       Your browser does not support HTML5 video.
     </video>
-    <div class="btn-row position-absolute">
+    <div class="btn-row position-absolute d-none z-3">
       <button id="playButton" class="bg-transparent border-0" type="button">
         <img class="img-fluid" src="./assets/icon/vuesax/bold/video-square.png" alt="" />
       </button>

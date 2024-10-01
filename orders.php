@@ -83,7 +83,7 @@ include_once('./header.php');
                 <?php
                 include('./config.php');
 
-                $productSql = "SELECT  * FROM orders WHERE user_id = ?";
+                $productSql = "SELECT *, CASE WHEN EXISTS ( SELECT 1 FROM order_items oi WHERE oi.order_id = o.order_id AND oi.order_status <> 'completed' ) THEN FALSE ELSE TRUE END AS all_items_completed FROM orders o JOIN order_items oi ON o.order_id = oi.order_id WHERE o.user_id= ?";
                 $productStmt = $config->prepare($productSql);
                 $productStmt->bind_param("i", $userId);
                 $productStmt->execute();
@@ -126,11 +126,11 @@ include_once('./header.php');
                             </div>
                             <div class="col-12 col-lg-2 d-flex d-lg-block align-items-center ">
                                 <p class="mb-0 text-start d-lg-none">Status:</p>
-                                <p class="mb-0 fw-medium text-dark ms-2 ms-lg-0 text-center py-lg-3 <?php if ($productRow['confirmation'] == "completed") {
+                                <p class="mb-0 fw-medium text-dark ms-2 ms-lg-0 text-center py-lg-3 <?php if ($productRow['all_items_completed'] == "1") {
                                                                                                         echo "text-bg-success text-white";
                                                                                                     } else {
                                                                                                         echo "text-bg-warning";
-                                                                                                    };  ?>"><?php echo $productRow['confirmation'];  ?></p>
+                                                                                                    };  ?>"><?php echo $productRow['order_status'];  ?></p>
                             </div>
                         </div>
 

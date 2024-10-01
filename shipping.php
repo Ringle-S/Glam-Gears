@@ -61,17 +61,17 @@ if (isset($_POST['placeOrder'])) {
   // echo $shipPaymentMode . "<br>";
   if ($shipPaymentMode == "card") {
     include_once('./config.php');
-    $sql = "INSERT INTO payments (order_id, cardnumber, cardname, expire_date) VALUES (?, ?, ?, ?)";
+    $sql = "INSERT INTO payments (track_id, cardnumber, cardname, expire_date) VALUES (?, ?, ?, ?)";
     $stmt = $config->prepare($sql);
 
     if (!$stmt) {
       die('Prepare failed: ' . $config->error);
     }
 
-    $stmt->bind_param("ssss", $orderid, $cardnumber, $cardname, $expDate);
+    $stmt->bind_param("isss", $trackid, $cardnumber, $cardname, $expDate);
 
     if (!$stmt->execute()) {
-      die('Execute failed: ' . $stmt->error);
+      die('Execute failed1: ' . $stmt->error);
     } else {
       include_once('./config.php');
       $insert_query = "INSERT INTO orders (`tracking_no`,`user_id`,`fname`,`lname`,`email`,`address`,`state`,`city`,`zipcode`,`phone`,`total_amount`,`coupon_code`,`payment_mode`) VALUES ('$trackid','$userId','$fname','$lname','$shipMail','$shipAddress','$shipState','$shipCity','$shipCode','$shipMobile','$shipTotalAmount','$couponCode','$shipPaymentMode')";
@@ -93,35 +93,46 @@ if (isset($_POST['placeOrder'])) {
           $orderId = $row['order_id'];
         }
         // Insert order items
-        $productSql = "SELECT products.product_id, cart.quantity, products.product_price, products.product_name FROM cart INNER JOIN products ON cart.product_id = products.product_id WHERE cart.user_id = ?";
+        $productSql = "SELECT products.product_id, cart.quantity, products.product_price, products.product_name,products.product_quantity FROM cart INNER JOIN products ON cart.product_id = products.product_id WHERE cart.user_id = ?";
         $stmt = $config->prepare($productSql);
         $stmt->bind_param("i", $userId);
         $stmt->execute();
-        $result = $stmt->get_result();
+        $result_new = $stmt->get_result();
 
-        while ($row = $result->fetch_assoc()) {
+        while ($row = $result_new->fetch_assoc()) {
           $productId = $row['product_id'];
           $productQuantity = $row['quantity'];
           $productPrice = $row['product_price'];
           $productName = $row['product_name'];
+          $actualQuantity = $row['product_quantity'];
+          echo $newQuantity = $actualQuantity - $productQuantity . "<br>";
 
           $order_item_sql = "INSERT INTO order_items (product_id, order_id, quantity, price, product_name) VALUES (?, ?, ?, ?, ?)";
           $stmt3 = $config->prepare($order_item_sql);
           $stmt3->bind_param("iiids", $productId, $orderId, $productQuantity, $productPrice, $productName);
 
-          if (!$stmt3) {
-            die('Prepare failed: ' . $config->error);
-          }
           if (!$stmt3->execute()) {
             die('Execute failed3: ' . $stmt3->error);
           } else {
-            $_SESSION['message'] = "Order placed successfully";
-            $productSql = "DELETE FROM cart WHERE user_id = ?";
-            $stmt = $config->prepare($productSql);
-            $stmt->bind_param("i", $userId);
-            $stmt->execute();
-            header('Location: ./orders.php');
-            die();
+            $quantitySql = "UPDATE `products` SET `product_quantity`=? WHERE `product_id` = ?";
+            $stmtQ = $config->prepare($quantitySql);
+            $stmtQ->bind_param("ii", $newQuantity, $productId);
+
+            if (!$stmtQ) {
+              die('Prepare failed: ' . $config->error);
+            }
+
+            if (!$stmtQ->execute()) {
+              die('Execute failedQ: ' . $stmtQ->error);
+            } else {
+              $_SESSION['message'] = "Order placed successfully";
+              $productSql = "DELETE FROM cart WHERE user_id = ?";
+              $stmt = $config->prepare($productSql);
+              $stmt->bind_param("i", $userId);
+              $stmt->execute();
+              header('Location: ./orders.php');
+              die();
+            }
           }
           $stmt3->close();
         }
@@ -145,46 +156,49 @@ if (isset($_POST['placeOrder'])) {
       $stmt->execute();
       $result = $stmt->get_result();
 
-      // while ($row = $result->fetch_assoc()) {
-      // $orderId = $row['order_id'];
-      // }
       $row = $result->fetch_assoc();
       $orderId = $row['order_id'];
 
-
-      $productSql = "SELECT products.product_id, cart.quantity, products.product_price, products.product_name FROM cart INNER JOIN products ON cart.product_id = products.product_id WHERE cart.user_id = ?";
-      // echo "<script>alert($sql);</script>";
+      $productSql = "SELECT products.product_id, cart.quantity, products.product_price, products.product_name, products.product_quantity FROM cart INNER JOIN products ON cart.product_id = products.product_id WHERE cart.user_id = ?";
       $stmt = $config->prepare($productSql);
       $stmt->bind_param("i", $userId);
       $stmt->execute();
       $result_new = $stmt->get_result();
 
-      // print_r($result);
       while ($row = $result_new->fetch_assoc()) {
         $productId = $row['product_id'];
         $productQuantity = $row['quantity'];
         $productPrice = $row['product_price'];
         $productName = $row['product_name'];
-        // echo $productId . "<br>";
-        // echo $productQuantity . "<br>";
-        // echo $productPrice . "<br>";
-        // echo $productName . "<br>";
-        // echo "<br>";
+        $actualQuantity = $row['product_quantity'];
+        echo $newQuantity = $actualQuantity - $productQuantity . "<br>";
+
         $order_item_sql = "INSERT INTO order_items (product_id, order_id, quantity, price, product_name) VALUES (?, ?, ?, ?, ?)";
         $stmt3 = $config->prepare($order_item_sql);
         $stmt3->bind_param("iiids", $productId, $orderId, $productQuantity, $productPrice, $productName);
 
-        if (!$stmt3) {
-          die('Prepare failed: ' . $config->error);
-        }
         if (!$stmt3->execute()) {
           die('Execute failed3: ' . $stmt3->error);
         } else {
-          $delproductSql = "DELETE FROM cart WHERE user_id = ?";
-          $stmt3 = $config->prepare($delproductSql);
-          $stmt3->bind_param("i", $userId);
-          $stmt3->execute();
-          header('Location: ./orders.php');
+          $quantitySql = "UPDATE `products` SET `product_quantity`=? WHERE `product_id` = ?";
+          $stmtQ = $config->prepare($quantitySql);
+          $stmtQ->bind_param("ii", $newQuantity, $productId);
+
+          if (!$stmtQ) {
+            die('Prepare failed: ' . $config->error);
+          }
+
+          if (!$stmtQ->execute()) {
+            die('Execute failedQ: ' . $stmtQ->error);
+          } else {
+            $_SESSION['message'] = "Order placed successfully";
+            $productSql = "DELETE FROM cart WHERE user_id = ?";
+            $stmt = $config->prepare($productSql);
+            $stmt->bind_param("i", $userId);
+            $stmt->execute();
+            header('Location: ./orders.php');
+            die();
+          }
         }
         $stmt3->close();
       }
@@ -311,7 +325,7 @@ if (isset($_POST['couponSubmit'])) {
       <?php
       include('./config.php');
 
-      $productSql = "SELECT  products.product_id AS productID, cart.cart_id AS cartID, products.main_image_name AS img_name, products.main_img_extension AS img_ext, products.product_name AS productName, products.product_price AS productPrice,products.discount_percent AS discountpercent , cart.quantity AS quantity FROM cart INNER JOIN products ON cart.product_id = products.product_id WHERE cart.user_id = ?";
+      $productSql = "SELECT  products.product_id AS productID, cart.cart_id AS cartID, products.main_image_name AS img_name, products.product_name AS productName, products.product_price AS productPrice,products.discount_percent AS discountpercent , cart.quantity AS quantity FROM cart INNER JOIN products ON cart.product_id = products.product_id WHERE cart.user_id = ?";
       $productStmt = $config->prepare($productSql);
       $productStmt->bind_param("i", $userId);
       $productStmt->execute();
@@ -483,7 +497,7 @@ if (isset($_POST['couponSubmit'])) {
         <div style="background-color: #001e2f" class="col-12 text-white px-5 py-4">
           <h4 class="fw-bold">Payment</h4>
           <div class="form-check border-bottom py-3">
-            <input class="form-check-input bg-transparent border-2" type="radio" name="payment" id="cashOnDelivery" value="COD" checked />
+            <input class="form-check-input bg-transparent border-2" type="radio" onchange="offConatiner()" name="payment" id="cashOnDelivery" value="COD" checked />
             <label class="form-check-label" for="cashOnDelivery">
               Cash on Delivery
             </label>
@@ -491,7 +505,7 @@ if (isset($_POST['couponSubmit'])) {
           <div class="form-check border-bottom py-3">
 
 
-            <input class="form-check-input bg-transparent border-2" type="radio" name="payment" id="card" value="card" />
+            <input class="form-check-input bg-transparent border-2" onchange="toggleContainer()" type="radio" name="payment" id="card" value="card" />
             <label class="form-check-label" for="card">Credit Cards
 
               <img class="img-fluid ms-5" src="./assets/img/master.png" alt="" />
@@ -499,7 +513,7 @@ if (isset($_POST['couponSubmit'])) {
               <img class="img-fluid" src="./assets/img/visa.png" alt="" />
             </label>
           </div>
-          <div class="row card-details g-3 mt-3">
+          <div style="display: none;" id="card-details" class="row card-details g-3 mt-3">
             <div class="col-12">
               <input type="number" class="form-control rounded-0 bg-transparent text-white" <?php if (isset($_POST['payment']) && ! $_POST['payment'] == "COD" &&  $_POST['payment'] == "") {
                                                                                               echo "disabled";
@@ -528,7 +542,29 @@ if (isset($_POST['couponSubmit'])) {
     </div>
   </form>
 </div>
+<script>
+  function offConatiner() {
+    const container = document.getElementById("card-details");
+    // const radio1 = document.getElementById("radio1");
+    // const radio2 = document.getElementById("radio2");
 
+
+
+    container.style.display = "none";
+
+  }
+
+  function toggleContainer() {
+    const container = document.getElementById("card-details");
+    // const radio1 = document.getElementById("radio1");
+    // const radio2 = document.getElementById("radio2");
+
+
+
+    container.style.display = "block";
+
+  }
+</script>
 <?php
 include_once('./footer.php');
 ?>

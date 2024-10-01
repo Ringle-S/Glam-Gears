@@ -1,6 +1,7 @@
 <?php
 session_start();
 include_once('../config.php');
+$userId = $_SESSION['user'];
 if (isset($_SESSION['user'])) {
     $userId = $_SESSION['user'];
 } else {
@@ -35,7 +36,7 @@ if (isset($_GET['id'])) {
         // echo $isFeatured;
         // echo "<script>alert($isFeatured)</script>";
         $imgName = $row['main_image_name'];
-        $imgExt = $row['main_img_extension'];
+        // $imgExt = $row['main_img_extension'];
     }
 
 
@@ -64,7 +65,7 @@ if (isset($_GET['id'])) {
         $targetPath = "../uploads/" . $fileName;
         if (in_array($image_extension, $allowedTypes)) {
             if (move_uploaded_file($tempName, $targetPath)) {
-                $sql = "UPDATE `products` SET `product_name`='$productName',`product_description`='$productDescription',`product_price`='$productPrice',`discount_percent`='$discountPercent',`product_quantity`='$productQuantity',`category_name`='$categoryName',`brand_name`='$brandName',`main_image_name`='$image_name',`main_img_extension`='$image_extension',`is_featured`='$isFeatured' WHERE `product_id` = $itemId";
+                $sql = "UPDATE `products` SET `product_name`='$productName',`product_description`='$productDescription',`product_price`='$productPrice',`discount_percent`='$discountPercent',`product_quantity`='$productQuantity',`category_name`='$categoryName',`brand_name`='$brandName',`main_image_name`='$fileName',`is_featured`='$isFeatured' WHERE `product_id` = $itemId";
                 include_once('./config.php');
                 $stmt = $config->prepare($sql);
 
@@ -99,20 +100,38 @@ if (isset($_GET['id'])) {
 
 
     // image featured
-    if (isset($_POST['productImgSubmit'])) {
-        foreach ($_FILES["imagefeatured"]["tmp_name"] as $key => $tmp_name) {
-            $fileName = $_FILES["imagefeatured"]["name"][$key];
-            $image_name = pathinfo($fileName, PATHINFO_FILENAME);
-            $image_extension = pathinfo($fileName, PATHINFO_EXTENSION);
-            $allowedTypes = array("jpg", "jpeg", "png", "gif");
-            $tempName = $_FILES["imagefeatured"]["tmp_name"][$key];
-            $targetPath = "../uploads/" . $fileName;
+    if (isset($_POST['productImgSubmit1'])) {
+
+        if (!isset($_FILES['featuredImage1'])) {
+            $_SESSION['message'] = "Please select featured images 1.";
+            header('Location: editProduct.php');
+            exit();
+        }
+        $fileerr1 = $_FILES["featuredImage1"];
+        $file1 = $_FILES["featuredImage1"]["name"];
+        $temppicName1 = $_FILES["featuredImage1"]["tmp_name"];
+
+
+
+        // echo $file;
+        $pic_name1 = pathinfo($file1, PATHINFO_FILENAME);
+        $pic_extension1 = pathinfo($file1, PATHINFO_EXTENSION);
+
+
+        $allowedTypes = array("jpg", "jpeg", "png", "gif");
+        $tempName1 = $_FILES["featuredImage1"]["tmp_name"];
+
+
+
+        $targetPath1 = "../uploads/" . $file1;
+
+        if ($fileerr1["error"] === UPLOAD_ERR_OK) {
             // Check if the file uploaded successfully
-            if (in_array($image_extension, $allowedTypes)) {
-                if (move_uploaded_file($tempName, $targetPath)) {
-                    include_once('./config.php');
-                    $stmt = $config->prepare("INSERT INTO product_images (product_id,img_name,img_extension) VALUES (?,?,?)");
-                    $stmt->bind_param("sss", $itemId, $image_name, $image_extension);
+            if (in_array($pic_extension1, $allowedTypes)) {
+                if (move_uploaded_file($tempName1, $targetPath1)) {
+                    include_once('../config.php');
+                    $stmt = $config->prepare("UPDATE product_images SET  img_name1=? WHERE product_id=?");
+                    $stmt->bind_param("si",  $file1, $id);
 
                     if ($stmt->execute()) {
                         $_SESSION['message'] = "Image uploaded successfully!";
@@ -130,71 +149,129 @@ if (isset($_GET['id'])) {
             } else {
                 echo "Your files are not allowed";
             }
+        } else {
+            echo "Error uploading file  : " . $fileerr1["error"], $fileerr2["error"], $fileerr3["error"] . "<br>";
         }
-        // $finalimg = '';
-        // if (in_array($ext, $extension)) {
-        //     if (!file_exists('images/' . $filename)) {
-        //         move_uploaded_file($filename_tmp, 'images/' . $filename);
-        //         $finalimg = $filename;
-        //     } else {
-        //         $filename = str_replace('.', '-', basename($filename, $ext));
-        //         $newfilename = $filename . time() . "." . $ext;
-        //         move_uploaded_file($filename_tmp, 'images/' . $newfilename);
-        //         $finalimg = $newfilename;
-        //     }
-        //     $creattime = date('Y-m-d h:i:s');
-        //     //insert
-        //     $insertqry = "INSERT INTO `multiple-images`( `image_name`, `image_createtime`) VALUES ('$finalimg','$creattime')";
-        //     mysqli_query($con, $insertqry);
+    }
+    // image featured
+    if (isset($_POST['productImgSubmit2'])) {
 
-        //     header('Location: index.php');
-        // } else {
-        //     //display error
-        // }
+        if (!isset($_FILES['featuredImage2'])) {
+            $_SESSION['message'] = "Please select featured images 2 ";
+            header('Location: editProduct.php');
+            exit();
+        }
+
+
+        $fileerr2 = $_FILES["featuredImage2"];
+        $file2 = $_FILES["featuredImage2"]["name"];
+        $temppicName2 = $_FILES["featuredImage2"]["tmp_name"];
+
+
+
+
+        // echo $file;
+
+        $pic_name2 = pathinfo($file2, PATHINFO_FILENAME);
+        $pic_extension2 = pathinfo($file2, PATHINFO_EXTENSION);
+
+        $allowedTypes = array("jpg", "jpeg", "png", "gif");
+
+        $tempName2 = $_FILES["featuredImage2"]["tmp_name"];
+
+
+
+
+
+        $targetPath2 = "../uploads/" . $file2;
+
+        if ($fileerr2["error"] === UPLOAD_ERR_OK) {
+            // Check if the file uploaded successfully
+            if (in_array($pic_extension2, $allowedTypes)) {
+                if (move_uploaded_file($tempName2, $targetPath2)) {
+                    include_once('../config.php');
+                    $stmt = $config->prepare("UPDATE product_images SET  img_name2=? WHERE product_id=?");
+                    $stmt->bind_param("si",  $file2, $id);
+
+                    if ($stmt->execute()) {
+                        $_SESSION['message'] = "Image uploaded successfully!";
+                        header('Location: dashboard.php');
+                        exit();
+                    } else {
+                        $errors = mysqli_error($config);
+                        $_SESSION['message'] = "Error inserting Image upload :" . $stmt->error;
+                        header('Location: editProduct.php');
+                        exit();
+                    }
+                } else {
+                    echo "File is not uploaded";
+                }
+            } else {
+                echo "Your files are not allowed";
+            }
+        } else {
+            echo "Error uploading file  : " .  $fileerr2["error"] . "<br>";
+        }
     }
 
-    // if (isset($_POST['productImgSubmit'])) {
-    //     // Check if the 'imagefeatured' array is set and not empty
 
-    //     // echo $_FILES['imagefeatured']['name'];
-    //     // $fileCount = count($_FILES['imagefeatured']['name']);
-    //     foreach ($_FILES['imagefeatured']['tmp_name'] as $key => $tmp_name) {
-    //         $extension = array('jpeg', 'jpg', 'png', 'gif');
-    //         echo $_FILES['imagefeatured']['name'];
+    // image featured3
+    if (isset($_POST['productImgSubmit3'])) {
 
-    //         $filename =  basename($_FILES['imagefeatured']['name'][$key]);
+        if (!isset($_FILES['featuredImage3'])) {
+            $_SESSION['message'] = "Please select featured images  3.";
+            header('Location: editProduct.php');
+            exit();
+        }
 
-    //         $image_name = pathinfo($filename, PATHINFO_FILENAME);
-    //         $ext = pathinfo($filename, PATHINFO_EXTENSION);
-    //         echo $image_name . "<br>";
-    //         echo $ext;
 
-    //         // if (in_array($ext, $extension)) {
-    //         //     if (!file_exists('images/' . $filename)) {
-    //         //         move_uploaded_file($filename_tmp, 'images/' . $filename);
-    //         //         $finalimg = $filename;
-    //         //     } else {
-    //         //         $filename = str_replace('.', '-', basename($filename, $ext));
-    //         //         $newfilename = $filename . time() . "." . $ext;
-    //         //         move_uploaded_file($filename_tmp, 'images/' . $newfilename);
-    //         //         $finalimg = $newfilename;
-    //         //         echo $finalimg;
-    //         //     }
-    //         //     // $creattime = date('Y-m-d h:i:s');
-    //         //insert
-    //         // require_once "../config.php";
-    //         // $insertqry = "INSERT INTO product_images ( `product_id`, `image_name`, `image_extension`) VALUES ('$itemId','$image_name','$ext')";
-    //         // if (mysqli_query($config, $query)) {
-    //         //     $_SESSION['message'] = "Product created successfully!";
-    //         //     header('Location: ./dashboard.php');
-    //         //     exit();
-    //         // } else {
-    //         //     $_SESSION['message'] = "Error: " . mysqli_error($config);
-    //         //     header('Location: editProduct.php');
-    //         //     exit();
-    //         // }
-    //     }
-    // }
+        $fileerr3 = $_FILES["featuredImage3"];
+        $file3 = $_FILES["featuredImage3"]["name"];
+        $temppicName3 = $_FILES["featuredImage3"]["tmp_name"];
+
+
+        // echo $file;
+
+        $pic_name3 = pathinfo($file3, PATHINFO_FILENAME);
+        $pic_extension3 = pathinfo($file3, PATHINFO_EXTENSION);
+
+
+        $allowedTypes = array("jpg", "jpeg", "png", "gif");
+
+        $tempName3 = $_FILES["featuredImage3"]["tmp_name"];
+
+
+
+
+        $targetPath3 = "../uploads/" . $file3;
+        if ($fileerr3["error"] === UPLOAD_ERR_OK) {
+            // Check if the file uploaded successfully
+            if (in_array($pic_extension3, $allowedTypes)) {
+                if (move_uploaded_file($tempName3, $targetPath3)) {
+                    include_once('../config.php');
+                    $stmt = $config->prepare("UPDATE product_images SET  img_name3=? WHERE product_id=?");
+                    $stmt->bind_param("si",   $file3, $id);
+
+                    if ($stmt->execute()) {
+                        $_SESSION['message'] = "Image uploaded successfully!";
+                        header('Location: dashboard.php');
+                        exit();
+                    } else {
+                        $errors = mysqli_error($config);
+                        $_SESSION['message'] = "Error inserting Image upload :" . $stmt->error;
+                        header('Location: editProduct.php');
+                        exit();
+                    }
+                } else {
+                    echo "File is not uploaded";
+                }
+            } else {
+                echo "Your files are not allowed";
+            }
+        } else {
+            echo "Error uploading file  : " .  $fileerr3["error"] . "<br>";
+        }
+    }
 }
 
 
@@ -232,7 +309,7 @@ if (isset($_GET['id'])) {
                     ?>
                     <div class="my-3 d-flex flex-column align-items-center">
                         <label for="blog_name" class="form-label text-center row ms-2">Old Image</label>
-                        <img width="200px" height="150px" class=" shadow-sm" src="../uploads/<?php echo  $imgName . '.' . $imgExt; ?>" alt="">
+                        <img width="200px" height="200px" class=" shadow-sm" src="../uploads/<?php echo  $imgName  ?>" alt="">
                     </div>
                     <div class="mb-3">
                         <label for="product_name" class="form-label">Product Name</label>
@@ -314,15 +391,111 @@ if (isset($_GET['id'])) {
         <div class="col-5">
             <div class="row d-flex justify-content-center vh-100 my-5 px-5">
                 <h3 style="color: #001e2f;" class=" display-6 fw-medium text-center">Featured Images Upload</h3>
-                <form class="col-12 px-5 d-flex flex-column" action="" method="post" enctype="multipart/form-data">
+                <form class="col-12 px-5 d-flex flex-column my-5" action="" method="post" enctype="multipart/form-data">
+                    <?php
+                    $sql = "SELECT * FROM product_images WHERE  product_id = ?";
+                    $stmt = $config->prepare($sql);
+                    $stmt->bind_param("s", $itemId);
+                    $stmt->execute();
+                    $result = $stmt->get_result();
+                    $row = mysqli_fetch_array($result)
 
-                    <div class="mb-3">
-                        <label for="featured_image" class="form-label">Images</label>
-                        <input style="  border: 1px solid #001e2f; " type="file" class="form-control rounded-0" multiple id="featured_image" name="imagefeatured[]" required>
+
+                    ?>
+                    <div class="row">
+                        <div class="col-12 mb-2 pe-4 d-flex align-items-center gap-3">
+                            <div class="my-3  d-flex flex-column align-items-center">
+                                <label for="blog_name" class="form-label text-center row ms-2">Featured Image<?php echo 1; ?></label>
+                                <img width="200px" height="200px" class=" shadow-sm" src="../uploads/<?php
+                                                                                                        echo  $row['img_name1'];
+                                                                                                        ?>" alt="<?php
+                                                                                                                    echo  $row['img_name1'];
+                                                                                                                    ?>">
+                            </div>
+                            <div class=" ">
+                                <!-- <label for="featuredImage<?php echo $i; ?>" class="form-label text-center row ms-2">Featured Image<?php echo $i; ?></label> -->
+                                <input style="  border: 1px solid #001e2f; " type="file" class="form-control rounded-0" id="featuredImage1" name="featuredImage1" required>
+                                <div class="row d-flex justify-content-center mt-3 px-4">
+
+                                    <button type="submit" name="productImgSubmit1" class="bte col-3">Upload</button>
+                                </div>
+                            </div>
+                        </div>
+
+
                     </div>
-                    <div class="row d-flex justify-content-center mt-3 px-4">
 
-                        <button type="submit" name="productImgSubmit" class="bte col-3">Upload</button>
+
+                </form>
+                <form class="col-12 px-5 d-flex flex-column my-5" action="" method="post" enctype="multipart/form-data">
+                    <?php
+                    $sql = "SELECT * FROM product_images WHERE  product_id = ?";
+                    $stmt = $config->prepare($sql);
+                    $stmt->bind_param("s", $itemId);
+                    $stmt->execute();
+                    $result = $stmt->get_result();
+                    $row = mysqli_fetch_array($result)
+
+
+                    ?>
+                    <div class="row">
+
+                        <div class="col-12 mb-2 pe-4 d-flex align-items-center gap-3">
+                            <div class="my-3  d-flex flex-column align-items-center">
+                                <label for="blog_name" class="form-label text-center row ms-2">Featured Image<?php echo 2; ?></label>
+                                <img width="200px" height="200px" class=" shadow-sm" src="../uploads/<?php
+                                                                                                        echo  $row['img_name2'];
+                                                                                                        ?>" alt="<?php
+                                                                                                                    echo  $row['img_name2'];
+                                                                                                                    ?>">
+                            </div>
+                            <div class="">
+                                <!-- <label for="featuredImage<?php echo $i; ?>" class="form-label text-center row ms-2">Featured Image<?php echo $i; ?></label> -->
+                                <input style="  border: 1px solid #001e2f; " type="file" class="form-control rounded-0" id="featuredImage2" name="featuredImage2" required>
+                                <div class="row d-flex justify-content-center mt-3 px-4">
+
+                                    <button type="submit" name="productImgSubmit2" class="bte col-3">Upload</button>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+
+                </form>
+                <form class="col-12 px-5 d-flex flex-column my-5" action="" method="post" enctype="multipart/form-data">
+                    <?php
+                    $sql = "SELECT * FROM product_images WHERE  product_id = ?";
+                    $stmt = $config->prepare($sql);
+                    $stmt->bind_param("s", $itemId);
+                    $stmt->execute();
+                    $result = $stmt->get_result();
+                    $row = mysqli_fetch_array($result)
+
+
+                    ?>
+                    <div class="row">
+
+                        <div class="col-12 mb-2 pe-4 d-flex align-items-center gap-3">
+                            <div class="my-3  d-flex flex-column align-items-center">
+                                <label for="blog_name" class="form-label text-center row ms-2">Featured Image3</label>
+                                <img width="200px" height="200px" class=" shadow-sm" src="../uploads/<?php
+                                                                                                        echo  $row['img_name3'];
+                                                                                                        ?>" alt="<?php
+                                                                                                                    echo  $row['img_name3'];
+                                                                                                                    ?>">
+                            </div>
+                            <div class=" ">
+                                <!-- <label for="featuredImage<?php echo $i; ?>" class="form-label text-center row ms-2">Featured Image<?php echo $i; ?></label> -->
+                                <input style="  border: 1px solid #001e2f; " type="file" class="form-control rounded-0" id="featuredImage3" name="featuredImage3" required>
+                                <div class="row d-flex justify-content-center mt-3 px-4">
+
+                                    <button type="submit" name="productImgSubmit3" class="bte col-3">Upload</button>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
 
 

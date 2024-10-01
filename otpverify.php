@@ -40,7 +40,7 @@ include_once('./header.php');
 
 <div class="forget-container">
     <div style="height:50vh;" class="row d-flex justify-content-center align-items-center">
-        <div class="col-3">
+        <div class="col-10 col-md-8 col-xl-4">
             <h2 class="text-center">OTP Verification</h2>
             <p class="text-center">Please enter your one time password which is send it to your email</p>
             <?php
@@ -63,7 +63,7 @@ include_once('./header.php');
                 </div>
 
                 <div class="input-group my-4 d-flex justify-content-center">
-                    <button type="submit" class="bte" name="otpSubmit">OTP Verify</button>
+                    <button type="submit" class="bte align-self-center" name="otpSubmit">OTP Verify</button>
                 </div>
 
 

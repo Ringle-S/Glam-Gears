@@ -9,7 +9,7 @@ if (isset($_SESSION['user'])) {
 
 $id = $_GET["trackno"];
 
-$sql = "UPDATE `orders` SET `confirmation`='denied' WHERE tracking_no = $id";
+$sql = "UPDATE `order_items` SET `order_status`='denied' WHERE order_item_id = $id";
 
 include_once('../config.php');
 $result = mysqli_query($config, $sql);

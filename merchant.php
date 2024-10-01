@@ -7,51 +7,7 @@ if (isset($_SESSION['user'])) {
     // echo $userId;
 }
 
-if (isset($_POST['merchantSubmit'])) {
-    function generate_5_digit_number()
-    {
-        return str_pad(rand(10000, 99999), 5, '0', STR_PAD_LEFT);
-    }
 
-    $random_number = generate_5_digit_number();
-    // echo "checking success";
-    $merchantId = $random_number;
-    $merchantName = $_POST["merchant_name"];
-    $businessName = $_POST["business_name"];
-    $merchantEmail = $_POST["merchant_email"];
-
-    $merchantPhone = $_POST["merchant_phone"];
-    $merchantpass = $_POST["merchantpass"];
-    $merchantRepass = $_POST["merchantRepass"];
-
-    $errors = array();
-
-
-    require_once "./config.php";
-    $sql = "SELECT * FROM merchants WHERE merchant_email = '$merchantEmail'";
-    $result = mysqli_query($config, $sql);
-    $rowCount = mysqli_num_rows($result);
-
-    if ($rowCount > 0) {
-        array_push($errors, "Email already exists!");
-    }
-    if (empty($merchantName) or empty($businessName) or empty($merchantEmail) or empty($merchantPhone) or empty($merchantpass) or empty($merchantRepass)) {
-        array_push($errors, "All fields are required");
-    }
-    if (!filter_var($merchantEmail, FILTER_VALIDATE_EMAIL)) {
-        array_push($errors, "Email is not valid");
-    }
-    if (strlen($merchantpass) < 8) {
-        array_push($errors, "Password must be at least 8 charactes long");
-    }
-    if ($merchantpass !== $merchantRepass) {
-        array_push($errors, "Password does not match");
-    }
-    if (strlen($merchantPhone) < 10) {
-        // echo strlen($merchantPhone);
-        array_push($errors, "Mobile number must be 10 charactes ");
-    }
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -67,18 +23,61 @@ include_once('./header.php');
 ?>
 <div class="row d-flex justify-content-center my-5">
     <h3 class="text-center">Application for Merchant</h3>
-    <form id="merchantForm" method="post" class="col-5 mt-4">
+    <form id="merchantForm" method="post" class="col-10 col-md-8 col-xl-4 mt-4">
         <?php
-        if (count($errors) > 0) {
-            foreach ($errors as  $error) {
-                echo "<div class='alert alert-danger'>$error</div>";
+        if (isset($_POST['merchantSubmit'])) {
+            function generate_5_digit_number()
+            {
+                return str_pad(rand(10000, 99999), 5, '0', STR_PAD_LEFT);
             }
-        } else {
-            // echo "checking success";
 
-            $query = mysqli_query($config, "INSERT INTO merchants (merchant_id,merchant_name,business_name,merchant_email,merchant_phone,merchant_pass,userid) VALUES('$merchantId','$merchantName','$businessName','$merchantEmail','$merchantPhone','$merchantRepass','$userId')");
-            echo "<script>alert('Your Application was successful');</script>";
-            echo "<script>window.location.href='./index.php'</script>";
+            $random_number = generate_5_digit_number();
+            // echo "checking success";
+            $merchantId = $random_number;
+            $merchantName = $_POST["merchant_name"];
+            $businessName = $_POST["business_name"];
+            $merchantEmail = $_POST["merchant_email"];
+
+            $merchantPhone = $_POST["merchant_phone"];
+            $merchantpass = $_POST["merchantpass"];
+            $merchantRepass = $_POST["merchantRepass"];
+
+            $errors = array();
+
+            require_once "./config.php";
+            $sql = "SELECT * FROM merchants WHERE merchant_email = '$merchantEmail'";
+            $result = mysqli_query($config, $sql);
+            $rowCount = mysqli_num_rows($result);
+
+            if ($rowCount > 0) {
+                array_push($errors, "Email already exists!");
+            }
+            if (empty($merchantName) or empty($businessName) or empty($merchantEmail) or empty($merchantPhone) or empty($merchantpass) or empty($merchantRepass)) {
+                array_push($errors, "All fields are required");
+            }
+            if (!filter_var($merchantEmail, FILTER_VALIDATE_EMAIL)) {
+                array_push($errors, "Email is not valid");
+            }
+            if (strlen($merchantpass) < 8) {
+                array_push($errors, "Password must be at least 8 charactes long");
+            }
+            if ($merchantpass !== $merchantRepass) {
+                array_push($errors, "Password does not match");
+            }
+            if (strlen($merchantPhone) < 10) {
+                // echo strlen($merchantPhone);
+                array_push($errors, "Mobile number must be 10 charactes ");
+            }
+            if (count($errors) > 0) {
+                foreach ($errors as  $error) {
+                    echo "<div class='alert alert-danger'>$error</div>";
+                }
+            } else {
+                // echo "checking success";
+                $query = mysqli_query($config, "INSERT INTO merchants (merchant_id,merchant_name,business_name,merchant_email,merchant_phone,merchant_pass,userid) VALUES('$merchantId','$merchantName','$businessName','$merchantEmail','$merchantPhone','$merchantRepass','$userId')");
+                echo "<script>alert('Your Application was successful');</script>";
+                echo "<script>window.location.href='./index.php'</script>";
+            }
         }
         ?>
         <div class="mb-3">
@@ -121,10 +120,10 @@ include_once('./header.php');
                                                                                                                                                                                                     } ?>" required>
         </div>
         <div class="row d-flex justify-content-between mt-5">
-            <div class="col-3">
+            <div class="col-6 col-md-3">
                 <a href="./index.php" class=" btn btn-dark link-underline link-underline-opacity-0 rounded-0">Back to Home</a>
             </div>
-            <div class="col-3">
+            <div class="col-6 col-md-3">
                 <button type="submit" name="merchantSubmit" class="bte w-100">Send a Request</button>
             </div>
         </div>

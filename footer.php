@@ -5,7 +5,7 @@ use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
 ?>
-<footer class="row px-2 px-lg-5 text-light" style="background-color: #001e2f">
+<footer class="row px-2 px-lg-5 text-light d-flex justify-content-center" style="background-color: #001e2f">
     <div class="row border-bottom border-light p-2 p-md-5 mt-5 d-flex gap-5 gap-lg-0">
         <div class="col-11 col-lg-3">
             <a href="./index.php">
@@ -15,7 +15,7 @@ use PHPMailer\PHPMailer\Exception;
         </div>
         <div class="col-5 col-lg-3">
             <ul class="list-unstyled d-flex flex-column gap-4">
-                <p class="fw-bold">Quick links</p>
+                <p class="fw-bold">QUICK LINKS</p>
 
                 <li>
                     <a href="./index.php" class="link-light link-underline-opacity-0">HOME</a>
@@ -36,7 +36,7 @@ use PHPMailer\PHPMailer\Exception;
         </div>
         <div class="col-5 col-lg-3">
             <ul class="list-unstyled d-flex flex-column gap-4">
-                <p class="fw-bold">Our Support</p>
+                <p class="fw-bold">OUR SUPPORTS</p>
                 <li>
                     <a href="" class="link-light link-underline-opacity-0">HELP</a>
                 </li>
@@ -105,7 +105,7 @@ use PHPMailer\PHPMailer\Exception;
                         //Recipients
                         $mail->setFrom('starkringle@gmail.com', 'Glam Gears');
                         $mail->addAddress($smail, 'subscriber');                    //Add a recipient
-
+                        $mail->addAttachment('./assets/img/Thank-you.png', 'image.png');
 
                         //Content
                         $mail->isHTML(true);                                        //Set email format to HTML
@@ -144,6 +144,8 @@ use PHPMailer\PHPMailer\Exception;
 <script src="./assets/js/showCase.js"></script>
 <script src="./assets/js/play.js"></script>
 <!-- <script src="./assets/js/contactform.js"></script> -->
+<script src="./assets/js/blog.js"></script>
+<script src="./assets/js/search.js"></script>
 <script src="./assets/js/jquery-1.10.2.min.js"></script>
 <script src="./assets/js/jquery-ui.js"></script>
 <script src="./node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

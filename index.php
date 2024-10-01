@@ -52,9 +52,9 @@ include_once('./header.php');
   <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-inner">
       <div class="carousel-item active">
-        <img src="./assets/img/bannerhome1.jpg" class="w-100 d-none d-lg-block" alt="..." />
-        <img src="./assets/img/mobbanhome1.jpg" class="w-100 d-block d-lg-none" alt="..." />
-        <div class="carousel-caption text-center text-lg-start d-flex flex-column align-items-center align-items-lg-start gap-3">
+        <img src="./assets/img/bannerhome1.jpg" class="w-100 d-none d-lg-block object-fit-cover" style="background-position: bottom;" alt="..." />
+        <img src="./assets/img/mobbanhome1.jpg" class="w-100 d-block d-lg-none object-fit-contain" style="background-position: bottom;" alt="..." />
+        <div class="carousel-caption caroCaption text-center text-lg-start d-flex flex-column align-items-center align-items-lg-start gap-3">
           <h5 class="">All New Phones up to 25% Flat Sale</h5>
           <h2>WELCOME TO SMARTWORLD</h2>
           <a href="./shop.php" class="btr link-underline link-underline-opacity-0 align-self-center align-self-lg-start">
@@ -63,9 +63,9 @@ include_once('./header.php');
         </div>
       </div>
       <div class="carousel-item">
-        <img src="./assets/img/bannerhome2.jpg" class="w-100 d-none d-lg-block" alt="..." />
-        <img src="./assets/img/mobbanhome2.jpg" class="w-100 d-block d-lg-none" alt="..." />
-        <div class="carousel-caption text-center text-lg-start d-flex flex-column align-items-center align-items-lg-start gap-3">
+        <img src="./assets/img/bannerhome2.jpg" class="w-100 d-none d-lg-block object-fit-cover" style="background-position: bottom;" alt="..." />
+        <img src="./assets/img/mobbanhome2.jpg" class="w-100 d-block d-lg-none object-fit-contain" style="background-position: bottom;" alt="..." />
+        <div class="carousel-caption caroCaption text-center text-lg-start d-flex flex-column align-items-center align-items-lg-start gap-3">
           <h5 class="">All New Phones up to 25% Flat Sale</h5>
           <h2>LET'S CHANGE YOUR STYLE IN TRENDS</h2>
           <a href="./shop.php" class="btr link-underline link-underline-opacity-0 align-self-center align-self-lg-start">
@@ -74,9 +74,9 @@ include_once('./header.php');
         </div>
       </div>
       <div class="carousel-item">
-        <img src="./assets/img/bannerhome3.jpg" class="w-100 d-none d-lg-block" alt="..." />
-        <img src="./assets/img/mobbanhome3.jpg" class="w-100 d-block d-lg-none" alt="..." />
-        <div class="carousel-caption text-center text-lg-start d-flex flex-column align-items-center align-items-lg-start gap-3">
+        <img src="./assets/img/bannerhome3.jpg" class="w-100 d-none d-lg-block object-fit-cover" style="background-position: bottom;" alt="..." />
+        <img src="./assets/img/mobbanhome3.jpg" class="w-100 d-block d-lg-none object-fit-contain" style="background-position: bottom;" alt="..." />
+        <div class="carousel-caption caroCaption text-center text-lg-start d-flex flex-column align-items-center align-items-lg-start gap-3">
           <h5 class="">All New Latest smart watch</h5>
           <h2>UP TO 25% FLAT <br>SALE All NEW WATCHES</h2>
           <a href="./shop.php" class="btr link-underline link-underline-opacity-0 align-self-center align-self-lg-start">
@@ -87,8 +87,12 @@ include_once('./header.php');
     </div>
   </div>
 </section>
+
+<style>
+
+</style>
 <!-- category container -->
-<section style="height: 60vh" class="category d-flex justify-content-center align-items-center px-5 w-100 gap-3 overflow-x-scroll">
+<section style="height: fit content; padding: 10vh 0 " class="category d-flex justify-content-center align-items-center px-5 w-100 gap-3 overflow-x-scroll">
   <div class="cat-card bg-light px-5 d-flex flex-column shadow-sm gap-4 justify-content-center align-items-center text-center">
     <img class="img-fluid w-75" src="./assets/icon/Camera.png" alt="" />
     <h6 class="text-gray-700">CAMERA</h6>
@@ -120,8 +124,7 @@ include_once('./header.php');
     <h2 class="fs-1">Up to 40% off our Christmas collection</h2>
     <p class="fs-5">
       It is a long established fact that a reader will be distracted by
-      the readable content of a page when looking at it's layout. The
-      point of using Lorem Ipsum is that
+      the readable content of a page when looking at it's layout. the offer could save you a lot of amount
     </p>
     <a href="./shop.php" class="link link-dark fw-bold"> SHOP NOW</a>
   </div>
@@ -135,9 +138,9 @@ include_once('./header.php');
   <div class="col-12">
     <h2 class="text-center h1 fw-semibold">BEST SELLERS</h2>
     <div class="row sellers-card p-0 p-md-0 g-0">
-      <div class="row g-0 g-md-5">
+      <div class="row  gap-3 gap-md-0 g-0 g-md-5">
         <?php
-        $sql = "SELECT p.product_id,p.main_image_name, p.main_img_extension,p.discount_percent,p.product_description,p.category_name, p.product_name, p.product_price,(p.product_price*oi.quantity) AS total_amt FROM order_items oi INNER JOIN products p ON oi.product_id = p.product_id GROUP BY p.product_id ORDER BY total_amt DESC LIMIT 8;";
+        $sql = "SELECT p.product_id,p.main_image_name,p.discount_percent,p.product_description,p.category_name, p.product_name, p.product_price,(p.product_price*oi.quantity) AS total_amt FROM order_items oi INNER JOIN products p ON oi.product_id = p.product_id GROUP BY p.product_id ORDER BY total_amt DESC LIMIT 8;";
         $result = mysqli_query($config, $sql);
         while ($row = mysqli_fetch_array($result)) {
         ?>
@@ -145,7 +148,7 @@ include_once('./header.php');
             <input class="d-none" type="text" name="productid" value="<?php echo $row['product_id']; ?>">
             <a href="./showproduct.php?productID=<?php echo $row['product_id']; ?>" class="link-underline d-flex flex-column gap-1 justify-content-center link-underline-opacity-0 card-seller">
               <div class="row">
-                <img height="330px" class=" object-fit-cover" src="./uploads/<?php echo $row['main_image_name'] . '.' . $row['main_img_extension']; ?>" alt="" />
+                <img height="330px" class=" img-fluid object-fit-contain" src="./uploads/<?php echo $row['main_image_name']; ?>" alt="" />
               </div>
               <div class="row mt-2">
                 <p style="height: 35px; overflow: hidden;" class="fw-medium fs-5 text-black"><?php echo $row['product_name']; ?></p>
@@ -176,10 +179,10 @@ include_once('./header.php');
 <!-- trends container -->
 <section class="trends">
   <section class="christmas row">
-    <div class="col-12 col-lg-6 p-5 gradient d-flex justify-content-center align-items-center">
+    <div class="col-12 col-lg-6 p-5 gradient d-flex flex-column-reverse flex-lg-row justify-content-center align-items-center">
       <img class="img-fluid" src="./assets/img/mobilecover.png" alt="" />
     </div>
-    <div style="background-color: #f7f6f5" class="col-12 col-lg-6 p-2 p-md-5 d-flex flex-column gap-3 text-center justify-content-center">
+    <div style="background-color: #f7f6f5" class="col-12 col-lg-6 p-3 p-md-5 d-flex flex-column gap-3 text-center justify-content-center">
       <h2 class="fs-1">Our Histroy</h2>
       <p class="fs-5">
         The point of It is a long established fact that a reader will be
@@ -190,8 +193,8 @@ include_once('./header.php');
       <a href="./about.php" class="link link-dark fw-bold">LEARN MORE</a>
     </div>
   </section>
-  <section class="christmas row">
-    <div style="background-color: #f7f6f5" class="col-12 col-lg-6 p-2 p-md-5 d-flex flex-column gap-3 text-center justify-content-center">
+  <section class="christmas row d-flex flex-column-reverse flex-lg-row">
+    <div style="background-color: #f7f6f5" class="col-12 col-lg-6 p-3 p-md-5 d-flex flex-column gap-3 text-center justify-content-center">
       <h2 class="fs-1">Medal Worthy Brands To Bag</h2>
       <p class="fs-5">
         It is a long established fact that a reader will be distracted by
@@ -211,7 +214,7 @@ include_once('./header.php');
   <div class="col-12 d-flex flex-column justify-content-center">
     <h2 class="text-center h1 fw-semibold">DISCOVER NEW ARRIVALS</h2>
     <div class="row sellers-card p-0 p-md-0 g-0">
-      <div class="row  g-0 g-md-5 ">
+      <div class="row  gap-3 gap-md-0 g-0 g-md-5 ">
         <?php
         $sql = "SELECT * FROM products WHERE is_featured='1' AND product_status='active' ORDER BY id DESC LIMIT 4;";
         $result = mysqli_query($config, $sql);
@@ -221,7 +224,7 @@ include_once('./header.php');
             <input class="d-none" type="text" name="productid" value="<?php echo $row['product_id']; ?>">
             <a href="./showproduct.php?productID=<?php echo $row['product_id']; ?>" class="link-underline d-flex flex-column gap-1 justify-content-center link-underline-opacity-0 card-seller">
               <div class="row">
-                <img height="330px" class=" object-fit-cover" src="./uploads/<?php echo $row['main_image_name'] . '.' . $row['main_img_extension']; ?>" alt="" />
+                <img height="330px" class=" img-fluid object-fit-contain" src="./uploads/<?php echo $row['main_image_name']; ?>" alt="" />
               </div>
               <div class="row mt-2">
                 <p style="height: 35px; overflow: hidden;" class="fw-medium fs-5 text-black"><?php echo $row['product_name']; ?></p>

@@ -10,7 +10,7 @@ cartIncrements.forEach((incre, index) => {
     countElement.value = count;
 
     const productId = countElement.dataset.productId;
-    console.log(productId);
+    // console.log(productId);
     // Assuming productId is in a data attribute
     updateCartQuantity(index, count);
   });
@@ -25,7 +25,7 @@ cartDecrements.forEach((decre, index) => {
       countElement.value = count;
 
       const productId = countElement.dataset.productId;
-      console.log(productId);
+      // console.log(productId);
 
       updateCartQuantity(index, count);
     }
@@ -36,6 +36,8 @@ function updateCartQuantity(index, count) {
   // Get product ID from the cart item (assuming you have a data attribute)
   const productId = cartCounts[index].dataset.productId;
 
+  // console.log(cartCounts[index].dataset.productId);
+
   // AJAX request to update the cart quantity in the database
   fetch("update_cart_quantity.php", {
     method: "POST",
@@ -43,18 +45,5 @@ function updateCartQuantity(index, count) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ productId: productId, quantity: count }),
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.success) {
-        // Handle successful update
-        console.log("Cart quantity updated successfully");
-      } else {
-        // Handle update error
-        console.error("Error updating cart quantity");
-      }
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
+  });
 }

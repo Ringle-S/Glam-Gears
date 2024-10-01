@@ -82,11 +82,12 @@ include_once('./header.php');
 ?>
 
 
-<a class="fs-5 link-underline link-underline-opacity-0 fw-semibold px-5 text-end d-block" style="color: #0F6290;" href="./login.php">
-    <p class="mt-5 me-4">User Login</p>
+<a class="fs-5 link-underline link-underline-opacity-0 fw-semibold px-5 text-end d-block d-flex align-items-center gap-0 justify-content-end" style="color: #0F6290;" href="./login.php">
+    <i class="bi bi-arrow-right mt-5 me-4 fw-bold fs-4"></i>
+    <p class="mt-5 me-4 mb-0">Switch To User Login</p>
 </a>
 <div style="padding: 100px 0;" id="loginModal" class="row login mt-4 px-lg-5 d-flex justify-content-center">
-    <div class="col-4">
+    <div class="col-10 col-md-8 col-xl-4">
         <h2 class="text-center">Log in to Admin Dashboard</h2>
 
 

@@ -1,5 +1,5 @@
 <body>
-    <section class="container-fluid position-relative">
+    <section class="container-fluid ">
 
         <header class="position-relative">
             <nav class="bg-light">
@@ -24,7 +24,7 @@
                             color: #fff;
                         }
                     </style>
-                    <ul class="d-lg-flex align-items-center gap-5 d-none list-unstyled fs-5 mb-0">
+                    <ul class="d-lg-flex align-items-center gap-3 gap-xl-5 d-none list-unstyled fs-5 mb-0">
                         <li>
                             <a href="./index.php" class="<?php if (basename($pagename) == 'index.php') {
                                                                 echo 'navactive';
@@ -55,7 +55,7 @@
                     </ul>
 
                     <div class="d-flex gap-3 position-relative">
-                        <button id="searchBtn" class="w-100 bg-transparent border-0 p-0 d-none">
+                        <button id="searchBtn" class="w-100 bg-transparent border-0 p-0 ">
                             <img class="img-fluid" src="./assets/icon/Search.svg" alt="searcico" />
                         </button>
                         <a class="d-lg-block d-none w-100" href="./wishlist.php">
@@ -176,83 +176,26 @@
                     </div>
                 </div>
             </nav>
-            <ul style="top: 80px" id="navlinks" class="d-lg-none list-unstyled position-absolute d-flex flex-column gap-4 z-3 ps-5 py-5 vh-100 w-75 bg-light">
-                <li class="ml-0">
-                    <a href="./index.php" class="link link-dark link-underline link-underline-opacity-0">Home</a>
-                </li>
-                <li>
-                    <a href="./shop.php" class="link link-dark link-underline link-underline-opacity-0">Shop</a>
-                </li>
-                <li>
-                    <a href="./about.php" class="link link-dark link-underline link-underline-opacity-0">About</a>
-                </li>
 
-                <li>
-                    <a href="./contact.php" class="link link-dark link-underline link-underline-opacity-0">Contact</a>
-                </li>
 
-                <li>
-                    <a href="./blogs.php" class="link link-dark link-underline link-underline-opacity-0">Blog</a>
-                </li>
-                <li>
-                    <a href="#" class="link link-dark link-underline link-underline-opacity-0">Wishlist</a>
-                </li>
-                <li>
-                    <a href="./cart.php" class="link link-dark link-underline link-underline-opacity-0">Cart</a>
-                </li>
-            </ul>
+            <div id="searchContainer" style="right: 5%;" class="d-none search-container col-11 col-md-6 col-lg-5 col-xl-3 position-absolute text-danger z-3 bg-light shadow-lg top-100 p-2 p-md-3">
+                <form action="" method="post" class="d-flex shadow-sm input-group">
+                    <span class="input-group-text bg-transparent border-end-0 rounded-0" style="border-color: #001e2f" id="basic-addon1">
+                        <i class="bi bi-search"></i></span>
+                    <input type="search" name="searchinput" class="form-control input-group-text py-2 px-3 border-start-0 text-start" style="border-color: #001e2f" placeholder="Search product" id="search-input">
 
-            <div id="searchContainer" style="right: 5%;" class="d-none search-container w-25 position-absolute text-danger z-3 bg-light shadow-lg top-100 p-5 ">
-
-                <form action="" method="post">
-                    <div class="d-flex">
-                        <input type="search" name="searchinput" class="py-2 px-3 " placeholder="search product" id="">
-                        <button style="background-color: #0f6290;" type="submit" class="border-0 text-white py-2 px-3" name="searchsubmit">Search</button>
-                    </div>
                 </form>
 
 
-                <div class="search-result mt-3">
-                    <?php
-                    include 'config.php'; // Replace with your database connection file
-
-                    if (isset($_POST['searchsubmit'])) {
-                        $search = $_POST['searchinput'];
-                        $sql = "SELECT * FROM products WHERE product_status='active' AND category_name LIKE '%$search%' OR brand_name LIKE '%$search%'";
-                        $result = $config->query($sql);
-
-                        if ($result->num_rows > 0) {
-                            // Output the results
-                            while ($row = $result->fetch_assoc()) {
 
 
-                    ?>
-                                <form method="post" class="w-100 d-flex border-bottom pb-2 mt-3">
-
-                                    <a href="./showproduct.php?productID=<?php echo $row['product_id']; ?>" class=" link-underline d-flex flex-column gap-1 justify-content-center link-underline-opacity-0 card-seller">
-                                        <div class="d-flex gap-3">
-                                            <div class="col-3">
-                                                <img class="img-fluid" src="./uploads/<?php echo $row['main_image_name'] . '.' . $row['main_img_extension']; ?>" alt="" />
-                                            </div>
-                                            <div class="col-9">
-                                                <p style="height: 35px; overflow: hidden;" class="fw-medium fs-5 mb-0 text-black"><?php echo $row['product_name']; ?></p>
 
 
-                                                <h5 style="color: #0f6290;" class=" fs-3">&#8377;<?php echo $row['product_price'] * $row['discount_percent']; ?> <del class="text-black ms-3 fs-5">&#8377;<?php echo $row['product_price']; ?></del></h5>
+
+                </html>
+                <div id="search-results" class="search-result mt-3">
 
 
-                                            </div>
-                                        </div>
-                                    </a>
-
-                                </form>
-                    <?php
-                            }
-                        } else {
-                            echo "No results found.";
-                        }
-                    }
-                    ?>
                 </div>
             </div>
             <script>
@@ -264,4 +207,30 @@
                     searchContainer.classList.toggle("d-none");
                 });
             </script>
+
         </header>
+        <ul style="top: 80px; transform:translateX(-100%) " id="navlinks" class="d-lg-none list-unstyled position-absolute d-flex flex-column gap-4 z-3 ps-5 py-5 vh-100 w-75 bg-light">
+            <li class="ml-0">
+                <a href="./index.php" class="link link-dark link-underline link-underline-opacity-0">Home</a>
+            </li>
+            <li>
+                <a href="./shop.php" class="link link-dark link-underline link-underline-opacity-0">Shop</a>
+            </li>
+            <li>
+                <a href="./about.php" class="link link-dark link-underline link-underline-opacity-0">About</a>
+            </li>
+
+            <li>
+                <a href="./contact.php" class="link link-dark link-underline link-underline-opacity-0">Contact</a>
+            </li>
+
+            <li>
+                <a href="./blogs.php" class="link link-dark link-underline link-underline-opacity-0">Blog</a>
+            </li>
+            <li>
+                <a href="./wishlist.php" class="link link-dark link-underline link-underline-opacity-0">Wishlist</a>
+            </li>
+            <li>
+                <a href="./cart.php" class="link link-dark link-underline link-underline-opacity-0">Cart</a>
+            </li>
+        </ul>

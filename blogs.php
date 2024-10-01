@@ -33,7 +33,7 @@ include_once('./header.php');
           " class="col-12 col-lg-6"></div>
   <div style="background-color: #fcfcfc" class="col-12 col-lg-6 d-flex flex-column align-items-center justify-content-center text-center p-5 p-lg-0">
     <div class="w-75">
-      <h2 class="fs-1">THE ELECTRIC AVENUE BLOGS</h2>
+      <h2 class="fs-1">ELECTRONIC GADGET BLOGS</h2>
       <p>
         Your go-to source for everything electric. Discover the latest
         tech trends, product reviews, and buying guides.Your one-stop shop
@@ -43,13 +43,13 @@ include_once('./header.php');
     </div>
   </div>
 </div>
-<div class="blog-container row">
-  <div class="blogs-contents col-12 col-lg-7">
-    <div class="row d-flex justify-content-start">
+<div class="blog-container row d-flex justify-content-center">
+  <div class="blogs-contents col-11   col-xl-7">
+    <div class=" d-flex flex-wrap justify-content-center justify-content-xl-start gap-4 ">
       <?php
       include('./config.php');
 
-      $blogSql = "SELECT b.blog_id, b.title, b.blog_desc, b.blog_text, b.img_name, b.created_at, b.user_id FROM blogs b WHERE status ='active' ORDER BY b.title DESC";
+      $blogSql = "SELECT b.blog_id, b.title, b.blog_desc, b.blog_text, b.img_name, b.created_at, b.user_id FROM blogs b WHERE status ='active' ORDER BY b.created_at DESC LIMIT 6";
       $blogStmt = $config->prepare($blogSql);
       if (!$blogStmt) {
         die('Prepare failed: ' . $config->error);
@@ -76,8 +76,8 @@ include_once('./header.php');
 
       ?>
 
-            <div class="blog-card col-12 col-md-7 col-lg-5">
-              <img class="img-fluid col-12 " src="./uploads/<?php echo $productRow['img_name']; ?>" alt="" />
+            <div class="blog-card col-12 col-md-7 col-lg-7 col-xl-5">
+              <img height="290px" class="img-fluid object-fit-contain" src="./uploads/<?php echo $productRow['img_name']; ?>" alt="" />
               <div class="d-flex align-items-center gap-3 py-2">
                 <img src="./assets/icon/Avatar.svg" alt="" />
                 <p class="mb-0"><?php echo $name; ?></p>
@@ -85,7 +85,7 @@ include_once('./header.php');
                 <p class="mb-0"><?php echo $productRow['created_at']; ?></p>
               </div>
               <h4><?php echo $productRow['title']; ?></h4>
-              <p>
+              <p style="height: 45px; overflow: hidden;">
                 <?php echo $productRow['blog_desc']; ?>
               </p>
             </div>
@@ -95,21 +95,41 @@ include_once('./header.php');
         }
       } else {
         echo '<div style="border-bottom: 1px solid #0f6290" class="row text-secondary px-3 py-5 fw-medium d-flex gap-4 gap-lg-0 align-items-center ">
-                                      <div class="col-12 text-center">Your cart is empty</div>
+                                      <div class="col-12 text-center">No blogs Yet</div>
                                           </div>';
       }
       ?>
     </div>
   </div>
-  <div class="blog-search col-12 col-lg-4 d-flex flex-column gap-3">
+  <div class="blog-search col-10 col-md-6 col-xl-4 d-flex flex-column align-items-center align-items-xl-start mt-5 mt-lg-0 gap-3">
     <div class="row">
-      <div class=" mb-3">
+      <div class=" mb-3 col-12">
         <form action="" method="post" class="input-group">
           <span class="input-group-text bg-transparent border-end-0 rounded-0" style="border-color: #001e2f" id="basic-addon1">
             <i class="bi bi-search"></i></span>
 
 
-          <input type="search" style="border-color: #001e2f" name="bloginput" class="py-2 text-start border-start-0 rounded-0 input-group-text bg-transparent" placeholder="search blogs category" id="" required>
+
+          <select style="border-color: #001e2f" name="bloginput" class=" py-2 pe-5 text-start border-start-0 rounded-0 form-select input-group-text bg-transparent" placeholder="search blogs category" id="blogSearch" required>
+            <option value="" selected disabled>Select blog category</option>
+            <?php
+            $blogSql = "SELECT DISTINCT(category) AS category FROM blogs b WHERE status ='active' ORDER BY b.category ASC";
+            $blogStmt = $config->prepare($blogSql);
+            if (!$blogStmt) {
+              die('Prepare failed: ' . $config->error);
+            }
+            $blogStmt->execute();
+            $productResult = $blogStmt->get_result();
+            if ($productResult->num_rows > 0) {
+              while ($productRow = $productResult->fetch_assoc()) {
+            ?>
+                <option value="<?php echo $productRow['category'] ?>"><?php echo $productRow['category'] ?></option>
+            <?php
+
+              }
+            }
+            ?>
+          </select>
           <button style="background-color: #0f6290; border-color: #001e2f" type="submit" class="border-0  text-white py-2 px-3" name="blogsubmit">Search</button>
 
         </form>
@@ -134,7 +154,7 @@ include_once('./header.php');
           while ($row = $result->fetch_assoc()) {
       ?>
             <div class="d-flex gap-3 align-items-center">
-              <img class="img-fluid col-3" src="./uploads/<?php echo $row['img_name']; ?>" alt="" />
+              <img class=" object-fit-contain" height="101px" src=" ./uploads/<?php echo $row['img_name']; ?>" alt="" />
               <h3 class="fs-4"><?php echo $row['title']; ?></h3>
             </div>
       <?php
@@ -147,12 +167,12 @@ include_once('./header.php');
       }
       ?>
     </div>
-    <div class="row d-flex flex-column gap-4">
+    <div class="row d-flex flex-column gap-4 mt-5">
       <h2 class="fs-3 fw-medium">POPULAR POST</h2>
       <?php
       include('./config.php');
 
-      $blogSql = "SELECT b.blog_id, b.title, b.blog_desc, b.blog_text, b.img_name, b.created_at, b.user_id FROM blogs b WHERE status ='active' ORDER BY b.title LIMIT 1 ";
+      $blogSql = "SELECT b.blog_id, b.title, b.blog_desc, b.blog_text, b.img_name, b.created_at, b.user_id FROM blogs b WHERE status ='active' ORDER BY b.created_at ASC LIMIT 1 ";
       $blogStmt = $config->prepare($blogSql);
 
       $blogStmt->execute();
@@ -161,7 +181,7 @@ include_once('./header.php');
         while ($productRow = $productResult->fetch_assoc()) {
       ?>
           <div class="d-flex gap-3 align-items-center">
-            <img class="img-fluid col-3" src="./uploads/<?php echo $productRow['img_name']; ?>" alt="" />
+            <img class=" object-fit-contain" height="101" src="./uploads/<?php echo $productRow['img_name']; ?>" alt="" />
             <h3 class="fs-4"><?php echo $productRow['title']; ?></h3>
           </div>
       <?php
@@ -177,6 +197,8 @@ include_once('./header.php');
     <div class="row"></div>
   </div>
 </div>
+
+
 
 <?php
 include_once('./footer.php');

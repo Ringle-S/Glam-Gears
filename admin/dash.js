@@ -1,5 +1,3 @@
-
-
 const buttons = document.querySelectorAll(".dashBtn");
 const containers = document.querySelectorAll(".displayDash");
 
@@ -39,3 +37,4 @@ editClose.addEventListener("click", () => {
   ProfileShowContainer.classList.remove("d-none");
   ProfileShowContainer.classList.add("d-flex");
 });
+

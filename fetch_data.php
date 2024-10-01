@@ -69,7 +69,7 @@ if (isset($_POST["action"])) {
                    <input class='d-none' type='text' name='productid' value='" . $row['product_id'] . "'>
                     <a href='./showproduct.php?productID=" . $row['product_id'] . "' class='link-underline d-flex flex-column gap-1 justify-content-center link-underline-opacity-0 card-seller'>
                   <div class='row'>
-                    <img height='330px' class='object-fit-cover' src='./uploads/" . $row['main_image_name'] . '.' . $row['main_img_extension'] . "' alt='' />
+                    <img height='330px' class='img-fluid object-fit-contain' src='./uploads/" . $row['main_image_name'] . "' alt='' />
                   </div>
                  <div class='row mt-2'>
                   <p style='height: 35px; overflow: hidden;' class='fw-medium fs-5 text-black'>" . $row['product_name'] . "</p>

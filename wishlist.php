@@ -15,9 +15,29 @@ if (isset($_GET['productID'])) {
     require_once "./config.php";
 }
 
-if (isset($_POST['addcart'])) {
-}
 
+if (isset($_POST['addcart'])) {
+    $productid = $_POST["productid"];
+
+    if ($_SESSION['user']) {
+        $userId = $_SESSION['user'];
+
+        require_once "./config.php";
+        $sql = "SELECT * FROM cart WHERE `product_id` = '$productid' AND `user_id` = '$userId'";
+        $result = mysqli_query($config, $sql);
+        $rowCount = mysqli_num_rows($result);
+        // echo $productid;
+        if (!($rowCount > 0)) {
+            require_once "./config.php";
+            $query = mysqli_query($config, "INSERT INTO cart (`user_id`,`product_id`) VALUES('$userId','$productid')");
+            header("Location: cart.php?productID=" . $productid);
+        } else {
+            $errorMsg = 'Already Waiting on your Cart';
+        }
+    } else {
+        header("Location: login.php?msg='You haven't logged in yet'&productID=" . $productid);
+    }
+}
 
 
 ?>
@@ -35,9 +55,9 @@ include_once('./header.php');
 ?>
 
 
-<div class="row px-5 my-5">
-    <div class="col-12 px-5">
-        <div class="row mt-5 px-5 my-5">
+<div class="row px-3 px-md-5 my-5">
+    <div class="col-12 px-0 px-md-5">
+        <div class="row mt-5 px-0 px-md-5 my-5">
             <h3 class="mb-3">Your Wishlist</h3>
             <?php
             require_once "./config.php";
@@ -78,7 +98,7 @@ include_once('./header.php');
                         <p class="mb-0 text-center">Brand</p>
                     </div>
                     <div class="col-2">
-                        <p class="mb-0 text-center">Checkout</p>
+                        <p class="mb-0 text-center">ADD TO CART</p>
                     </div>
                 </div>
                 <?php
@@ -103,15 +123,15 @@ include_once('./header.php');
                                         <i class="bi bi-x-lg fs-3"></i>
                                     </a>
                                 </div>
-                                <div class="col-4 col-lg-2">
-                                    <img class="img-fluid shadow-sm" src="./uploads/<?php echo $itemrow['main_image_name'] . '.' . $itemrow['main_img_extension']; ?>" alt="" />
+                                <div class="col-8 col-md-5 col-lg-2">
+                                    <img class="img-fluid shadow-sm" src="./uploads/<?php echo $itemrow['main_image_name']; ?>" alt="" />
                                 </div>
                                 <div class="col-10 col-lg-3">
                                     <p class="mb-0 text-center"><?php echo $itemrow['product_name']; ?></p>
                                 </div>
                                 <div class="col-12 col-lg-2">
                                     <div class="d-flex align-items-center justify-content-between justify-content-lg-center">
-                                        <p class="mb-0 d-lg-none">PRICE:</p>
+                                        <p class="mb-0 fw-semibold fs-5 d-lg-none">PRICE:</p>
                                         <p class="mb-0 text-center">&#8377;<?php echo $itemrow['product_price'] * $itemrow['discount_percent'];
                                                                             ?> </p>
                                     </div>
@@ -119,17 +139,17 @@ include_once('./header.php');
 
                                 <div class="col-12 col-lg-2">
                                     <div class="d-flex align-items-center justify-content-between justify-content-lg-center">
-                                        <p class="mb-0 d-lg-none">Brand:</p>
+                                        <p class="mb-0 fw-semibold fs-5 d-lg-none">Brand:</p>
                                         <p class="mb-0 text-center"><?php echo $itemrow['brand_name']; ?></p>
                                     </div>
                                 </div>
                                 <div class="col-12 col-lg-2">
                                     <div class="d-flex align-items-center justify-content-between justify-content-lg-center">
-                                        <p class="mb-0 d-lg-none">Checkout:</p>
+                                        <p class="mb-0 fw-semibold fs-5 d-lg-none">Checkout:</p>
 
-                                        <button type="submit" name="addcart" class="bte text-center ">
+                                        <a href="./addtocart.php?productID=<?php echo $itemrow['product_id']; ?>" class="bte text-center link-underline link-underline-opacity-0">
                                             ADD TO CART
-                                        </button>
+                                        </a>
                                     </div>
                                 </div>
                             </div>

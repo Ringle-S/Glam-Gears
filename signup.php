@@ -12,7 +12,7 @@ include_once('./header.php');
 
 
 <div style="padding: 100px 0;" id=" signupModal" class="row signup d-flex mt-4 px-lg-5 justify-content-center">
-    <div class="col-4">
+    <div class="col-10 col-md-8 col-xl-4">
         <h2 class="text-center">CREATE YOUR ACCOUNT</h2>
         <?php
 

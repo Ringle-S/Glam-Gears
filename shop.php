@@ -47,7 +47,7 @@ include_once('./header.php');
 
 
 <!-- product container -->
-<section class="product-container d-flex row">
+<section class="product-container d-flex row position-relative">
   <div class="product-filter d-flex flex-column gap-3 col-12 col-lg-3 d-none d-lg-block">
     <?php
     require_once "./config.php";
@@ -128,99 +128,93 @@ include_once('./header.php');
         }
         ?>
       </div>
+    </form>
   </div>
-  </form>
   </div>
   <div class="product-card col-12 col-lg-9 position-relative">
-    <div class="row d-none justify-content-between justify-content-lg-end mb-3 ">
-      <div id="filterBtn" class="fliter col-2 d-flex align-items-center gap-3 d-lg-none">
+    <div class="row d-flex justify-content-end mb-3 ">
+      <div id="filterBtn" class="fliter col-2 d-flex align-items-center gap-3 me-5 d-lg-none">
         <img src="./assets/icon/Filters.png" alt="" />
         <span>FILTER</span>
       </div>
-      <form class="col-8 col-md-4 col-lg-3 d-flex align-items-center" action="" method="post">
-        <span class="w-50 w-lg-100">Sort by :</span>
-        <select class="form-select" class="common_selector sort" name="sort" aria-label="Default select example">
-          <option class="py-2" class="optionSelection sort" value="product_name" selected>Alphabetical</option>
-          <option class="py-2" class="optionSelection sort" value="product_price">Price low to high</option>
-          <option class="py-2" class="optionSelection sort" value="product_price DESC">Price high to low</option>
-        </select>
-      </form>
+
     </div>
     <span style="color: #0f6290" class="fw-medium d-lg-none">Showing <?php echo $totalRows; ?> items</span>
     <div class="row filter_data g-5">
 
     </div>
-    <!-- mob filter -->
-    <div class="mob-filter bg-light position-absolute d-none flex-column top-0 w-75 w-md-50 h-100 p-5 left-0">
-      <i id="fliterClose" class="bi bi-x-lg fs-2 align-self-end"></i>
 
-      <form class="d-flex flex-column gap-2" method="post" action="">
-        <div class="list-group d-flex flex-column gap-2 mb-3">
-          <h4>Sort by</h4>
+  </div>
+  <!-- mob filter -->
+  <div class="mob-filter bg-light position-absolute d-none shadow-lg flex-column top-0 w-75 w-md-50  p-5 left-0">
+    <i id="fliterClose" class="bi bi-x-lg fs-2 align-self-end"></i>
 
+    <form class="d-flex flex-column gap-2" method="post" action="">
+      <div class="list-group d-flex flex-column gap-2 mb-3">
+        <h4>Sort by</h4>
+
+        <div class="row d-flex  gap-3">
+          <label><input type="radio" name="price" class="common_selector sort" value="ASC"> Price Low - High</label>
+          <label><input type="radio" name="price" class="common_selector sort" value="DESC"> Price High - LOW</label>
+        </div>
+
+      </div>
+      <div class="list-group">
+        <h5>Price Range</h5>
+        <input type="hidden" id="hidden_minimum_price" value="0" />
+        <input type="hidden" id="hidden_maximum_price" value="50000" />
+        <p id="price_show">100 - 50000</p>
+        <div id="price_range"></div>
+      </div>
+
+      <div class="list-group d-flex flex-column gap-2 mt-3">
+        <h4>Categories</h4>
+        <?php
+        include_once('./config.php');
+        $query = "SELECT DISTINCT(category_name) FROM products WHERE product_status = 'active' ORDER BY category_name DESC";
+        $stmt = $config->prepare($query);
+        if (!$stmt) {
+          die('Prepare failed: ' . $config->error);
+        }
+        $stmt->execute();
+        $result = $stmt->get_result();
+        // echo  $result;
+        if (!$result) {
+          die('Prepare failed: ' . $config->error);
+        }
+
+        $categorys = $result->fetch_all(MYSQLI_ASSOC);
+        foreach ($categorys as $category) {
+        ?>
           <div class="row d-flex  gap-3">
-            <label><input type="radio" name="price" class="common_selector sort" value="ASC"> Price Low - High</label>
-            <label><input type="radio" name="price" class="common_selector sort" value="DESC"> Price High - LOW</label>
+            <label><input type="checkbox" class="common_selector category" value="<?php echo $category['category_name']; ?>"> <?php echo $category['category_name']; ?></label>
           </div>
+        <?php
+        }
 
-        </div>
-        <div class="list-group">
-          <h5>Price Range</h5>
-          <input type="hidden" id="hidden_minimum_price" value="0" />
-          <input type="hidden" id="hidden_maximum_price" value="50000" />
-          <p id="price_show">100 - 50000</p>
-          <div id="price_range"></div>
-        </div>
+        ?>
+      </div>
 
-        <div class="list-group d-flex flex-column gap-2 mt-3">
-          <h4>Categories</h4>
-          <?php
-          include_once('./config.php');
-          $query = "SELECT DISTINCT(category_name) FROM products WHERE product_status = 'active' ORDER BY category_name DESC";
-          $stmt = $config->prepare($query);
-          if (!$stmt) {
-            die('Prepare failed: ' . $config->error);
-          }
-          $stmt->execute();
-          $result = $stmt->get_result();
-          // echo  $result;
-          if (!$result) {
-            die('Prepare failed: ' . $config->error);
-          }
+      <div class="list-group d-flex flex-column gap-2 mt-3">
+        <h4>Brands</h4>
+        <?php
+        $query = "SELECT DISTINCT(brand_name) FROM products WHERE product_status = 'active' ORDER BY brand_name DESC";
+        $stmt = $config->prepare($query);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $brands = $result->fetch_all(MYSQLI_ASSOC);
+        foreach ($brands as $brand) {
+        ?>
+          <div class="row d-flex  gap-3">
+            <label><input type="checkbox" class="common_selector brand" value="<?php echo $brand['brand_name']; ?>"> <?php echo $brand['brand_name']; ?> </label>
+          </div>
+        <?php
+        }
+        ?>
+      </div>
 
-          $categorys = $result->fetch_all(MYSQLI_ASSOC);
-          foreach ($categorys as $category) {
-          ?>
-            <div class="row d-flex  gap-3">
-              <label><input type="checkbox" class="common_selector category" value="<?php echo $category['category_name']; ?>"> <?php echo $category['category_name']; ?></label>
-            </div>
-          <?php
-          }
+    </form>
 
-          ?>
-        </div>
-
-        <div class="list-group d-flex flex-column gap-2 mt-3">
-          <h4>Brands</h4>
-          <?php
-          $query = "SELECT DISTINCT(brand_name) FROM products WHERE product_status = 'active' ORDER BY brand_name DESC";
-          $stmt = $config->prepare($query);
-          $stmt->execute();
-          $result = $stmt->get_result();
-          $brands = $result->fetch_all(MYSQLI_ASSOC);
-          foreach ($brands as $brand) {
-          ?>
-            <div class="row d-flex  gap-3">
-              <label><input type="checkbox" class="common_selector brand" value="<?php echo $brand['brand_name']; ?>"> <?php echo $brand['brand_name']; ?> </label>
-            </div>
-          <?php
-          }
-          ?>
-        </div>
-
-      </form>
-
-    </div>
   </div>
 </section>
 

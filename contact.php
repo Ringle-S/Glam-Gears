@@ -44,11 +44,21 @@ include_once('./header.php');
     <div class="line"></div>
     <p>FOLLOW US ON SOCIAL MEDIA</p>
     <div class="mediarow d-flex gap-3">
-      <img height="24px" width="24px" src="./assets/icon/Social Media Icon Square/Facebook.png" alt="" />
-      <img height="24px" width="24px" src="./assets/icon/Social Media Icon Square/Instagram.png" alt="" />
-      <img height="24px" width="24px" src="./assets/icon/Social Media Icon Square/LinkedIn.png" alt="" />
-      <img height="24px" width="24px" src="./assets/icon/Social Media Icon Square/Twitter.png" alt="" />
-      <img height="24px" width="24px" src="./assets/icon/Social Media Icon Square/YouTube.png" alt="" />
+      <a href="https://www.facebook.com/login/" target="_blank">
+        <img width="28px" height="28px" src="./assets/icon/Social Media Icon Square/Facebook.png" alt="" />
+      </a>
+      <a href="https://www.instagram.com/accounts/login/" target="_blank">
+        <img width="28px" height="28px" src="./assets/icon/Social Media Icon Square/Instagram.png" alt="" />
+      </a>
+      <a href="https://www.linkedin.com/feed/" target="_blank">
+        <img width="28px" height="28px" src="./assets/icon/Social Media Icon Square/LinkedIn.png" alt="" />
+      </a>
+      <a href="https://x.com/i/flow/login" target="_blank">
+        <img width="28px" height="28px" src="./assets/icon/Social Media Icon Square/Twitter.png" alt="" />
+      </a>
+      <a href="https://www.youtube.com/account" target="_blank">
+        <img width="28px" height="28px" src="./assets/icon/Social Media Icon Square/YouTube.png" alt="" />
+      </a>
     </div>
   </div>
   <div class="contactban-img col-18 col-lg-6 d-flex justify-content-center align-items-center justify-content-lg-start">
@@ -70,32 +80,32 @@ include_once('./header.php');
   <div class="row mt-5 pt-5">
     <div class="col-12 col-lg-6 d-flex flex-column gap-4">
       <div class="d-flex row flex-column align-items-center align-items-lg-start text-center text-lg-start gap-2">
-        <div class="d-flex row  justify-content-center justify-content-lg-start">
-          <img width="24px" height="38px" class="col-1" src="./assets/icon/location.png" alt="" />
-          <h5 class="fs-4 col-11" style="color: #0f6290">ADDRESS</h5>
+        <div class=" d-flex justify-content-center gap-4 justify-content-lg-start align-items-center ">
+          <img class="" src="./assets/icon/location.png" alt="" />
+          <h5 class="fs-4 mb-0" style="color: #0f6290">ADDRESS</h5>
         </div>
-        <div class="d-flex flex-column ms-5">
+        <div class="d-flex flex-column ms-0 ms-lg-5">
           <p class="fs-5 mb-0">
             400 University Drive Suite 200 Madurai,Tamil Nadu
           </p>
         </div>
       </div>
       <div class="d-flex row flex-column align-items-center align-items-lg-start text-center text-lg-start gap-2">
-        <div class="d-flex row  justify-content-center justify-content-lg-start">
-          <img class="col-1" width="24px" height="38px" src="./assets/icon/phone.png" alt="" />
-          <h5 class="fs-4 col-11" style="color: #0f6290">PHONE</h5>
+        <div class=" d-flex justify-content-center gap-4 justify-content-lg-start align-items-center ">
+          <img class="" src="./assets/icon/phone.png" alt="" />
+          <h5 class="fs-4 mb-0" style="color: #0f6290">PHONE</h5>
         </div>
-        <div class="d-flex flex-column ms-5">
+        <div class="d-flex flex-column ms-0 ms-lg-5">
           <p class="fs-5  mb-0">Mobile: <a class="link-underline text-dark link-underline-opacity-0" href="tel:+">+91 8548569854</a></p>
           <p class="fs-5 ">Hotline: <a class="link-underline text-dark link-underline-opacity-0" href="tel:+">20054 254184</a></p>
         </div>
       </div>
       <div class="d-flex row flex-column align-items-center align-items-lg-start text-center text-lg-start gap-2">
-        <div class="d-flex row  justify-content-center justify-content-lg-start">
-          <img class="col-1" width="24px" height="34px" src="./assets/icon/Clcok.png" alt="" />
-          <h5 class="fs-4 col-11" style="color: #0f6290">WORKING TIME</h5>
+        <div class=" d-flex justify-content-center gap-4 justify-content-lg-start align-items-center">
+          <img class="" src="./assets/icon/Clcok.png" alt="" />
+          <h5 class="fs-4 mb-0" style="color: #0f6290">WORKING TIME</h5>
         </div>
-        <div class="d-flex flex-column ms-5">
+        <div class="d-flex flex-column ms-0 ms-lg-5">
           <p class="fs-5 mb-0">Monday-Friday: 9:00 - 22:00</p>
           <p class="fs-5">Saturday-Sunday: 9:00 - 21:00</p>
         </div>
@@ -207,16 +217,22 @@ include_once('./header.php');
       <form action="" id="contactform" method="post" class="d-flex flex-column gap-4">
         <div class="input_field">
           <label for="name" class="form-label fs-5 fw-medium">Your name</label>
-          <input style="border-color: #001e2f" name="contactname" class="border-1" type="text" placeholder="Your name" id="name" />
+          <input style="border-color: #001e2f" value="<?php if (isset($contactName)) {
+                                                        echo $contactName;
+                                                      } ?>" name="contactname" class="border-1" type="text" placeholder="Your name" id="name" required />
         </div>
 
         <div class="input_field">
           <label for="email" class="form-label fs-5 fw-medium">Email address</label>
-          <input style="border-color: #001e2f" name="contactmail" class="border-1" type="text" placeholder="Abc@def.com" id="email" />
+          <input style="border-color: #001e2f" value="<?php if (isset($contactEmail)) {
+                                                        echo $contactEmail;
+                                                      } ?>" name="contactmail" class="border-1" type="text" placeholder="Abc@def.com" id="email" required />
         </div>
         <div class="input_field">
           <label for="message" class="form-label fs-5 fw-medium">Message</label>
-          <textarea style="border-color: #001e2f" name="Contactmessage" class="border-1" placeholder="Hi! i’d like to ask about" id="message"></textarea>
+          <textarea style="border-color: #001e2f" value="<?php if (isset($contactText)) {
+                                                            echo $contactText;
+                                                          } ?>" name="Contactmessage" class="border-1" placeholder="Hi! i’d like to ask about" id="message"></textarea>
         </div>
         <div class="d-flex justify-content-center justify-content-lg-start">
           <button type="submit" name="contactSubmit" class="bte">SUBMIT</button>

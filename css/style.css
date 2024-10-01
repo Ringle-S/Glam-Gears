@@ -7,7 +7,9 @@ p {
 button {
   cursor: pointer;
 }
-
+#navlinks {
+  z-index: 100 !important;
+}
 .line {
   width: 200px;
   height: 1px;
@@ -354,7 +356,12 @@ video {
     left: 45%;
   }
 }
-@media only screen and (max-width: 1400px) {
+@media only screen and (max-width: 1900px) {
+  .blog-container {
+    padding: 50px 5% !important;
+  }
+}
+@media only screen and (max-width: 1430px) {
   video {
     width: 400px;
     height: 365px;
@@ -366,8 +373,27 @@ video {
     top: 45%;
     left: 35%;
   }
+  .caroCaption {
+    margin-left: 0 0 0 50px !important;
+  }
+  .caroCaption > h2 {
+    font-size: 38px !important;
+  }
+  .blog-container {
+    padding: 50px 5% !important;
+  }
+  .cart-items {
+    padding: 100px 8% !important;
+  }
 }
 @media only screen and (max-width: 1024px) {
+  .caroCaption {
+    margin-left: 50px !important;
+  }
+  .caroCaption > h2 {
+    font-size: 32px !important;
+    /* background-color: #0f6290; */
+  }
   .video-container {
     padding: 50px 5%;
   }
@@ -383,6 +409,12 @@ video {
   .billing-details {
     padding: 100px 5%;
   }
+  .carousel-item {
+    height: 60vh !important;
+  }
+  .banner-container {
+    height: 60vh !important;
+  }
 }
 @media only screen and (max-width: 900px) {
   .slider-one {
@@ -396,7 +428,7 @@ video {
   }
 
   video {
-    width: 446px;
+    width: 400px !important;
     height: 365px;
   }
   .btn-row {
@@ -411,7 +443,9 @@ video {
   .seller {
     padding: 40px 5%;
   }
-
+  .form-container {
+    padding: 50px 5%;
+  }
   video {
     width: 360px;
     height: 365px;

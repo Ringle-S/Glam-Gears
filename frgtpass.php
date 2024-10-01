@@ -115,7 +115,7 @@ include_once('./header.php');
 
 <div class="forget-container">
     <div style="height:50vh;" class="row d-flex justify-content-center align-items-center">
-        <div class="col-3">
+        <div class="col-10 col-md-8 col-xl-4">
             <?php
             if (isset($_GET["msg"])) {
                 $msg = $_GET["msg"];
@@ -142,7 +142,7 @@ include_once('./header.php');
                 </div> -->
 
                 <form method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>" class="input-group my-4 d-flex justify-content-center">
-                    <button type="submit" class="bte" name="forgetSubmit">Verify Email</button>
+                    <button type="submit" class="bte align-self-center" name="forgetSubmit">Verify Email</button>
                 </form>
 
 

@@ -26,3 +26,19 @@ inputFile.addEventListener("change", function () {
     alert("Image size more than 2MB");
   }
 });
+
+const container = document.getElementById("navlinks");
+const moveButton = document.getElementById("mobmenubtn");
+let isMoving = false;
+let startX = 0;
+
+moveButton.addEventListener("click", () => {
+  isMoving = !isMoving;
+
+  if (isMoving) {
+    container.style.transition = "transform 0.5s ease-in-out";
+    container.style.transform = "translateX(-100%)";
+  } else {
+    container.style.transform = "translateX(-15px)";
+  }
+});

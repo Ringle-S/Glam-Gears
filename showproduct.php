@@ -59,7 +59,7 @@ if (isset($_GET['productID'])) {
     // echo $isFeatured;
     // echo "<script>alert($isFeatured)</script>";
     $imgName = $row['main_image_name'];
-    $imgExt = $row['main_img_extension'];
+
     $merchatId = $row['merchant_id'];
     if ($merchatId) {
       require_once "./config.php";
@@ -165,7 +165,7 @@ include_once('./header.php');
       <div class="product-imgs">
         <div class="img-display">
           <div id="imageZoom" style="
-                    --url: url('./uploads/<?php echo  $imgName . '.' . $imgExt; ?>');
+                    --url: url('./uploads/<?php echo  $imgName ?>');
                     --zoom-x: 0%;
                     --zoom-y: 0%;
                     --display: none;
@@ -177,11 +177,14 @@ include_once('./header.php');
             $total_row = $result->num_rows;
             if ($total_row > 0) {
             ?>
-              <img src="./uploads/<?php echo  $imgName . '.' . $imgExt; ?>" alt="<?php echo $imgName ?>" />
+              <img src="./uploads/<?php echo  $imgName ?>" alt="<?php echo $imgName ?>" />
               <?php
               while ($row = mysqli_fetch_array($result)) {
               ?>
-                <img src="./uploads/<?php echo $row['img_name'] . '.' . $row['img_extension']; ?>" alt="<?php echo $row['img_name'] ?>" />
+                <img src="./uploads/<?php echo $row['img_name1'] ?>" alt="<?php echo $row['img_name1'] ?>" />
+                <img src="./uploads/<?php echo $row['img_name2'] ?>" alt="<?php echo $row['img_name2'] ?>" />
+                <img src="./uploads/<?php echo $row['img_name3'] ?>" alt="<?php echo $row['img_name3'] ?>" />
+
             <?php
               }
             }
@@ -191,23 +194,34 @@ include_once('./header.php');
         <div class="img-select">
           <div class="img-item">
             <a href="#" data-id="1">
-              <img src="./uploads/<?php echo  $imgName . '.' . $imgExt; ?>" alt="<?php echo $imgName ?>" />
+              <img src="./uploads/<?php echo  $imgName ?>" alt="<?php echo $imgName ?>" />
             </a>
           </div>
           <?php
           require_once "./config.php";
           $sql = "SELECT * FROM product_images WHERE  product_id = $productid";
           $result = mysqli_query($config, $sql);
-          $i = 2;
+
           while ($row = mysqli_fetch_array($result)) {
           ?>
             <div class="img-item">
-              <a href="#" data-id="<?php echo $i ?>">
-                <img src="./uploads/<?php echo $row['img_name'] . '.' . $row['img_extension']; ?>" alt="<?php echo $row['img_name'] ?>" />
+              <a href="#" data-id="2">
+                <img src="./uploads/<?php echo $row['img_name1']; ?>" alt="<?php echo $row['img_name1'] ?>" />
               </a>
             </div>
+            <div class="img-item">
+              <a href="#" data-id="3">
+                <img src="./uploads/<?php echo $row['img_name2']; ?>" alt="<?php echo $row['img_name2'] ?>" />
+              </a>
+            </div>
+            <div class="img-item">
+              <a href="#" data-id="4">
+                <img src="./uploads/<?php echo $row['img_name3']; ?>" alt="<?php echo $row['img_name3'] ?>" />
+              </a>
+            </div>
+
           <?php
-            $i++;
+
           }
           ?>
 
@@ -217,11 +231,15 @@ include_once('./header.php');
     <div class="col-12 col-lg-5">
       <h2><?php echo $productName; ?></h2>
       <p class="fs-4">
-        Stock: <span style="color: #f79e1b"> <?php if ($productQuantity == 0) {
-                                                echo 'Out of stock';
-                                              } else {
-                                                echo "Instock";
-                                              } ?></span>
+        Stock: <span style="<?php if ($productQuantity == 0) {
+                              echo 'color: red ';
+                            } else {
+                              echo "color: #f79e1b ";
+                            } ?>"> <?php if ($productQuantity == 0) {
+                                      echo 'Out of stock';
+                                    } else {
+                                      echo "Instock";
+                                    } ?></span>
       </p>
       <p class="fs-3">
         &#8377;<?php echo $productPrice * (1 - $discount); ?> <del class="text-black ms-3 fs-5">&#8377;<?php echo $productPrice; ?></del></span>
@@ -294,7 +312,7 @@ include_once('./header.php');
               <p class="fs-5 fw-medium">Seller Name: <span class=" fs-6 ms-2 fw-normal"><?php echo $merchantName; ?></span></p>
               <p class="fs-5 fw-medium">Business Name: <span class=" fs-6 ms-2 fw-normal"><?php echo $businessName; ?></span></p>
               <p class="fs-5 fw-medium">Mail Address: <span class=" fs-6 ms-2 fw-normal"><?php echo $merchantMail; ?></span></p>
-              <p class="fs-5 fw-medium">Contact Number: <span class=" fs-6 ms-2 fw-normal"><?php echo $merchantPhone; ?></span></p>
+
               <p class="fs-5 fw-medium">Uploaded Date: <span class=" fs-6 ms-2 fw-normal"><?php echo $CreatedDate; ?></span>
               </p>
             </div>
@@ -313,7 +331,7 @@ include_once('./header.php');
     <div class="row sellers-card p-0 p-md-5 p-lg-0">
       <div class="row g-5">
         <?php
-        $sql = "SELECT * FROM products WHERE is_featured='1' AND product_status='active' ORDER BY id DESC LIMIT 4;";
+        $sql = "SELECT * FROM products WHERE is_featured='1' AND product_status='active' AND category_name='$categoryName'  ORDER BY id DESC LIMIT 4;";
         $result = mysqli_query($config, $sql);
         while ($row = mysqli_fetch_array($result)) {
         ?>
@@ -321,7 +339,7 @@ include_once('./header.php');
             <input class="d-none" type="text" name="productid" value="<?php echo $row['product_id']; ?>">
             <a href="./showproduct.php?productID=<?php echo $row['product_id']; ?>" class="link-underline d-flex flex-column gap-1 justify-content-center link-underline-opacity-0 card-seller">
               <div class="row">
-                <img class="img-fluid" src="./uploads/<?php echo $row['main_image_name'] . '.' . $row['main_img_extension']; ?>" alt="" />
+                <img class="img-fluid" src="./uploads/<?php echo $row['main_image_name'] ?>" alt="" />
               </div>
               <div class="row mt-2">
                 <p style="height: 35px; overflow: hidden;" class="fw-medium fs-5 text-black"><?php echo $row['product_name']; ?></p>

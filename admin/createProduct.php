@@ -38,22 +38,96 @@ if ((isset(($_POST['productSubmit'])) && isset($_FILES['mainImage']) && $_FILES[
     $targetPath = "../uploads/" . $fileName;
     if (in_array($image_extension, $allowedTypes)) {
         if (move_uploaded_file($tempName, $targetPath)) {
-            $sql = "INSERT INTO products (product_id, product_name, product_description, product_price, discount_percent, product_quantity, category_name, brand_name, merchant_id, main_image_name, main_img_extension, is_featured) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-            include_once('./config.php');
-            $stmt = $config->prepare($sql);
 
-            // Assuming you have validated the input data and have values for each variable
-            $stmt->bind_param("ssssssssssss", $productId, $productName, $productDescription, $productPrice, $discountPercent, $productQuantity, $categoryName, $brandName, $userId, $image_name, $image_extension, $isFeatured);
 
-            if ($stmt->execute()) {
-                $_SESSION['message'] = "Product created successfully!";
-                header('Location: dashboard.php');
-                exit();
+            $fileerr1 = $_FILES["featuredImage1"];
+            $file1 = $_FILES["featuredImage1"]["name"];
+            $temppicName1 = $_FILES["featuredImage1"]["tmp_name"];
+
+
+            $fileerr2 = $_FILES["featuredImage2"];
+            $file2 = $_FILES["featuredImage2"]["name"];
+            $temppicName2 = $_FILES["featuredImage2"]["tmp_name"];
+
+
+            $fileerr3 = $_FILES["featuredImage3"];
+            $file3 = $_FILES["featuredImage3"]["name"];
+            $temppicName3 = $_FILES["featuredImage3"]["tmp_name"];
+
+
+            // echo $file;
+            $pic_name1 = pathinfo($file1, PATHINFO_FILENAME);
+            $pic_extension1 = pathinfo($file1, PATHINFO_EXTENSION);
+
+            $pic_name2 = pathinfo($file2, PATHINFO_FILENAME);
+            $pic_extension2 = pathinfo($file2, PATHINFO_EXTENSION);
+
+            $pic_name3 = pathinfo($file3, PATHINFO_FILENAME);
+            $pic_extension3 = pathinfo($file3, PATHINFO_EXTENSION);
+
+
+            $sql = "INSERT INTO product_images (product_id, img_name1, img_name2, img_name3) VALUES (?, ?, ?, ?)";
+            $stmt1 = $config->prepare($sql);
+
+
+            if ($stmt1) {
+                // Bind parameters
+                $stmt1->bind_param("isssss",  $productId, $file1, $file2, $file3);
+
+                // Iterate over each file
+
+                // Check if file was uploaded successfully
+                if ($fileerr1["error"] === UPLOAD_ERR_OK && $fileerr2["error"] === UPLOAD_ERR_OK && $fileerr3["error"] === UPLOAD_ERR_OK) {
+                    // Generate unique filename to avoid conflicts
+                    // $unique_filename = uniqid() . "_" . $file["name"];
+
+                    // Move uploaded file to desired directory
+                    $targetpicPath1 = "../uploads/" . $file1;
+                    $targetpicPath2 = "../uploads/" . $file2;
+                    $targetpicPath3 = "../uploads/" . $file3;
+
+                    if (in_array($pic_extension1, $allowedTypes) && in_array($pic_extension2, $allowedTypes) && in_array($pic_extension3, $allowedTypes)) {
+                        if (move_uploaded_file($temppicName1, $targetpicPath1) && move_uploaded_file($temppicName2, $targetpicPath2) && move_uploaded_file($temppicName3, $targetpicPath3)) {
+                            // Store filename in database
+                            if ($stmt1->execute()) {
+                                $sql = "INSERT INTO products (product_id, product_name, product_description, product_price, discount_percent, product_quantity, category_name, brand_name, merchant_id, main_image_name, is_featured) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                                include_once('./config.php');
+                                $stmt = $config->prepare($sql);
+
+                                // Assuming you have validated the input data and have values for each variable
+                                $stmt->bind_param("sssssssssss", $productId, $productName, $productDescription, $productPrice, $discountPercent, $productQuantity, $categoryName, $brandName, $userId, $fileName, $isFeatured);
+
+                                if ($stmt->execute()) {
+                                    $_SESSION['message'] = "Product created successfully!";
+                                    header('Location: dashboard.php');
+                                    exit();
+                                } else {
+                                    $errors = mysqli_error($config);
+                                    $_SESSION['message'] = "Error: " . $stmt->error;
+                                    header('Location: createProduct.php');
+                                    exit();
+                                }
+                            } else {
+                                $errors = mysqli_error($config);
+                                $_SESSION['message'] = "Error: " . $stmt1->error;
+                                header('Location: createProduct.php');
+                                exit();
+                            }
+                        } else {
+                            echo "File is not uploaded";
+                        }
+                    } else {
+                        echo "Your files are not allowed";
+                    }
+                } else {
+                    echo "Error uploading file  : " . $fileerr1["error"] . "<br>";
+                }
+
+
+
+                echo "Files uploaded successfully!";
             } else {
-                $errors = mysqli_error($config);
-                $_SESSION['message'] = "Error: " . $stmt->error;
-                header('Location: createProduct.php');
-                exit();
+                echo "Error preparing statement: " . $config->error;
             }
         } else {
             echo "File is not uploaded";
@@ -61,62 +135,10 @@ if ((isset(($_POST['productSubmit'])) && isset($_FILES['mainImage']) && $_FILES[
     } else {
         echo "Your files are not allowed";
     }
-    // $filename = basename($_FILES['mainImage']['name']);
-
-    // $image_name = pathinfo($filename, PATHINFO_FILENAME);
-
-    // $image_extension = pathinfo($filename, PATHINFO_EXTENSION);
-
-    // echo "Image Name: " . $image_name . "<br>";
-    // echo "Image Extension: " . $image_extension . "<br>";
-    // echo "Image directory: " . $target_dir . "<br>";
-
-
-    // Insert into database
-
 }
 
 
 
-
-// if (isset($_POST['productSubmit'])) {
-//     $extension = array('jpeg', 'jpg', 'png', 'gif');
-//     foreach ($_FILES['imagefeatured']['tmp_name'] as $key => $value) {
-//         $filename =  basename($_FILES['imagefeatured']['name'][$key]);
-
-//         $image_name = pathinfo($filename, PATHINFO_FILENAME);
-//         $ext = pathinfo($filename, PATHINFO_EXTENSION);
-//         echo $image_name . "<br>";
-//         echo $ext;
-
-//         // if (in_array($ext, $extension)) {
-//         //     if (!file_exists('images/' . $filename)) {
-//         //         move_uploaded_file($filename_tmp, 'images/' . $filename);
-//         //         $finalimg = $filename;
-//         //     } else {
-//         //         $filename = str_replace('.', '-', basename($filename, $ext));
-//         //         $newfilename = $filename . time() . "." . $ext;
-//         //         move_uploaded_file($filename_tmp, 'images/' . $newfilename);
-//         //         $finalimg = $newfilename;
-//         //         echo $finalimg;
-//         //     }
-//         //     // $creattime = date('Y-m-d h:i:s');
-//         //insert
-//         require_once "../config.php";
-//         $insertqry = "INSERT INTO product_images ( `product_id`, `image_name`, `image_extension`) VALUES ('$itemId','$image_name','$ext')";
-//         mysqli_query($config, $insertqry);
-
-//         if (mysqli_query($config, $insertqry)) {
-//             $_SESSION['message'] = "Product created successfully!";
-//             header('Location: ./dashboard.php');
-//             exit();
-//         } else {
-//             $_SESSION['message'] = "Error: " . mysqli_error($config);
-//             header('Location: createProduct.php');
-//             exit();
-//         }
-//     }
-// }
 ?>
 
 
@@ -218,6 +240,18 @@ if ((isset(($_POST['productSubmit'])) && isset($_FILES['mainImage']) && $_FILES[
                     <div class="mb-3">
                         <label for="main_image" class="form-label">Main Image</label>
                         <input style="  border: 1px solid #001e2f; " type="file" class="form-control rounded-0" id="main_image" name="mainImage" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="featured_image_one" class="form-label">Featured Image 1</label>
+                        <input style="  border: 1px solid #001e2f; " type="file" class="form-control rounded-0" id="featured_image_one" name="featuredImage1" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="featured_image_two" class="form-label">Featured Image 2</label>
+                        <input style="  border: 1px solid #001e2f; " type="file" class="form-control rounded-0" id="featured_image_two" name="featuredImage2" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="featured_image_three" class="form-label">Featured Image 3</label>
+                        <input style="  border: 1px solid #001e2f; " type="file" class="form-control rounded-0" id="featured_image_three" name="featuredImage3" required>
                     </div>
 
                     <div class="row d-flex justify-content-between mt-5 px-4">

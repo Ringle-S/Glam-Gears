@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 15, 2024 at 05:09 PM
+-- Generation Time: Oct 01, 2024 at 07:41 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -68,9 +68,10 @@ CREATE TABLE `cart` (
 --
 
 INSERT INTO `cart` (`cart_id`, `user_id`, `product_id`, `quantity`, `added_on`) VALUES
-(29, 1, 72211, 1, '2024-09-14 10:23:06'),
 (30, 52895, 72211, 1, '2024-09-14 10:32:43'),
-(40, 45291, 72211, 1, '2024-09-15 09:06:42');
+(40, 45291, 72211, 1, '2024-09-15 09:06:42'),
+(43, 2, 76227, 3, '2024-09-30 14:42:38'),
+(44, 2, 54522, 1, '2024-09-30 14:45:10');
 
 -- --------------------------------------------------------
 
@@ -83,6 +84,7 @@ CREATE TABLE `contacts_queries` (
   `contact_name` varchar(50) NOT NULL,
   `contact_email` varchar(50) NOT NULL,
   `contact_message` varchar(255) NOT NULL,
+  `status` varchar(10) NOT NULL DEFAULT 'unread',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -90,9 +92,9 @@ CREATE TABLE `contacts_queries` (
 -- Dumping data for table `contacts_queries`
 --
 
-INSERT INTO `contacts_queries` (`contact_id`, `contact_name`, `contact_email`, `contact_message`, `created_at`) VALUES
-(1, 'Karthick Raj', 'karthick@gmail.com', 'Many users already have downloaded jQuery from Google when visiting another site. As a result, it will be loaded from cache when they visit your site, which leads to faster loading time. Also, most CDN\'s will make sure that once a user requests a file fro', '2024-08-14 14:07:34'),
-(2, 'Karthick Raj', 'karthick@gmail.com', 'Many users already have downloaded jQuery from Google when visiting another site. As a result, it will be loaded from cache when they visit your site, which leads to faster loading time. Also, most CDN\'s will make sure that once a user requests a file fro', '2024-08-14 14:07:34');
+INSERT INTO `contacts_queries` (`contact_id`, `contact_name`, `contact_email`, `contact_message`, `status`, `created_at`) VALUES
+(1, 'Karthick Raj', 'karthick@gmail.com', 'Many users already have downloaded jQuery from Google when visiting another site. As a result, it will be loaded from cache when they visit your site, which leads to faster loading time. Also, most CDN\'s will make sure that once a user requests a file fro', 'unread', '2024-08-14 14:07:34'),
+(2, 'Karthick Raj', 'karthick@gmail.com', 'Many users already have downloaded jQuery from Google when visiting another site. As a result, it will be loaded from cache when they visit your site, which leads to faster loading time. Also, most CDN\'s will make sure that once a user requests a file fro', 'unread', '2024-08-14 14:07:34');
 
 -- --------------------------------------------------------
 
@@ -176,6 +178,7 @@ CREATE TABLE `orders` (
   `order_id` int(11) NOT NULL,
   `tracking_no` int(10) NOT NULL,
   `user_id` int(10) NOT NULL,
+  `confirmation` varchar(30) NOT NULL DEFAULT 'Pending',
   `fname` varchar(100) NOT NULL,
   `lname` varchar(100) NOT NULL,
   `email` varchar(100) NOT NULL,
@@ -187,7 +190,6 @@ CREATE TABLE `orders` (
   `total_amount` int(20) NOT NULL,
   `coupon_code` varchar(20) NOT NULL,
   `payment_mode` varchar(20) NOT NULL,
-  `confirmation` varchar(10) NOT NULL DEFAULT 'Pending',
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `update_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -196,10 +198,12 @@ CREATE TABLE `orders` (
 -- Dumping data for table `orders`
 --
 
-INSERT INTO `orders` (`order_id`, `tracking_no`, `user_id`, `fname`, `lname`, `email`, `address`, `state`, `city`, `zipcode`, `phone`, `total_amount`, `coupon_code`, `payment_mode`, `confirmation`, `created_at`, `update_at`) VALUES
-(1, 86991, 1, 'Karthi', 'kannan', 'manna@gmail.com', '446e,valluvar nagar, kovilpatti', 'TN', 'Tuticorin', 628501, 2147483647, 2471, 'MEGAOFF10', 'COD', 'completed', '2024-08-16 15:40:31', '2024-08-27 03:38:29'),
-(2, 93449, 1, 'aathi', 'velu', 'aathi@gmail.com', '446e,valluvar nagar, kovilpatti', 'TN', 'Tuticorin', 628501, 2147483647, 315, '', 'COD', 'completed', '2024-08-27 03:37:48', '2024-08-27 03:38:33'),
-(3, 89074, 52895, 'aathi', 'velu', 'aathi@gmail.com', '446e,valluvar nagar, kovilpatti', 'TN', 'Tuticorin', 628501, 2147483647, 605, '', 'COD', 'completed', '2024-08-27 05:00:38', '2024-09-15 14:46:26');
+INSERT INTO `orders` (`order_id`, `tracking_no`, `user_id`, `confirmation`, `fname`, `lname`, `email`, `address`, `state`, `city`, `zipcode`, `phone`, `total_amount`, `coupon_code`, `payment_mode`, `created_at`, `update_at`) VALUES
+(1, 86991, 1, 'Pending', 'Karthi', 'kannan', 'manna@gmail.com', '446e,valluvar nagar, kovilpatti', 'TN', 'Tuticorin', 628501, 2147483647, 2471, 'MEGAOFF10', 'COD', '2024-08-16 15:40:31', '2024-08-27 03:38:29'),
+(2, 89074, 1, 'Pending', 'aathi', 'velu', 'aathi@gmail.com', '446e,valluvar nagar, kovilpatti', 'TN', 'Tuticorin', 628501, 2147483647, 315, '', 'COD', '2024-08-27 03:37:48', '2024-10-01 04:08:14'),
+(3, 89074, 52895, 'Pending', 'aathi', 'velu', 'aathi@gmail.com', '446e,valluvar nagar, kovilpatti', 'TN', 'Tuticorin', 628501, 2147483647, 605, '', 'COD', '2024-08-27 05:00:38', '2024-09-15 14:46:26'),
+(49, 93305, 10031, 'Pending', 'fefefwef', 'wfewfewf', 'manna@gmail.com', '446e,valluvar nagar, kovilpatti', 'TN', 'Tuticorin', 628501, 2147483647, 1769, '', 'card', '2024-10-01 05:33:32', '2024-10-01 05:33:32'),
+(50, 94384, 10031, 'Pending', 'fefefwef', 'wfewfewf', 'manna@gmail.com', '446e,valluvar nagar, kovilpatti', 'TN', 'Tuticorin', 628501, 2147483647, 1769, '', 'card', '2024-10-01 05:33:52', '2024-10-01 05:33:52');
 
 -- --------------------------------------------------------
 
@@ -214,6 +218,7 @@ CREATE TABLE `order_items` (
   `quantity` int(10) NOT NULL,
   `price` int(10) NOT NULL,
   `product_name` varchar(100) NOT NULL,
+  `order_status` varchar(15) NOT NULL DEFAULT 'Pending',
   `ordered_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -221,10 +226,11 @@ CREATE TABLE `order_items` (
 -- Dumping data for table `order_items`
 --
 
-INSERT INTO `order_items` (`order_item_id`, `product_id`, `order_id`, `quantity`, `price`, `product_name`, `ordered_at`) VALUES
-(1, 76227, 1, 4, 845, 'AirHead Ultimate 131Hz DeadHeardZ', '2024-08-16 15:40:31'),
-(2, 32523, 2, 3, 350, 'X Gamer Game Console ', '2024-08-27 03:37:48'),
-(3, 54522, 3, 1, 3025, 'Crazy Wheels for PS5', '2024-08-27 05:00:38');
+INSERT INTO `order_items` (`order_item_id`, `product_id`, `order_id`, `quantity`, `price`, `product_name`, `order_status`, `ordered_at`) VALUES
+(1, 76227, 1, 4, 845, 'AirHead Ultimate 131Hz DeadHeardZ', 'completed', '2024-08-16 15:40:31'),
+(2, 32523, 2, 3, 350, 'X Gamer Game Console ', 'completed', '2024-08-27 03:37:48'),
+(3, 54522, 1, 1, 3025, 'Crazy Wheels for PS5', 'completed', '2024-08-27 05:00:38'),
+(50, 32523, 50, 3, 350, 'X Gamer Game Console ', 'Pending', '2024-10-01 05:33:52');
 
 -- --------------------------------------------------------
 
@@ -234,12 +240,20 @@ INSERT INTO `order_items` (`order_item_id`, `product_id`, `order_id`, `quantity`
 
 CREATE TABLE `payments` (
   `id` int(10) NOT NULL,
-  `order_id` int(10) NOT NULL,
+  `track_id` int(10) NOT NULL,
   `cardnumber` int(50) NOT NULL,
   `cardname` varchar(32) NOT NULL,
   `expire_date` date NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `payments`
+--
+
+INSERT INTO `payments` (`id`, `track_id`, `cardnumber`, `cardname`, `expire_date`, `created_at`) VALUES
+(1, 93305, 2147483647, 'efwefce', '2024-10-24', '2024-10-01 05:33:32'),
+(2, 94384, 2147483647, 'efwefce', '2024-10-24', '2024-10-01 05:33:52');
 
 -- --------------------------------------------------------
 
@@ -260,7 +274,6 @@ CREATE TABLE `products` (
   `product_status` varchar(8) NOT NULL DEFAULT 'active',
   `merchant_id` int(100) NOT NULL,
   `main_image_name` varchar(100) NOT NULL,
-  `main_img_extension` varchar(10) NOT NULL,
   `is_featured` varchar(1) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
@@ -270,16 +283,14 @@ CREATE TABLE `products` (
 -- Dumping data for table `products`
 --
 
-INSERT INTO `products` (`id`, `product_id`, `product_name`, `product_description`, `product_price`, `discount_percent`, `product_quantity`, `category_name`, `brand_name`, `product_status`, `merchant_id`, `main_image_name`, `main_img_extension`, `is_featured`, `created_at`, `updated_at`) VALUES
-(1, 76227, 'AirHead Ultimate 131Hz DeadHeardZ', 'Headphones are electronic audio device that people wear over their ears. They let people hear sounds on a walkman, MP3 player, mobile phone or computer.                             ', 845.00, 0.40, 100, 'Headphone', 'Oppo', 'active', 10031, 'Blackhead1', 'png', '1', '2024-09-15 06:31:53', '2024-08-11 15:05:38'),
-(2, 32523, 'X Gamer Game Console ', 'CPU: Handles game logic and calculations.   \r\nGPU: Renders graphics and visuals for the game.\r\nMemory: Stores game data, system software, and temporary information.\r\nStorage: Holds game installations and saved data (internal or external).\r\nInput devices: Controllers for player interaction.   \r\nOutput devices: Connect to a television or monitor to display the game.                            ', 350.00, 0.30, 40, 'Joystick', 'Sony', 'active', 10031, 'joystick1', 'png', '1', '2024-08-12 04:57:07', '2024-08-12 04:57:07'),
-(3, 72211, 'Smart Android Television Genz', 'Smart TVs: Internet-connected TVs offering streaming services and apps.   \r\n4K and 8K resolution: Higher pixel counts for sharper images.   \r\nHDR (High Dynamic Range): Improved contrast and color for a more realistic picture.   \r\nTelevision has evolved from a simple entertainment device to a multimedia hub, offering a wide range of content and interactive features.Type the description', 35000.00, 0.30, 30, 'Television', 'Samsung', 'active', 10031, 'TV3', 'png', '1', '2024-09-15 06:32:23', '2024-08-12 07:37:51'),
-(4, 57705, 'PowerSurge high-capacity power', 'Conversion: Translates data or signals from one format to another.   \r\nCompatibility: Ensures seamless operation between different devices or systems.   \r\nInterface: Provides a connection point for two or more components.\r\nIn essence, an adapter is a versatile tool that facilitates connectivity and interoperability in the world of technology.', 354.00, 0.27, 100, 'Charger', 'Nokia', 'active', 52895, 'adapter1', 'png', '1', '2024-09-15 06:32:23', '2024-08-12 15:04:59'),
-(5, 54522, 'Crazy Wheels for PS5', 'Smartwatches have revolutionized the way we interact with technology. Once limited to displaying time and date, these wearable devices have evolved into sophisticated companions that track fitness goals', 3025.00, 0.20, 40, 'console', 'Sony', 'active', 45291, 'Carconsole1', 'png', '1', '2024-08-27 06:06:55', '2024-08-16 15:47:15'),
-(6, 94083, 'Vehicle @MOBILE HOLDER 2xx', 'smartwatches have become indispensable for many. As technology continues to advance, we can expect even more innovative features and functionalities to emerge in the smartwatch market.', 365.00, 0.10, 10, 'accessories', 'Nokia', 'active', 45291, 'mobilestand1', 'png', '1', '2024-08-16 15:49:44', '2024-08-16 15:49:44'),
-(7, 18256, 'Smart watch 121z ', 'Smartwatches are more than just timekeepers; they\'re compact computers that fit on your wrist', 699.00, 0.15, 50, 'smart watch', 'Oppo', 'inactive', 52895, '', 'png', '1', '2024-08-27 04:32:54', '2024-08-27 04:22:04'),
-(8, 87002, 'Smart watch 121z ', 'Smartwatches are more than just timekeepers; they\'re compact computers that fit on your wrist', 699.00, 0.15, 50, 'smart watch', 'Oppo', 'active', 52895, 'whitewatch1', 'png', '1', '2024-08-27 04:32:49', '2024-08-27 04:32:49'),
-(9, 15975, 'Checking', 'Checkingchecking', 1200.00, 0.20, 10, 'Cloths', 'Puma', 'inactive', 10031, 'colorcorrec', 'jpg', '1', '2024-09-15 07:01:55', '2024-09-14 07:48:06');
+INSERT INTO `products` (`id`, `product_id`, `product_name`, `product_description`, `product_price`, `discount_percent`, `product_quantity`, `category_name`, `brand_name`, `product_status`, `merchant_id`, `main_image_name`, `is_featured`, `created_at`, `updated_at`) VALUES
+(1, 76227, 'AirHead Ultimate 131Hz DeadHeardZ', 'Headphones are electronic audio device that people wear over their ears. They let people hear sounds on a walkman, MP3 player, mobile phone or computer.                             ', 845.00, 0.40, 93, 'Headphone', 'Oppo', 'active', 10031, 'Blackhead1.png', '1', '2024-09-30 16:33:21', '2024-08-11 15:05:38'),
+(2, 32523, 'X Gamer Game Console ', 'CPU: Handles game logic and calculations.   \r\nGPU: Renders graphics and visuals for the game.\r\nMemory: Stores game data, system software, and temporary information.\r\nStorage: Holds game installations and saved data (internal or external).\r\nInput devices: Controllers for player interaction.   \r\nOutput devices: Connect to a television or monitor to display the game.                            ', 350.00, 0.30, 37, 'Joystick', 'Sony', 'active', 10031, 'joystick1.png', '1', '2024-10-01 05:33:52', '2024-08-12 04:57:07'),
+(3, 72211, 'Smart Android Television Genz', 'Smart TVs: Internet-connected TVs offering streaming services and apps.   \r\n4K and 8K resolution: Higher pixel counts for sharper images.   \r\nHDR (High Dynamic Range): Improved contrast and color for a more realistic picture.   \r\nTelevision has evolved from a simple entertainment device to a multimedia hub, offering a wide range of content and interactive features.Type the description', 35000.00, 0.30, 29, 'Television', 'Samsung', 'active', 10031, 'TV3.png', '1', '2024-09-30 16:39:06', '2024-08-12 07:37:51'),
+(4, 57705, 'PowerSurge high-capacity power', 'Conversion: Translates data or signals from one format to another.   \r\nCompatibility: Ensures seamless operation between different devices or systems.   \r\nInterface: Provides a connection point for two or more components.\r\nIn essence, an adapter is a versatile tool that facilitates connectivity and interoperability in the world of technology.', 354.00, 0.27, 100, 'Charger', 'Nokia', 'active', 52895, 'adapter1.png', '1', '2024-09-30 14:22:10', '2024-08-12 15:04:59'),
+(5, 54522, 'Crazy Wheels for PS5', 'Smartwatches have revolutionized the way we interact with technology. Once limited to displaying time and date, these wearable devices have evolved into sophisticated companions that track fitness goals', 3025.00, 0.20, 40, 'console', 'Sony', 'active', 45291, 'Carconsole1.png', '1', '2024-09-30 14:22:10', '2024-08-16 15:47:15'),
+(6, 94083, 'Vehicle @MOBILE HOLDER 2xx', 'smartwatches have become indispensable for many. As technology continues to advance, we can expect even more innovative features and functionalities to emerge in the smartwatch market.', 365.00, 0.10, 10, 'accessories', 'Nokia', 'active', 45291, 'mobilestand1.png', '1', '2024-09-30 14:22:10', '2024-08-16 15:49:44'),
+(8, 87002, 'Smart watch 121z ', 'Smartwatches are more than just timekeepers; they\'re compact computers that fit on your wrist', 699.00, 0.15, 50, 'smart watch', 'Oppo', 'active', 52895, 'whitewatch1.png', '1', '2024-09-30 14:22:10', '2024-08-27 04:32:49');
 
 -- --------------------------------------------------------
 
@@ -290,8 +301,9 @@ INSERT INTO `products` (`id`, `product_id`, `product_name`, `product_description
 CREATE TABLE `product_images` (
   `image_id` int(11) NOT NULL,
   `product_id` int(11) DEFAULT NULL,
-  `img_name` varchar(568) NOT NULL,
-  `img_extension` varchar(10) NOT NULL,
+  `img_name1` varchar(568) NOT NULL,
+  `img_name2` varchar(30) NOT NULL,
+  `img_name3` varchar(30) NOT NULL,
   `uploaded_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -299,13 +311,15 @@ CREATE TABLE `product_images` (
 -- Dumping data for table `product_images`
 --
 
-INSERT INTO `product_images` (`image_id`, `product_id`, `img_name`, `img_extension`, `uploaded_at`) VALUES
-(1, 76227, 'Blackhead2', 'png', '2024-09-14 07:39:20'),
-(2, 76227, 'Blackhead3', 'png', '2024-09-14 07:39:20'),
-(3, 76227, 'Blackhead4', 'png', '2024-09-14 07:39:20'),
-(4, 76227, 'Blackhead5', 'png', '2024-09-14 07:39:20'),
-(5, 76227, 'Blackhead6', 'png', '2024-09-14 07:39:20'),
-(7, 54522, 'Carconsole2', 'png', '2024-09-14 07:39:20');
+INSERT INTO `product_images` (`image_id`, `product_id`, `img_name1`, `img_name2`, `img_name3`, `uploaded_at`) VALUES
+(1, 76227, 'Blackhead2.png', 'Blackhead3.png', 'Blackhead4.png', '2024-09-14 07:39:20'),
+(9, 52377, 'console2.png', 'joystick2.png', 'joystick3.png', '2024-09-30 14:55:33'),
+(10, 32523, 'console1.png', 'console2.png', 'joystick3.png', '2024-10-01 04:24:23'),
+(11, 72211, 'TV2.png', 'TV2.png', 'adapter3.png', '2024-10-01 04:26:06'),
+(12, 57705, 'adapter2.png', 'adapter3.png', 'adapter4.png', '2024-10-01 04:28:17'),
+(13, 54522, 'Carconsole2.png', 'Carconsole3.png', 'Carconsole1.png', '2024-10-01 04:29:59'),
+(14, 94083, 'mobilestand2.png', 'mobilestand3.png', 'mobilestand4.png', '2024-10-01 04:33:17'),
+(15, 87002, 'whitewatch2.png', 'whitewatch3.png', 'watch1-1.png', '2024-10-01 04:35:45');
 
 -- --------------------------------------------------------
 
@@ -354,7 +368,8 @@ INSERT INTO `wishlist` (`wishlist_id`, `user_id`, `product_id`, `added_on`) VALU
 (7, 10031, 57705, '2024-08-13 06:36:47'),
 (8, 10031, 32523, '2024-08-13 07:00:21'),
 (9, 1, 76227, '2024-09-14 08:05:02'),
-(10, 1, 32523, '2024-09-14 08:06:03');
+(10, 1, 32523, '2024-09-14 08:06:03'),
+(11, 2, 54522, '2024-09-30 14:31:10');
 
 --
 -- Indexes for dumped tables
@@ -409,6 +424,12 @@ ALTER TABLE `order_items`
   ADD PRIMARY KEY (`order_item_id`);
 
 --
+-- Indexes for table `payments`
+--
+ALTER TABLE `payments`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `products`
 --
 ALTER TABLE `products`
@@ -446,7 +467,7 @@ ALTER TABLE `blogs`
 -- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- AUTO_INCREMENT for table `contacts_queries`
@@ -476,25 +497,31 @@ ALTER TABLE `newsletter`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `order_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `order_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+
+--
+-- AUTO_INCREMENT for table `payments`
+--
+ALTER TABLE `payments`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `product_images`
 --
 ALTER TABLE `product_images`
-  MODIFY `image_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `image_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -506,7 +533,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `wishlist`
 --
 ALTER TABLE `wishlist`
-  MODIFY `wishlist_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `wishlist_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -535,7 +535,7 @@ if (!empty($userId)) {
                                         <p class="mb-0 text-center">Name</p>
                                     </div>
                                     <div class="col-2">
-                                        <p class="mb-0 text-center">Email</p>
+                                        <p class="mb-0 text-center">PRODUCT</p>
                                     </div>
                                     <div class="col-1">
                                         <p class="mb-0 text-center">Amount</p>
@@ -592,8 +592,8 @@ if (!empty($userId)) {
                                                     <p class="mb-0 fw-medium text-dark ms-2 ms-lg-0 text-center"><?php echo $Fname . ' ' . $lname;  ?></p>
                                                 </div>
                                                 <div class="col-12 col-lg-2 d-flex d-lg-block align-items-center ">
-                                                    <p class="mb-0 text-start d-lg-none">Email:</p>
-                                                    <p class="mb-0 fw-medium text-dark ms-2 ms-lg-0 text-center"><?php echo $email;  ?></p>
+                                                    <p class="mb-0 text-start d-lg-none">Product:</p>
+                                                    <p class="mb-0 fw-medium text-dark ms-2 ms-lg-0 text-center"><?php echo $productRow['product_name'];  ?></p>
                                                 </div>
                                                 <div class="col-12 col-lg-1 d-flex d-lg-block align-items-center ">
                                                     <p class="mb-0 text-start d-lg-none">Amount:</p>

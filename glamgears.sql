@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 01, 2024 at 07:41 AM
+-- Generation Time: Oct 02, 2024 at 04:57 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -69,9 +69,7 @@ CREATE TABLE `cart` (
 
 INSERT INTO `cart` (`cart_id`, `user_id`, `product_id`, `quantity`, `added_on`) VALUES
 (30, 52895, 72211, 1, '2024-09-14 10:32:43'),
-(40, 45291, 72211, 1, '2024-09-15 09:06:42'),
-(43, 2, 76227, 3, '2024-09-30 14:42:38'),
-(44, 2, 54522, 1, '2024-09-30 14:45:10');
+(40, 45291, 72211, 1, '2024-09-15 09:06:42');
 
 -- --------------------------------------------------------
 
@@ -143,7 +141,7 @@ CREATE TABLE `merchants` (
 --
 
 INSERT INTO `merchants` (`id`, `merchant_id`, `merchant_name`, `business_name`, `merchant_email`, `merchant_phone`, `merchant_pass`, `user_type`, `merchant_status`, `userid`, `date_created`, `date_updated`) VALUES
-(1, 10031, 'Krishnan', 'Kalai Mobiles', 'krishnan@gmail.com', 9999255545, 'krish123', 'merchant', 1, 2, '2024-08-08 09:38:35', '2024-08-11 16:40:17'),
+(1, 10031, 'Krishnan', 'Kalai Mobiles', 'krishnan@gmail.com', 999925554, 'krish123', 'admin', 1, 2, '2024-08-08 09:38:35', '2024-10-01 06:05:45'),
 (2, 52895, 'Rajan', 'Century TechZ', 'techz@gmail.com', 9586525848, 'raj12345', 'merchant', 1, 3, '2024-08-11 05:33:18', '2024-08-11 05:33:18'),
 (4, 45291, 'Ringle Ebenezer', 'Glam Gears', 'ringlestr@gmail.com', 9952185689, 'ringle01', 'admin', 1, 4, '2024-08-16 15:44:02', '2024-08-16 15:44:02'),
 (5, 50023, 'wqdwedf', 'fwewfe', 'manna@gmail.com', 6852156984, '12345678', 'merchant', 0, 2, '2024-09-15 14:02:02', '2024-09-15 14:02:02');
@@ -164,8 +162,8 @@ CREATE TABLE `newsletter` (
 --
 
 INSERT INTO `newsletter` (`newsletter`, `news_email`) VALUES
-(1, 'ringlestr@gmail.com'),
-(2, 'ringle.ebenezer@gmail.com'),
+(1, 'ringvvvlestr@gmail.com'),
+(2, 'ringle.vebenezer@gmail.com'),
 (4, 'danielrajdj1903@gmail.com');
 
 -- --------------------------------------------------------
@@ -202,8 +200,8 @@ INSERT INTO `orders` (`order_id`, `tracking_no`, `user_id`, `confirmation`, `fna
 (1, 86991, 1, 'Pending', 'Karthi', 'kannan', 'manna@gmail.com', '446e,valluvar nagar, kovilpatti', 'TN', 'Tuticorin', 628501, 2147483647, 2471, 'MEGAOFF10', 'COD', '2024-08-16 15:40:31', '2024-08-27 03:38:29'),
 (2, 89074, 1, 'Pending', 'aathi', 'velu', 'aathi@gmail.com', '446e,valluvar nagar, kovilpatti', 'TN', 'Tuticorin', 628501, 2147483647, 315, '', 'COD', '2024-08-27 03:37:48', '2024-10-01 04:08:14'),
 (3, 89074, 52895, 'Pending', 'aathi', 'velu', 'aathi@gmail.com', '446e,valluvar nagar, kovilpatti', 'TN', 'Tuticorin', 628501, 2147483647, 605, '', 'COD', '2024-08-27 05:00:38', '2024-09-15 14:46:26'),
-(49, 93305, 10031, 'Pending', 'fefefwef', 'wfewfewf', 'manna@gmail.com', '446e,valluvar nagar, kovilpatti', 'TN', 'Tuticorin', 628501, 2147483647, 1769, '', 'card', '2024-10-01 05:33:32', '2024-10-01 05:33:32'),
-(50, 94384, 10031, 'Pending', 'fefefwef', 'wfewfewf', 'manna@gmail.com', '446e,valluvar nagar, kovilpatti', 'TN', 'Tuticorin', 628501, 2147483647, 1769, '', 'card', '2024-10-01 05:33:52', '2024-10-01 05:33:52');
+(55, 84200, 2, 'Pending', 'Karthi', 'kannan', 'manna@gmail.com', '446e,valluvar nagar, kovilpatti', '', 'Tuticorin', 628501, 2147483647, 4199, '', 'COD', '2024-10-02 14:23:50', '2024-10-02 14:23:50'),
+(56, 85604, 1, 'Pending', 'Karthi', 'kannan', 'manna@gmail.com', '446e,valluvar nagar, kovilpatti', '', 'Tuticorin', 628501, 2147483647, 56260, '', 'card', '2024-10-02 14:53:50', '2024-10-02 14:53:50');
 
 -- --------------------------------------------------------
 
@@ -230,7 +228,11 @@ INSERT INTO `order_items` (`order_item_id`, `product_id`, `order_id`, `quantity`
 (1, 76227, 1, 4, 845, 'AirHead Ultimate 131Hz DeadHeardZ', 'completed', '2024-08-16 15:40:31'),
 (2, 32523, 2, 3, 350, 'X Gamer Game Console ', 'completed', '2024-08-27 03:37:48'),
 (3, 54522, 1, 1, 3025, 'Crazy Wheels for PS5', 'completed', '2024-08-27 05:00:38'),
-(50, 32523, 50, 3, 350, 'X Gamer Game Console ', 'Pending', '2024-10-01 05:33:52');
+(57, 76227, 55, 3, 845, 'AirHead Ultimate 131Hz DeadHeardZ', 'completed', '2024-10-02 14:23:50'),
+(58, 57705, 55, 1, 354, 'PowerSurge high-capacity power', 'Pending', '2024-10-02 14:23:50'),
+(59, 54522, 55, 1, 3025, 'Crazy Wheels for PS5', 'completed', '2024-10-02 14:23:50'),
+(60, 72211, 56, 2, 35000, 'Smart Android Television Genz', 'Pending', '2024-10-02 14:53:50'),
+(61, 54522, 56, 3, 3025, 'Crazy Wheels for PS5', 'Pending', '2024-10-02 14:53:50');
 
 -- --------------------------------------------------------
 
@@ -253,7 +255,10 @@ CREATE TABLE `payments` (
 
 INSERT INTO `payments` (`id`, `track_id`, `cardnumber`, `cardname`, `expire_date`, `created_at`) VALUES
 (1, 93305, 2147483647, 'efwefce', '2024-10-24', '2024-10-01 05:33:32'),
-(2, 94384, 2147483647, 'efwefce', '2024-10-24', '2024-10-01 05:33:52');
+(2, 94384, 2147483647, 'efwefce', '2024-10-24', '2024-10-01 05:33:52'),
+(3, 91493, 0, '', '0000-00-00', '2024-10-01 06:46:08'),
+(4, 83060, 2147483647, 'efwefce', '2024-10-24', '2024-10-01 06:55:34'),
+(5, 85604, 2147483647, 'wefefewfwef', '2024-10-11', '2024-10-02 14:53:50');
 
 -- --------------------------------------------------------
 
@@ -285,11 +290,11 @@ CREATE TABLE `products` (
 
 INSERT INTO `products` (`id`, `product_id`, `product_name`, `product_description`, `product_price`, `discount_percent`, `product_quantity`, `category_name`, `brand_name`, `product_status`, `merchant_id`, `main_image_name`, `is_featured`, `created_at`, `updated_at`) VALUES
 (1, 76227, 'AirHead Ultimate 131Hz DeadHeardZ', 'Headphones are electronic audio device that people wear over their ears. They let people hear sounds on a walkman, MP3 player, mobile phone or computer.                             ', 845.00, 0.40, 93, 'Headphone', 'Oppo', 'active', 10031, 'Blackhead1.png', '1', '2024-09-30 16:33:21', '2024-08-11 15:05:38'),
-(2, 32523, 'X Gamer Game Console ', 'CPU: Handles game logic and calculations.   \r\nGPU: Renders graphics and visuals for the game.\r\nMemory: Stores game data, system software, and temporary information.\r\nStorage: Holds game installations and saved data (internal or external).\r\nInput devices: Controllers for player interaction.   \r\nOutput devices: Connect to a television or monitor to display the game.                            ', 350.00, 0.30, 37, 'Joystick', 'Sony', 'active', 10031, 'joystick1.png', '1', '2024-10-01 05:33:52', '2024-08-12 04:57:07'),
+(2, 32523, 'X Gamer Game Console ', 'CPU: Handles game logic and calculations.   \r\nGPU: Renders graphics and visuals for the game.\r\nMemory: Stores game data, system software, and temporary information.\r\nStorage: Holds game installations and saved data (internal or external).\r\nInput devices: Controllers for player interaction.   \r\nOutput devices: Connect to a television or monitor to display the game.                            ', 350.00, 0.30, 36, 'Joystick', 'Sony', 'active', 10031, 'joystick1.png', '1', '2024-10-01 06:44:59', '2024-08-12 04:57:07'),
 (3, 72211, 'Smart Android Television Genz', 'Smart TVs: Internet-connected TVs offering streaming services and apps.   \r\n4K and 8K resolution: Higher pixel counts for sharper images.   \r\nHDR (High Dynamic Range): Improved contrast and color for a more realistic picture.   \r\nTelevision has evolved from a simple entertainment device to a multimedia hub, offering a wide range of content and interactive features.Type the description', 35000.00, 0.30, 29, 'Television', 'Samsung', 'active', 10031, 'TV3.png', '1', '2024-09-30 16:39:06', '2024-08-12 07:37:51'),
 (4, 57705, 'PowerSurge high-capacity power', 'Conversion: Translates data or signals from one format to another.   \r\nCompatibility: Ensures seamless operation between different devices or systems.   \r\nInterface: Provides a connection point for two or more components.\r\nIn essence, an adapter is a versatile tool that facilitates connectivity and interoperability in the world of technology.', 354.00, 0.27, 100, 'Charger', 'Nokia', 'active', 52895, 'adapter1.png', '1', '2024-09-30 14:22:10', '2024-08-12 15:04:59'),
-(5, 54522, 'Crazy Wheels for PS5', 'Smartwatches have revolutionized the way we interact with technology. Once limited to displaying time and date, these wearable devices have evolved into sophisticated companions that track fitness goals', 3025.00, 0.20, 40, 'console', 'Sony', 'active', 45291, 'Carconsole1.png', '1', '2024-09-30 14:22:10', '2024-08-16 15:47:15'),
-(6, 94083, 'Vehicle @MOBILE HOLDER 2xx', 'smartwatches have become indispensable for many. As technology continues to advance, we can expect even more innovative features and functionalities to emerge in the smartwatch market.', 365.00, 0.10, 10, 'accessories', 'Nokia', 'active', 45291, 'mobilestand1.png', '1', '2024-09-30 14:22:10', '2024-08-16 15:49:44'),
+(5, 54522, 'Crazy Wheels for PS5', 'Smartwatches have revolutionized the way we interact with technology. Once limited to displaying time and date, these wearable devices have evolved into sophisticated companions that track fitness goals', 3025.00, 0.20, 33, 'console', 'Sony', 'active', 45291, 'Carconsole1.png', '1', '2024-10-02 14:53:50', '2024-08-16 15:47:15'),
+(6, 94083, 'Vehicle @MOBILE HOLDER 2xx', 'smartwatches have become indispensable for many. As technology continues to advance, we can expect even more innovative features and functionalities to emerge in the smartwatch market.', 365.00, 0.10, 6, 'accessories', 'Nokia', 'active', 45291, 'mobilestand1.png', '1', '2024-10-01 06:55:34', '2024-08-16 15:49:44'),
 (8, 87002, 'Smart watch 121z ', 'Smartwatches are more than just timekeepers; they\'re compact computers that fit on your wrist', 699.00, 0.15, 50, 'smart watch', 'Oppo', 'active', 52895, 'whitewatch1.png', '1', '2024-09-30 14:22:10', '2024-08-27 04:32:49');
 
 -- --------------------------------------------------------
@@ -315,7 +320,7 @@ INSERT INTO `product_images` (`image_id`, `product_id`, `img_name1`, `img_name2`
 (1, 76227, 'Blackhead2.png', 'Blackhead3.png', 'Blackhead4.png', '2024-09-14 07:39:20'),
 (9, 52377, 'console2.png', 'joystick2.png', 'joystick3.png', '2024-09-30 14:55:33'),
 (10, 32523, 'console1.png', 'console2.png', 'joystick3.png', '2024-10-01 04:24:23'),
-(11, 72211, 'TV2.png', 'TV2.png', 'adapter3.png', '2024-10-01 04:26:06'),
+(11, 72211, 'TV1.png', 'adapter6.png', 'TV3.png', '2024-10-01 04:26:06'),
 (12, 57705, 'adapter2.png', 'adapter3.png', 'adapter4.png', '2024-10-01 04:28:17'),
 (13, 54522, 'Carconsole2.png', 'Carconsole3.png', 'Carconsole1.png', '2024-10-01 04:29:59'),
 (14, 94083, 'mobilestand2.png', 'mobilestand3.png', 'mobilestand4.png', '2024-10-01 04:33:17'),
@@ -467,7 +472,7 @@ ALTER TABLE `blogs`
 -- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
 
 --
 -- AUTO_INCREMENT for table `contacts_queries`
@@ -497,19 +502,19 @@ ALTER TABLE `newsletter`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `order_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+  MODIFY `order_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
 
 --
 -- AUTO_INCREMENT for table `payments`
 --
 ALTER TABLE `payments`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `products`

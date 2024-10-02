@@ -110,32 +110,30 @@ if (isset($_POST['placeOrder'])) {
           $order_item_sql = "INSERT INTO order_items (product_id, order_id, quantity, price, product_name) VALUES (?, ?, ?, ?, ?)";
           $stmt3 = $config->prepare($order_item_sql);
           $stmt3->bind_param("iiids", $productId, $orderId, $productQuantity, $productPrice, $productName);
-
-          if (!$stmt3->execute()) {
-            die('Execute failed3: ' . $stmt3->error);
-          } else {
-            $quantitySql = "UPDATE `products` SET `product_quantity`=? WHERE `product_id` = ?";
-            $stmtQ = $config->prepare($quantitySql);
-            $stmtQ->bind_param("ii", $newQuantity, $productId);
-
-            if (!$stmtQ) {
-              die('Prepare failed: ' . $config->error);
-            }
-
-            if (!$stmtQ->execute()) {
-              die('Execute failedQ: ' . $stmtQ->error);
-            } else {
-              $_SESSION['message'] = "Order placed successfully";
-              $productSql = "DELETE FROM cart WHERE user_id = ?";
-              $stmt = $config->prepare($productSql);
-              $stmt->bind_param("i", $userId);
-              $stmt->execute();
-              header('Location: ./orders.php');
-              die();
-            }
-          }
-          $stmt3->close();
+          $stmt3->execute();
         }
+
+        $quantitySql = "UPDATE `products` SET `product_quantity`=? WHERE `product_id` = ?";
+        $stmtQ = $config->prepare($quantitySql);
+        $stmtQ->bind_param("ii", $newQuantity, $productId);
+
+        if (!$stmtQ) {
+          die('Prepare failed: ' . $config->error);
+        }
+
+        if (!$stmtQ->execute()) {
+          die('Execute failedQ: ' . $stmtQ->error);
+        } else {
+          $_SESSION['message'] = "Order placed successfully";
+          $productSql = "DELETE FROM cart WHERE user_id = ?";
+          $stmt = $config->prepare($productSql);
+          $stmt->bind_param("i", $userId);
+          $stmt->execute();
+          header('Location: ./orders.php');
+          die();
+        }
+
+        $stmt3->close();
       }
     }
   } else {
@@ -176,33 +174,30 @@ if (isset($_POST['placeOrder'])) {
         $order_item_sql = "INSERT INTO order_items (product_id, order_id, quantity, price, product_name) VALUES (?, ?, ?, ?, ?)";
         $stmt3 = $config->prepare($order_item_sql);
         $stmt3->bind_param("iiids", $productId, $orderId, $productQuantity, $productPrice, $productName);
+        $stmt3->execute();
+      }
 
-        if (!$stmt3->execute()) {
-          die('Execute failed3: ' . $stmt3->error);
-        } else {
-          $quantitySql = "UPDATE `products` SET `product_quantity`=? WHERE `product_id` = ?";
-          $stmtQ = $config->prepare($quantitySql);
-          $stmtQ->bind_param("ii", $newQuantity, $productId);
+      $quantitySql = "UPDATE `products` SET `product_quantity`=? WHERE `product_id` = ?";
+      $stmtQ = $config->prepare($quantitySql);
+      $stmtQ->bind_param("ii", $newQuantity, $productId);
 
-          if (!$stmtQ) {
-            die('Prepare failed: ' . $config->error);
-          }
+      if (!$stmtQ) {
+        die('Prepare failed: ' . $config->error);
+      }
 
-          if (!$stmtQ->execute()) {
-            die('Execute failedQ: ' . $stmtQ->error);
-          } else {
-            $_SESSION['message'] = "Order placed successfully";
-            $productSql = "DELETE FROM cart WHERE user_id = ?";
-            $stmt = $config->prepare($productSql);
-            $stmt->bind_param("i", $userId);
-            $stmt->execute();
-            header('Location: ./orders.php');
-            die();
-          }
-        }
-        $stmt3->close();
+      if (!$stmtQ->execute()) {
+        die('Execute failedQ: ' . $stmtQ->error);
+      } else {
+        $_SESSION['message'] = "Order placed successfully";
+        $productSql = "DELETE FROM cart WHERE user_id = ?";
+        $stmt = $config->prepare($productSql);
+        $stmt->bind_param("i", $userId);
+        $stmt->execute();
+        header('Location: ./orders.php');
+        die();
       }
     }
+    $stmt3->close();
   }
 }
 

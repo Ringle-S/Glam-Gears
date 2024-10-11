@@ -9,32 +9,7 @@ if (!isset($_SESSION['user'])) {
   header("Location: login.php?msg='You haven't logged in yet'&productID=" . $_GET['productID']);
 }
 
-// $quantitys = array();
-// if (isset($_POST['updateCart'])) {
 
-//   $quantitys[] = $_POST['quantity'];
-//   // print_r($quantitys) . "<br>";
-//   $productSql = "SELECT cart.cart_id AS cartId FROM cart INNER JOIN products ON cart.product_id = products.product_id WHERE cart.user_id = ?";
-//   $productStmt = $config->prepare($productSql);
-//   $productStmt->bind_param("i", $userId);
-//   $productStmt->execute();
-//   $productResult = $productStmt->get_result();
-
-//   if ($productResult->num_rows > 0) {
-//     while ($productRow = $productResult->fetch_assoc()) {
-//       // $totalCart = round_to_2dp($productRow['total_price']);
-//       $cartId = $productRow['cartId'];
-//     }
-//     // echo $cartId . "<br>";
-//   }
-//   include('./config.php');
-//   // foreach ($quantitys as $quantity) {
-//   //   $productSql = "UPDATE cart SET `quantity`='$quantity' WHERE `cart_id`=?";
-//   //   $productStmt = $config->prepare($productSql);
-//   //   $productStmt->bind_param("i", $userId);
-//   //   $productStmt->execute();
-//   // }
-// }
 
 ?>
 <!DOCTYPE html>
@@ -243,26 +218,6 @@ include_once('./header.php');
     $productStmt->close();
 
 
-
-    // $errorMsg = "";
-    // if (isset($_POST['couponSubmit'])) {
-    //   $couponCode = $_POST['couponvalue'];
-    //   // echo  $couponCode;
-
-    //   require_once "./config.php";
-    //   $sql = "SELECT * FROM coupons WHERE coupon_code = ?";
-    //   $stmt = $config->prepare($sql);
-    //   $stmt->bind_param("s", $couponCode);
-    //   $stmt->execute();
-    //   $result = $stmt->get_result();
-    //   if ($result->num_rows > 0) {
-    //     $row = $result->fetch_assoc();
-    //     $couponDiscount = $row['coupon_value'];
-    //     // echo $couponDiscount;
-    //   } else {
-    //     $errorMsg = "NO coupon available";
-    //   }
-    // }
 
     ?>
     <?php

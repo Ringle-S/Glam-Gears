@@ -6,23 +6,15 @@ $userId = $_SESSION['user'];
 if (!isset($_SESSION['user'])) {
   header("Location: login.php?msg='You haven't logged in yet'&productID=" . $_GET['productID']);
 }
+if (isset($_GET['product_id'])) {
+
+  $selectedProductId = $_GET['product_id'];
+}
+
 if (isset($_POST['couponSubmit'])) {
 
-  $fname = $_POST['fname'];
-  $lname = $_POST['lname'];
-  $shipMail = $_POST['shipMail'];
-  $shipAddress = $_POST['shipAddress'];
-  $shipState = $_POST['shipState'];
-  $shipCity = $_POST['shipCity'];
-  $shipCode = $_POST['shipZip'];
-  $shipMobile = $_POST['shipPhone'];
-  $shipTotalAmount = $_POST['totalCost'];
-  $shipPaymentMode = $_POST['payment'];
 
   $couponCode = $_POST['couponvalue'];
-  $cardnumber = $_POST['cardNumber'];
-  $cardname = $_POST['nameOnCard'];
-  $expDate = $_POST['expiryDate'];
 }
 
 function generateRandomFiveDigitNumber()
@@ -59,23 +51,89 @@ if (isset($_POST['placeOrder'])) {
   $expDate = $_POST['expiryDate'];
 
   // echo $shipPaymentMode . "<br>";
-  if ($shipPaymentMode == "card") {
-    include_once('./config.php');
-    $sql = "INSERT INTO payments (track_id, cardnumber, cardname, expire_date) VALUES (?, ?, ?, ?)";
-    $stmt = $config->prepare($sql);
-
-    if (!$stmt) {
-      die('Prepare failed: ' . $config->error);
-    }
-
-    $stmt->bind_param("isss", $trackid, $cardnumber, $cardname, $expDate);
-
-    if (!$stmt->execute()) {
-      die('Execute failed1: ' . $stmt->error);
-    } else {
+  if (isset($selectedProductId)) {
+    if ($shipPaymentMode == "card") {
       include_once('./config.php');
+      $sql = "INSERT INTO payments (track_id, cardnumber, cardname, expire_date) VALUES (?, ?, ?, ?)";
+      $stmt = $config->prepare($sql);
+
+      if (!$stmt) {
+        die('Prepare failed: ' . $config->error);
+      }
+
+      $stmt->bind_param("isss", $trackid, $cardnumber, $cardname, $expDate);
+
+      if (!$stmt->execute()) {
+        die('Execute failed1: ' . $stmt->error);
+      } else {
+        include_once('./config.php');
+        $insert_query = "INSERT INTO orders (`tracking_no`,`user_id`,`fname`,`lname`,`email`,`address`,`state`,`city`,`zipcode`,`phone`,`total_amount`,`coupon_code`,`payment_mode`) VALUES ('$trackid','$userId','$fname','$lname','$shipMail','$shipAddress','$shipState','$shipCity','$shipCode','$shipMobile','$shipTotalAmount','$couponCode','$shipPaymentMode')";
+        $stmt2 = $config->prepare($insert_query);
+        if (!$stmt2) {
+          die('Prepare failed: ' . $config->error);
+        }
+        if (!$stmt2->execute()) {
+          die('Execute failed2: ' . $stmt2->error);
+        } else {
+          include_once('./config.php');
+          $productSql = "SELECT order_id FROM orders WHERE tracking_no = ?";
+          $stmt = $config->prepare($productSql);
+          $stmt->bind_param("i", $trackid);
+          $stmt->execute();
+          $result = $stmt->get_result();
+
+          while ($row = $result->fetch_assoc()) {
+            $orderId = $row['order_id'];
+          }
+          // Insert order items
+          $productSql = "SELECT products.product_id, products.product_price, products.product_name,products.product_quantity FROM products WHERE products.product_id = ?";
+          $stmt = $config->prepare($productSql);
+          $stmt->bind_param("i", $selectedProductId);
+          $stmt->execute();
+          $result_new = $stmt->get_result();
+
+          while ($row = $result_new->fetch_assoc()) {
+            $productId = $row['product_id'];
+            $productQuantity = 1;
+            $productPrice = $row['product_price'];
+            $productName = $row['product_name'];
+            $actualQuantity = $row['product_quantity'];
+            echo $newQuantity = $actualQuantity - $productQuantity . "<br>";
+
+            $order_item_sql = "INSERT INTO order_items (product_id, order_id, quantity, price, product_name) VALUES (?, ?, ?, ?, ?)";
+            $stmt3 = $config->prepare($order_item_sql);
+            $stmt3->bind_param("iiids", $productId, $orderId, $productQuantity, $productPrice, $productName);
+            $stmt3->execute();
+          }
+
+          $quantitySql = "UPDATE `products` SET `product_quantity`=? WHERE `product_id` = ?";
+          $stmtQ = $config->prepare($quantitySql);
+          $stmtQ->bind_param("ii", $newQuantity, $productId);
+
+          if (!$stmtQ) {
+            die('Prepare failed: ' . $config->error);
+          }
+
+          if (!$stmtQ->execute()) {
+            die('Execute failedQ: ' . $stmtQ->error);
+          } else {
+            $_SESSION['message'] = "Order placed successfully";
+            $productSql = "DELETE FROM cart WHERE user_id = ?";
+            $stmt = $config->prepare($productSql);
+            $stmt->bind_param("i", $userId);
+            $stmt->execute();
+            header('Location: ./orders.php');
+            die();
+          }
+
+          $stmt3->close();
+        }
+      }
+    } else {
+      // include_once('./config.php');
       $insert_query = "INSERT INTO orders (`tracking_no`,`user_id`,`fname`,`lname`,`email`,`address`,`state`,`city`,`zipcode`,`phone`,`total_amount`,`coupon_code`,`payment_mode`) VALUES ('$trackid','$userId','$fname','$lname','$shipMail','$shipAddress','$shipState','$shipCity','$shipCode','$shipMobile','$shipTotalAmount','$couponCode','$shipPaymentMode')";
       $stmt2 = $config->prepare($insert_query);
+
       if (!$stmt2) {
         die('Prepare failed: ' . $config->error);
       }
@@ -93,7 +151,148 @@ if (isset($_POST['placeOrder'])) {
           $orderId = $row['order_id'];
         }
         // Insert order items
-        $productSql = "SELECT products.product_id, cart.quantity, products.product_price, products.product_name,products.product_quantity FROM cart INNER JOIN products ON cart.product_id = products.product_id WHERE cart.user_id = ?";
+        $productSql = "SELECT products.product_id, products.product_price, products.product_name,products.product_quantity FROM products WHERE products.product_id = ?";
+        $stmt = $config->prepare($productSql);
+        $stmt->bind_param("i", $selectedProductId);
+        $stmt->execute();
+        $result_new = $stmt->get_result();
+
+        while ($row = $result_new->fetch_assoc()) {
+          $productId = $row['product_id'];
+          $productQuantity = 1;
+          $productPrice = $row['product_price'];
+          $productName = $row['product_name'];
+          $actualQuantity = $row['product_quantity'];
+          echo $newQuantity = $actualQuantity - $productQuantity . "<br>";
+
+          $order_item_sql = "INSERT INTO order_items (product_id, order_id, quantity, price, product_name) VALUES (?, ?, ?, ?, ?)";
+          $stmt3 = $config->prepare($order_item_sql);
+          $stmt3->bind_param("iiids", $productId, $orderId, $productQuantity, $productPrice, $productName);
+          $stmt3->execute();
+        }
+
+        $quantitySql = "UPDATE `products` SET `product_quantity`=? WHERE `product_id` = ?";
+        $stmtQ = $config->prepare($quantitySql);
+        $stmtQ->bind_param("ii", $newQuantity, $productId);
+
+        if (!$stmtQ) {
+          die('Prepare failed: ' . $config->error);
+        }
+
+        if (!$stmtQ->execute()) {
+          die('Execute failedQ: ' . $stmtQ->error);
+        } else {
+          $_SESSION['message'] = "Order placed successfully";
+          $productSql = "DELETE FROM cart WHERE user_id = ?";
+          $stmt = $config->prepare($productSql);
+          $stmt->bind_param("i", $userId);
+          $stmt->execute();
+          header('Location: ./orders.php');
+          die();
+        }
+      }
+      $stmt3->close();
+    }
+  } else {
+    if ($shipPaymentMode == "card") {
+      include_once('./config.php');
+      $sql = "INSERT INTO payments (track_id, cardnumber, cardname, expire_date) VALUES (?, ?, ?, ?)";
+      $stmt = $config->prepare($sql);
+
+      if (!$stmt) {
+        die('Prepare failed: ' . $config->error);
+      }
+
+      $stmt->bind_param("isss", $trackid, $cardnumber, $cardname, $expDate);
+
+      if (!$stmt->execute()) {
+        die('Execute failed1: ' . $stmt->error);
+      } else {
+        include_once('./config.php');
+        $insert_query = "INSERT INTO orders (`tracking_no`,`user_id`,`fname`,`lname`,`email`,`address`,`state`,`city`,`zipcode`,`phone`,`total_amount`,`coupon_code`,`payment_mode`) VALUES ('$trackid','$userId','$fname','$lname','$shipMail','$shipAddress','$shipState','$shipCity','$shipCode','$shipMobile','$shipTotalAmount','$couponCode','$shipPaymentMode')";
+        $stmt2 = $config->prepare($insert_query);
+        if (!$stmt2) {
+          die('Prepare failed: ' . $config->error);
+        }
+        if (!$stmt2->execute()) {
+          die('Execute failed2: ' . $stmt2->error);
+        } else {
+          include_once('./config.php');
+          $productSql = "SELECT order_id FROM orders WHERE tracking_no = ?";
+          $stmt = $config->prepare($productSql);
+          $stmt->bind_param("i", $trackid);
+          $stmt->execute();
+          $result = $stmt->get_result();
+
+          while ($row = $result->fetch_assoc()) {
+            $orderId = $row['order_id'];
+          }
+          // Insert order items
+          $productSql = "SELECT products.product_id, cart.quantity, products.product_price, products.product_name,products.product_quantity FROM cart INNER JOIN products ON cart.product_id = products.product_id WHERE cart.user_id = ?";
+          $stmt = $config->prepare($productSql);
+          $stmt->bind_param("i", $userId);
+          $stmt->execute();
+          $result_new = $stmt->get_result();
+
+          while ($row = $result_new->fetch_assoc()) {
+            $productId = $row['product_id'];
+            $productQuantity = $row['quantity'];
+            $productPrice = $row['product_price'];
+            $productName = $row['product_name'];
+            $actualQuantity = $row['product_quantity'];
+            echo $newQuantity = $actualQuantity - $productQuantity . "<br>";
+
+            $order_item_sql = "INSERT INTO order_items (product_id, order_id, quantity, price, product_name) VALUES (?, ?, ?, ?, ?)";
+            $stmt3 = $config->prepare($order_item_sql);
+            $stmt3->bind_param("iiids", $productId, $orderId, $productQuantity, $productPrice, $productName);
+            $stmt3->execute();
+          }
+
+          $quantitySql = "UPDATE `products` SET `product_quantity`=? WHERE `product_id` = ?";
+          $stmtQ = $config->prepare($quantitySql);
+          $stmtQ->bind_param("ii", $newQuantity, $productId);
+
+          if (!$stmtQ) {
+            die('Prepare failed: ' . $config->error);
+          }
+
+          if (!$stmtQ->execute()) {
+            die('Execute failedQ: ' . $stmtQ->error);
+          } else {
+            $_SESSION['message'] = "Order placed successfully";
+            $productSql = "DELETE FROM cart WHERE user_id = ?";
+            $stmt = $config->prepare($productSql);
+            $stmt->bind_param("i", $userId);
+            $stmt->execute();
+            header('Location: ./orders.php');
+            die();
+          }
+
+          $stmt3->close();
+        }
+      }
+    } else {
+      // include_once('./config.php');
+      $insert_query = "INSERT INTO orders (`tracking_no`,`user_id`,`fname`,`lname`,`email`,`address`,`state`,`city`,`zipcode`,`phone`,`total_amount`,`coupon_code`,`payment_mode`) VALUES ('$trackid','$userId','$fname','$lname','$shipMail','$shipAddress','$shipState','$shipCity','$shipCode','$shipMobile','$shipTotalAmount','$couponCode','$shipPaymentMode')";
+      $stmt2 = $config->prepare($insert_query);
+
+      if (!$stmt2) {
+        die('Prepare failed: ' . $config->error);
+      }
+      if (!$stmt2->execute()) {
+        die('Execute failed2: ' . $stmt2->error);
+      } else {
+        // include_once('./config.php');
+        $productSql = "SELECT order_id FROM orders WHERE tracking_no = ?";
+        $stmt = $config->prepare($productSql);
+        $stmt->bind_param("i", $trackid);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $row = $result->fetch_assoc();
+        $orderId = $row['order_id'];
+
+        $productSql = "SELECT products.product_id, cart.quantity, products.product_price, products.product_name, products.product_quantity FROM cart INNER JOIN products ON cart.product_id = products.product_id WHERE cart.user_id = ?";
         $stmt = $config->prepare($productSql);
         $stmt->bind_param("i", $userId);
         $stmt->execute();
@@ -132,72 +331,9 @@ if (isset($_POST['placeOrder'])) {
           header('Location: ./orders.php');
           die();
         }
-
-        $stmt3->close();
       }
+      $stmt3->close();
     }
-  } else {
-    // include_once('./config.php');
-    $insert_query = "INSERT INTO orders (`tracking_no`,`user_id`,`fname`,`lname`,`email`,`address`,`state`,`city`,`zipcode`,`phone`,`total_amount`,`coupon_code`,`payment_mode`) VALUES ('$trackid','$userId','$fname','$lname','$shipMail','$shipAddress','$shipState','$shipCity','$shipCode','$shipMobile','$shipTotalAmount','$couponCode','$shipPaymentMode')";
-    $stmt2 = $config->prepare($insert_query);
-
-    if (!$stmt2) {
-      die('Prepare failed: ' . $config->error);
-    }
-    if (!$stmt2->execute()) {
-      die('Execute failed2: ' . $stmt2->error);
-    } else {
-      // include_once('./config.php');
-      $productSql = "SELECT order_id FROM orders WHERE tracking_no = ?";
-      $stmt = $config->prepare($productSql);
-      $stmt->bind_param("i", $trackid);
-      $stmt->execute();
-      $result = $stmt->get_result();
-
-      $row = $result->fetch_assoc();
-      $orderId = $row['order_id'];
-
-      $productSql = "SELECT products.product_id, cart.quantity, products.product_price, products.product_name, products.product_quantity FROM cart INNER JOIN products ON cart.product_id = products.product_id WHERE cart.user_id = ?";
-      $stmt = $config->prepare($productSql);
-      $stmt->bind_param("i", $userId);
-      $stmt->execute();
-      $result_new = $stmt->get_result();
-
-      while ($row = $result_new->fetch_assoc()) {
-        $productId = $row['product_id'];
-        $productQuantity = $row['quantity'];
-        $productPrice = $row['product_price'];
-        $productName = $row['product_name'];
-        $actualQuantity = $row['product_quantity'];
-        echo $newQuantity = $actualQuantity - $productQuantity . "<br>";
-
-        $order_item_sql = "INSERT INTO order_items (product_id, order_id, quantity, price, product_name) VALUES (?, ?, ?, ?, ?)";
-        $stmt3 = $config->prepare($order_item_sql);
-        $stmt3->bind_param("iiids", $productId, $orderId, $productQuantity, $productPrice, $productName);
-        $stmt3->execute();
-      }
-
-      $quantitySql = "UPDATE `products` SET `product_quantity`=? WHERE `product_id` = ?";
-      $stmtQ = $config->prepare($quantitySql);
-      $stmtQ->bind_param("ii", $newQuantity, $productId);
-
-      if (!$stmtQ) {
-        die('Prepare failed: ' . $config->error);
-      }
-
-      if (!$stmtQ->execute()) {
-        die('Execute failedQ: ' . $stmtQ->error);
-      } else {
-        $_SESSION['message'] = "Order placed successfully";
-        $productSql = "DELETE FROM cart WHERE user_id = ?";
-        $stmt = $config->prepare($productSql);
-        $stmt->bind_param("i", $userId);
-        $stmt->execute();
-        header('Location: ./orders.php');
-        die();
-      }
-    }
-    $stmt3->close();
   }
 }
 
@@ -249,16 +385,16 @@ if (isset($_POST['couponSubmit'])) {
       <div class="row d-flex flex-column justify-content-center gap-3 mt-3">
         <div class="row">
           <div class="col-6">
-            <label for="inputEmail4" class="form-label">First Name*</label>
+            <label for="fname" class="form-label">First Name*</label>
             <input required type="text" class="form-control py-2 rounded-0 display-6" style="border: 1px solid #001e2f" placeholder="First name" aria-label="First name" name="fname" id="fname" value="<?php if (isset($fname)) {
                                                                                                                                                                                                           echo $fname;
-                                                                                                                                                                                                        } ?>" />
+                                                                                                                                                                                                        } ?>" required />
           </div>
           <div class="col-6">
-            <label for="inputEmail4" class="form-label">Last Name*</label>
+            <label for="lname" class="form-label">Last Name*</label>
             <input required type="text" class="form-control py-2 rounded-0 display-6" style="border: 1px solid #001e2f" placeholder="Last name" aria-label="Last name" name="lname" id="lname" value="<?php if (isset($lname)) {
                                                                                                                                                                                                         echo $lname;
-                                                                                                                                                                                                      } ?>" />
+                                                                                                                                                                                                      } ?>" required />
           </div>
         </div>
         <div class="row">
@@ -281,13 +417,13 @@ if (isset($_POST['couponSubmit'])) {
         <div class="row">
           <div class="col-md-6">
             <label for="inputState" class="form-label">State*</label>
-            <select onchange="loadStates()" id="inputState" name="shipState" class="form-select py-2 rounded-0 display-6" style="border: 1px solid #001e2f">
+            <select onchange="loadStates()" id="inputState" name="shipState" class="form-select py-2 rounded-0 display-6" style="border: 1px solid #001e2f" required>
               <option disabled>State</option>
             </select>
           </div>
           <div class="col-md-6">
             <label for="inputCity" class="form-label">Town / City*</label>
-            <input required style="border: 1px solid #001e2f" type="text" name="shipCity" id="inputCity" placeholder="Enter your city/town" class="form-select py-2 rounded-0 display-6">
+            <input required style="border: 1px solid #001e2f" type="text" name="shipCity" id="inputCity" placeholder="Enter your city/town" class="form-select py-2 rounded-0 display-6" required>
 
           </div>
         </div>
@@ -296,14 +432,14 @@ if (isset($_POST['couponSubmit'])) {
             <label for="inputZip" class="form-label">Zip Code</label>
             <input required type="number" placeholder="Zip code" name="shipZip" class="form-control py-2 rounded-0 display-6" style="border: 1px solid #001e2f" id="inputZip" value="<?php if (isset($shipCode)) {
                                                                                                                                                                                         echo $shipCode;
-                                                                                                                                                                                      } ?>" />
+                                                                                                                                                                                      } ?>" required />
             <ul id="pincodes" class="pincodes list-unstyled"></ul>
           </div>
           <div class="col-md-6">
             <label for="inputMobile" class="form-label">Phone*</label>
             <input required type="number" placeholder="(123) 456 - 7890" name="shipPhone" class="form-control py-2 rounded-0 display-6" style="border: 1px solid #001e2f" id="inputMobile" value="<?php if (isset($shipMobile)) {
                                                                                                                                                                                                     echo $shipMobile;
-                                                                                                                                                                                                  } ?>" />
+                                                                                                                                                                                                  } ?>" required />
           </div>
         </div>
 
@@ -312,6 +448,7 @@ if (isset($_POST['couponSubmit'])) {
     <div class="col-lg-5 col-12">
       <div class="row">
         <div class="col-12 d-flex justify-content-between">
+          <!-- <?php echo $selectedProductId;  ?> -->
           <h4>Product</h4>
           <h4>Subtotal</h4>
         </div>
@@ -320,32 +457,63 @@ if (isset($_POST['couponSubmit'])) {
       <?php
       include('./config.php');
 
-      $productSql = "SELECT  products.product_id AS productID, cart.cart_id AS cartID, products.main_image_name AS img_name, products.product_name AS productName, products.product_price AS productPrice,products.discount_percent AS discountpercent , cart.quantity AS quantity FROM cart INNER JOIN products ON cart.product_id = products.product_id WHERE cart.user_id = ?";
-      $productStmt = $config->prepare($productSql);
-      $productStmt->bind_param("i", $userId);
-      $productStmt->execute();
-      $productResult = $productStmt->get_result();
-      if ($productResult->num_rows > 0) {
-        while ($productRow = $productResult->fetch_assoc()) {
+      if (isset($selectedProductId)) {
+        $productSql1 = "SELECT  products.product_id AS productID, products.main_image_name AS img_name, products.product_name AS productName, products.product_price AS productPrice,products.discount_percent AS discountpercent FROM products WHERE  products.product_id = ?";
+        $productStmt1 = $config->prepare($productSql1);
+        $productStmt1->bind_param("i", $selectedProductId);
+        $productStmt1->execute();
+        $productResult1 = $productStmt1->get_result();
+        if ($productResult1->num_rows > 0) {
+          while ($productRow = $productResult1->fetch_assoc()) {
 
 
       ?>
-          <div class="row">
-            <div class="col-12 d-flex justify-content-between align-items-center">
-              <p class="mb-0"><?php echo $productRow['productName']; ?> <span class="ms-2">&#215;<?php echo $productRow['quantity']; ?></span></p>
-              <div class=" d-flex align-items-center justify-content-end w-25 ">
-                &#8377;<input disabled type="number" class="form-control bg-transparent border-0  text-end text-dark" value="<?php
-                                                                                                                              echo $productRow['productPrice'] * $productRow['quantity'];
-                                                                                                                              ?>" />
+            <div class="row">
+              <div class="col-12 d-flex justify-content-between align-items-center">
+                <p class="mb-0"><?php echo $productRow['productName']; ?> <span class="ms-2">&#215;<?php echo 1; ?></span></p>
+                <div class=" d-flex align-items-center justify-content-end w-25 ">
+                  &#8377;<input disabled type="number" class="form-control bg-transparent border-0  text-end text-dark" value="<?php
+                                                                                                                                echo $productRow['productPrice'] * 1;
+                                                                                                                                ?>" />
+                </div>
               </div>
             </div>
-          </div>
-      <?php
+          <?php
+          }
+        } else {
+          echo '<div style="border-bottom: 1px solid #0f6290" class="row text-secondary px-3 py-5 fw-medium d-flex gap-4 gap-lg-0 align-items-center ">
+          <div class="col-12 text-center">Your have no Product</div>
+          </div>';
         }
       } else {
-        echo '<div style="border-bottom: 1px solid #0f6290" class="row text-secondary px-3 py-5 fw-medium d-flex gap-4 gap-lg-0 align-items-center ">
-          <div class="col-12 text-center">Your cart is empty</div>
+
+        $productSql = "SELECT  products.product_id AS productID, cart.cart_id AS cartID, products.main_image_name AS img_name, products.product_name AS productName, products.product_price AS productPrice,products.discount_percent AS discountpercent , cart.quantity AS quantity FROM cart INNER JOIN products ON cart.product_id = products.product_id WHERE cart.user_id = ?";
+        $productStmt = $config->prepare($productSql);
+        $productStmt->bind_param("i", $userId);
+        $productStmt->execute();
+        $productResult = $productStmt->get_result();
+        if ($productResult->num_rows > 0) {
+          while ($productRow = $productResult->fetch_assoc()) {
+
+
+          ?>
+            <div class="row">
+              <div class="col-12 d-flex justify-content-between align-items-center">
+                <p class="mb-0"><?php echo $productRow['productName']; ?> <span class="ms-2">&#215;<?php echo $productRow['quantity']; ?></span></p>
+                <div class=" d-flex align-items-center justify-content-end w-25 ">
+                  &#8377;<input disabled type="number" class="form-control bg-transparent border-0  text-end text-dark" value="<?php
+                                                                                                                                echo $productRow['productPrice'] * $productRow['quantity'];
+                                                                                                                                ?>" />
+                </div>
+              </div>
+            </div>
+      <?php
+          }
+        } else {
+          echo '<div style="border-bottom: 1px solid #0f6290" class="row text-secondary px-3 py-5 fw-medium d-flex gap-4 gap-lg-0 align-items-center ">
+          <div class="col-12 text-center">Your have no Product</div>
           </div>';
+        }
       }
       ?>
 
@@ -435,14 +603,36 @@ if (isset($_POST['couponSubmit'])) {
           $errorMsg = "NO coupon available";
         }
       }
-
+      if (isset($selectedProductId)) {
+        $productSql1 = "SELECT  products.product_id AS productID, products.main_image_name AS img_name, products.product_name AS productName, products.product_price AS productPrice,products.discount_percent AS discountpercent FROM products WHERE  products.product_id = ?";
+        $productStmt1 = $config->prepare($productSql1);
+        $productStmt1->bind_param("i", $selectedProductId);
+        $productStmt1->execute();
+        $productResult1 = $productStmt1->get_result();
+        if ($productResult1->num_rows > 0) {
+          while ($productRow = $productResult1->fetch_assoc()) {
+            $productPrice = $productRow['productPrice'] - ($productRow['productPrice'] * ($productRow['discountpercent']));
+            $discountpercent = $productPrice * ($productRow['discountpercent']);
+            // $productPrice = $productRow['productPrice'];
+          }
+        }
+      }
       ?>
       <div class="row mt-5">
         <div class="col-12 d-flex justify-content-between align-items-center">
           <h5 class="fw-semibold">Subtotal</h5>
           <div class=" d-flex align-items-center justify-content-end w-25 h5">
-            &#8377;<input disabled type="number" class="form-control bg-transparent border-0 fw-semibold pt-3 text-dark text-end h5" value="<?php
-                                                                                                                                            echo $totalCart;
+            &#8377;<input disabled type="number" class="form-control bg-transparent border-0 fw-semibold pt-3 text-dark text-end h5" value="<?php if (isset($selectedProductId)) {
+
+                                                                                                                                              if (isset($_POST['couponSubmit'])) {
+                                                                                                                                                echo $productPrice;
+                                                                                                                                              } else {
+                                                                                                                                                echo $productPrice;
+                                                                                                                                              }
+                                                                                                                                            } else {
+
+                                                                                                                                              echo $totalCart;
+                                                                                                                                            }
                                                                                                                                             ?>" />
           </div>
         </div>
@@ -451,10 +641,19 @@ if (isset($_POST['couponSubmit'])) {
       <div class="d-flex justify-content-between align-items-center">
         <h5 class="mb-0 fw-semibold">Discount</h5>
         <div class=" d-flex align-items-center justify-content-end w-25 h5">
-          &#8377;<input disabled type="number" class="form-control bg-transparent border-0 fw-semibold pt-3 text-dark text-end h5" value="<?php if (isset($_POST['couponSubmit'])) {
-                                                                                                                                            echo $disTotal + ($discount * $couponDiscount);
+          &#8377;<input disabled type="number" class="form-control bg-transparent border-0 fw-semibold pt-3 text-dark text-end h5" value="<?php if (isset($selectedProductId)) {
+
+                                                                                                                                            if (isset($_POST['couponSubmit'])) {
+                                                                                                                                              echo $productPrice * (($couponDiscount));
+                                                                                                                                            } else {
+                                                                                                                                              echo $discountpercent;
+                                                                                                                                            }
                                                                                                                                           } else {
-                                                                                                                                            echo $disTotal;
+                                                                                                                                            if (isset($_POST['couponSubmit'])) {
+                                                                                                                                              echo $disTotal + ($discount * $couponDiscount);
+                                                                                                                                            } else {
+                                                                                                                                              echo $disTotal;
+                                                                                                                                            }
                                                                                                                                           } ?>" />
         </div>
       </div>
@@ -463,10 +662,19 @@ if (isset($_POST['couponSubmit'])) {
         <div class="col-12 d-flex justify-content-between align-items-center">
           <h5 class="fw-semibold">Total Amount</h5>
           <div class=" d-flex align-items-center justify-content-end w-25 h5">
-            &#8377;<input type="number" name="totalCost" class="form-control bg-transparent border-0 fw-semibold pt-3 text-dark text-end h5" value="<?php if (isset($_POST['couponSubmit'])) {
-                                                                                                                                                      echo $discount - (($discount * $couponDiscount));
+            &#8377;<input type="number" name="totalCost" class="form-control bg-transparent border-0 fw-semibold pt-3 text-dark text-end h5" value="<?php if (isset($selectedProductId)) {
+
+                                                                                                                                                      if (isset($_POST['couponSubmit'])) {
+                                                                                                                                                        echo $productPrice - ($productPrice * (($couponDiscount)));
+                                                                                                                                                      } else {
+                                                                                                                                                        echo $productPrice;
+                                                                                                                                                      }
                                                                                                                                                     } else {
-                                                                                                                                                      echo $discount;
+                                                                                                                                                      if (isset($_POST['couponSubmit'])) {
+                                                                                                                                                        echo $discount - (($discount * $couponDiscount));
+                                                                                                                                                      } else {
+                                                                                                                                                        echo $discount;
+                                                                                                                                                      }
                                                                                                                                                     } ?>" />
           </div>
         </div>

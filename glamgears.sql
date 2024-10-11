@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 02, 2024 at 04:57 PM
+-- Generation Time: Oct 11, 2024 at 05:19 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -201,7 +201,11 @@ INSERT INTO `orders` (`order_id`, `tracking_no`, `user_id`, `confirmation`, `fna
 (2, 89074, 1, 'Pending', 'aathi', 'velu', 'aathi@gmail.com', '446e,valluvar nagar, kovilpatti', 'TN', 'Tuticorin', 628501, 2147483647, 315, '', 'COD', '2024-08-27 03:37:48', '2024-10-01 04:08:14'),
 (3, 89074, 52895, 'Pending', 'aathi', 'velu', 'aathi@gmail.com', '446e,valluvar nagar, kovilpatti', 'TN', 'Tuticorin', 628501, 2147483647, 605, '', 'COD', '2024-08-27 05:00:38', '2024-09-15 14:46:26'),
 (55, 84200, 2, 'Pending', 'Karthi', 'kannan', 'manna@gmail.com', '446e,valluvar nagar, kovilpatti', '', 'Tuticorin', 628501, 2147483647, 4199, '', 'COD', '2024-10-02 14:23:50', '2024-10-02 14:23:50'),
-(56, 85604, 1, 'Pending', 'Karthi', 'kannan', 'manna@gmail.com', '446e,valluvar nagar, kovilpatti', '', 'Tuticorin', 628501, 2147483647, 56260, '', 'card', '2024-10-02 14:53:50', '2024-10-02 14:53:50');
+(56, 85604, 1, 'Pending', 'Karthi', 'kannan', 'manna@gmail.com', '446e,valluvar nagar, kovilpatti', '', 'Tuticorin', 628501, 2147483647, 56260, '', 'card', '2024-10-02 14:53:50', '2024-10-02 14:53:50'),
+(57, 88011, 2, 'Pending', 'Karthi', 'kannan', 'manna@gmail.com', '446e,valluvar nagar, kovilpatti', 'ML', 'Tuticorin', 628501, 2147483647, 329, '', 'COD', '2024-10-11 14:32:58', '2024-10-11 14:32:58'),
+(58, 99459, 2, 'Pending', 'Karthi', 'kannan', 'manna@gmail.com', '446e,valluvar nagar, kovilpatti', 'TN', 'Tuticorin', 628501, 2147483647, 207, 'MEGAOFF20', 'card', '2024-10-11 14:36:51', '2024-10-11 14:36:51'),
+(59, 86400, 4, 'Pending', 'aathi', 'velu', 'aathi@gmail.com', '446e,valluvar nagar, kovilpatti', 'AN', 'Tuticorin', 628501, 2147483647, 3362, '', 'COD', '2024-10-11 15:03:37', '2024-10-11 15:03:37'),
+(61, 95539, 4, 'Pending', 'Karthi', 'kannan', 'manna@gmail.com', '446e,valluvar nagar, kovilpatti', 'TN', 'Tuticorin', 628501, 2147483647, 594, '', 'COD', '2024-10-11 15:07:49', '2024-10-11 15:07:49');
 
 -- --------------------------------------------------------
 
@@ -232,7 +236,12 @@ INSERT INTO `order_items` (`order_item_id`, `product_id`, `order_id`, `quantity`
 (58, 57705, 55, 1, 354, 'PowerSurge high-capacity power', 'Pending', '2024-10-02 14:23:50'),
 (59, 54522, 55, 1, 3025, 'Crazy Wheels for PS5', 'completed', '2024-10-02 14:23:50'),
 (60, 72211, 56, 2, 35000, 'Smart Android Television Genz', 'Pending', '2024-10-02 14:53:50'),
-(61, 54522, 56, 3, 3025, 'Crazy Wheels for PS5', 'Pending', '2024-10-02 14:53:50');
+(61, 54522, 56, 3, 3025, 'Crazy Wheels for PS5', 'Pending', '2024-10-02 14:53:50'),
+(62, 94083, 57, 1, 365, 'Vehicle @MOBILE HOLDER 2xx', 'Pending', '2024-10-11 14:32:58'),
+(63, 57705, 58, 1, 354, 'PowerSurge high-capacity power', 'Pending', '2024-10-11 14:36:51'),
+(64, 94083, 59, 3, 365, 'Vehicle @MOBILE HOLDER 2xx', 'completed', '2024-10-11 15:03:37'),
+(65, 87002, 59, 4, 699, 'Smart watch 121z ', 'Pending', '2024-10-11 15:03:37'),
+(67, 87002, 61, 1, 699, 'Smart watch 121z ', 'Pending', '2024-10-11 15:07:49');
 
 -- --------------------------------------------------------
 
@@ -258,7 +267,8 @@ INSERT INTO `payments` (`id`, `track_id`, `cardnumber`, `cardname`, `expire_date
 (2, 94384, 2147483647, 'efwefce', '2024-10-24', '2024-10-01 05:33:52'),
 (3, 91493, 0, '', '0000-00-00', '2024-10-01 06:46:08'),
 (4, 83060, 2147483647, 'efwefce', '2024-10-24', '2024-10-01 06:55:34'),
-(5, 85604, 2147483647, 'wefefewfwef', '2024-10-11', '2024-10-02 14:53:50');
+(5, 85604, 2147483647, 'wefefewfwef', '2024-10-11', '2024-10-02 14:53:50'),
+(6, 99459, 2147483647, 'efwefce', '2024-10-31', '2024-10-11 14:36:51');
 
 -- --------------------------------------------------------
 
@@ -290,12 +300,12 @@ CREATE TABLE `products` (
 
 INSERT INTO `products` (`id`, `product_id`, `product_name`, `product_description`, `product_price`, `discount_percent`, `product_quantity`, `category_name`, `brand_name`, `product_status`, `merchant_id`, `main_image_name`, `is_featured`, `created_at`, `updated_at`) VALUES
 (1, 76227, 'AirHead Ultimate 131Hz DeadHeardZ', 'Headphones are electronic audio device that people wear over their ears. They let people hear sounds on a walkman, MP3 player, mobile phone or computer.                             ', 845.00, 0.40, 93, 'Headphone', 'Oppo', 'active', 10031, 'Blackhead1.png', '1', '2024-09-30 16:33:21', '2024-08-11 15:05:38'),
-(2, 32523, 'X Gamer Game Console ', 'CPU: Handles game logic and calculations.   \r\nGPU: Renders graphics and visuals for the game.\r\nMemory: Stores game data, system software, and temporary information.\r\nStorage: Holds game installations and saved data (internal or external).\r\nInput devices: Controllers for player interaction.   \r\nOutput devices: Connect to a television or monitor to display the game.                            ', 350.00, 0.30, 36, 'Joystick', 'Sony', 'active', 10031, 'joystick1.png', '1', '2024-10-01 06:44:59', '2024-08-12 04:57:07'),
+(2, 32523, 'X Gamer Game Console ', 'CPU: Handles game logic and calculations.   \r\nGPU: Renders graphics and visuals for the game.\r\nMemory: Stores game data, system software, and temporary information.\r\nStorage: Holds game installations and saved data (internal or external).\r\nInput devices: Controllers for player interaction.   \r\nOutput devices: Connect to a television or monitor to display the game.                            ', 350.00, 0.30, 35, 'Joystick', 'Sony', 'active', 10031, 'joystick1.png', '1', '2024-10-11 15:04:49', '2024-08-12 04:57:07'),
 (3, 72211, 'Smart Android Television Genz', 'Smart TVs: Internet-connected TVs offering streaming services and apps.   \r\n4K and 8K resolution: Higher pixel counts for sharper images.   \r\nHDR (High Dynamic Range): Improved contrast and color for a more realistic picture.   \r\nTelevision has evolved from a simple entertainment device to a multimedia hub, offering a wide range of content and interactive features.Type the description', 35000.00, 0.30, 29, 'Television', 'Samsung', 'active', 10031, 'TV3.png', '1', '2024-09-30 16:39:06', '2024-08-12 07:37:51'),
-(4, 57705, 'PowerSurge high-capacity power', 'Conversion: Translates data or signals from one format to another.   \r\nCompatibility: Ensures seamless operation between different devices or systems.   \r\nInterface: Provides a connection point for two or more components.\r\nIn essence, an adapter is a versatile tool that facilitates connectivity and interoperability in the world of technology.', 354.00, 0.27, 100, 'Charger', 'Nokia', 'active', 52895, 'adapter1.png', '1', '2024-09-30 14:22:10', '2024-08-12 15:04:59'),
+(4, 57705, 'PowerSurge high-capacity power', 'Conversion: Translates data or signals from one format to another.   \r\nCompatibility: Ensures seamless operation between different devices or systems.   \r\nInterface: Provides a connection point for two or more components.\r\nIn essence, an adapter is a versatile tool that facilitates connectivity and interoperability in the world of technology.', 354.00, 0.27, 99, 'Charger', 'Nokia', 'active', 52895, 'adapter1.png', '1', '2024-10-11 14:36:51', '2024-08-12 15:04:59'),
 (5, 54522, 'Crazy Wheels for PS5', 'Smartwatches have revolutionized the way we interact with technology. Once limited to displaying time and date, these wearable devices have evolved into sophisticated companions that track fitness goals', 3025.00, 0.20, 33, 'console', 'Sony', 'active', 45291, 'Carconsole1.png', '1', '2024-10-02 14:53:50', '2024-08-16 15:47:15'),
-(6, 94083, 'Vehicle @MOBILE HOLDER 2xx', 'smartwatches have become indispensable for many. As technology continues to advance, we can expect even more innovative features and functionalities to emerge in the smartwatch market.', 365.00, 0.10, 6, 'accessories', 'Nokia', 'active', 45291, 'mobilestand1.png', '1', '2024-10-01 06:55:34', '2024-08-16 15:49:44'),
-(8, 87002, 'Smart watch 121z ', 'Smartwatches are more than just timekeepers; they\'re compact computers that fit on your wrist', 699.00, 0.15, 50, 'smart watch', 'Oppo', 'active', 52895, 'whitewatch1.png', '1', '2024-09-30 14:22:10', '2024-08-27 04:32:49');
+(6, 94083, 'Vehicle @MOBILE HOLDER 2xx', 'smartwatches have become indispensable for many. As technology continues to advance, we can expect even more innovative features and functionalities to emerge in the smartwatch market.', 365.00, 0.10, 5, 'accessories', 'Nokia', 'active', 45291, 'mobilestand1.png', '1', '2024-10-11 14:32:58', '2024-08-16 15:49:44'),
+(8, 87002, 'Smart watch 121z ', 'Smartwatches are more than just timekeepers; they\'re compact computers that fit on your wrist', 699.00, 0.15, 45, 'smart watch', 'Oppo', 'active', 52895, 'whitewatch1.png', '1', '2024-10-11 15:07:49', '2024-08-27 04:32:49');
 
 -- --------------------------------------------------------
 
@@ -374,7 +384,9 @@ INSERT INTO `wishlist` (`wishlist_id`, `user_id`, `product_id`, `added_on`) VALU
 (8, 10031, 32523, '2024-08-13 07:00:21'),
 (9, 1, 76227, '2024-09-14 08:05:02'),
 (10, 1, 32523, '2024-09-14 08:06:03'),
-(11, 2, 54522, '2024-09-30 14:31:10');
+(11, 2, 54522, '2024-09-30 14:31:10'),
+(12, 4, 32523, '2024-10-11 15:09:35'),
+(13, 4, 72211, '2024-10-11 15:09:41');
 
 --
 -- Indexes for dumped tables
@@ -472,7 +484,7 @@ ALTER TABLE `blogs`
 -- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
+  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
 
 --
 -- AUTO_INCREMENT for table `contacts_queries`
@@ -502,19 +514,19 @@ ALTER TABLE `newsletter`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `order_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
+  MODIFY `order_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
 
 --
 -- AUTO_INCREMENT for table `payments`
 --
 ALTER TABLE `payments`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `products`
@@ -538,7 +550,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `wishlist`
 --
 ALTER TABLE `wishlist`
-  MODIFY `wishlist_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `wishlist_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -99,7 +99,7 @@ include_once('./header.php');
             </div>
 
             <div class="row d-flex justify-content-center mt-3">
-                <div class="col-6 ">
+                <div class="col-10 col-md-6 ">
                     <button type="submit" name="registerSubmit" class="bte w-100">CREATE AN ACCOUNT</button>
                 </div>
             </div>

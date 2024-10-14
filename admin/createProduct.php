@@ -72,7 +72,7 @@ if ((isset(($_POST['productSubmit'])) && isset($_FILES['mainImage']) && $_FILES[
 
             if ($stmt1) {
                 // Bind parameters
-                $stmt1->bind_param("isssss",  $productId, $file1, $file2, $file3);
+                $stmt1->bind_param("isss",  $productId, $file1, $file2, $file3);
 
                 // Iterate over each file
 
@@ -114,26 +114,22 @@ if ((isset(($_POST['productSubmit'])) && isset($_FILES['mainImage']) && $_FILES[
                                 exit();
                             }
                         } else {
-                            echo "File is not uploaded";
+                            $errors = "File is not uploaded";
                         }
                     } else {
-                        echo "Your files are not allowed";
+                        $errors = "Only jpg, jpeg, png, gif files are allowed";
                     }
                 } else {
-                    echo "Error uploading file  : " . $fileerr1["error"] . "<br>";
+                    $errors = "Error uploading file  : " . $fileerr1["error"] . "<br>";
                 }
-
-
-
-                echo "Files uploaded successfully!";
             } else {
-                echo "Error preparing statement: " . $config->error;
+                $errors = "Error preparing statement: " . $config->error;
             }
         } else {
-            echo "File is not uploaded";
+            $errors = "File is not uploaded";
         }
     } else {
-        echo "Your files are not allowed";
+        $errors = "Your files are not allowed";
     }
 }
 
@@ -161,9 +157,9 @@ if ((isset(($_POST['productSubmit'])) && isset($_FILES['mainImage']) && $_FILES[
 
 <body>
     <section class=" container-fluid row  d-flex justify-content-center">
-        <div class="col-12">
+        <div class="col-12 pb-5">
             <div class="row d-flex justify-content-center vh-100 my-5">
-                <h3 style="color: #001e2f;" class=" display-6 fw-medium text-center">Product Upload</h3>
+                <h3 style="color: #001e2f;" class=" display-6 fw-medium text-center">Create Product</h3>
                 <form class="col-5" action="" method="post" enctype="multipart/form-data">
 
                     <?php
@@ -171,6 +167,12 @@ if ((isset(($_POST['productSubmit'])) && isset($_FILES['mainImage']) && $_FILES[
                         $msg = $_GET["message"];
                         echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
       ' . $msg . '
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>';
+                    }
+                    if ($errors != '') {
+                        echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+      ' . $errors . '
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>';
                     }
@@ -200,23 +202,45 @@ if ((isset(($_POST['productSubmit'])) && isset($_FILES['mainImage']) && $_FILES[
                     <div class="mb-3">
                         <label for="discount_percent"
                             class="form-label">Discount Percent</label>
-                        <input style="  border: 1px solid #001e2f; " type="number" placeholder="100.00" pattern="^\d+(?:\.\d{1,2})?$" max=" 100" class="form-control rounded-0" id="discount_percent" name="discount_percent" value="<?php if (isset($discountPercent)) {
-                                                                                                                                                                                                                                            echo $discountPercent;
-                                                                                                                                                                                                                                        } ?>" required>
+                        <input style="  border: 1px solid #001e2f; " type="number" placeholder="100%" pattern="^\d+(?:\.\d{1,2})?$" max=" 100" class="form-control rounded-0" id="discount_percent" name="discount_percent" value="<?php if (isset($discountPercent)) {
+                                                                                                                                                                                                                                        echo $discountPercent;
+                                                                                                                                                                                                                                    } ?>" required>
                     </div>
                     <div class="mb-3">
                         <label for="product_quantity" class="form-label">Product Quantity</label>
-                        <input style="  border: 1px solid #001e2f; " type="number" placeholder="100" max="100" class="form-control rounded-0" id="product_quantity" name="product_quantity" value="<?php if (isset($productQuantity)) {
-                                                                                                                                                                                                        echo $productQuantity;
-                                                                                                                                                                                                    } ?>" required>
+                        <input style="  border: 1px solid #001e2f; " type="number" placeholder="Max 100" max="100" class="form-control rounded-0" id="product_quantity" name="product_quantity" value="<?php if (isset($productQuantity)) {
+                                                                                                                                                                                                            echo $productQuantity;
+                                                                                                                                                                                                        } ?>" required>
                     </div>
                     <div class="mb-3">
-
                         <label for="category_name" class="form-label">Category Name</label>
-                        <input style="  border: 1px solid #001e2f; " type="text" placeholder="Category" class="form-control rounded-0" id="category_name"
-                            name="category_name" value="<?php if (isset($categoryName)) {
-                                                            echo $categoryName;
-                                                        } ?>" required>
+                        <select style="  border: 1px solid #001e2f; " class="form-select rounded-0" id="category_name" name="category_name" required>
+                            <option value="" selected disabled>Select Category</option>
+                            <option <?php if (isset($categoryName) && $categoryName == "televisions") {
+                                        echo "selected";
+                                    } ?> value="televisions">Televisions</option>
+                            <option <?php if (isset($categoryName) && $categoryName == "gaming") {
+                                        echo "selected";
+                                    } ?> value="gaming">Gaming</option>
+                            <option <?php if (isset($categoryName) && $categoryName == "smartPhones") {
+                                        echo "selected";
+                                    } ?> value="smartPhones">Computing</option>
+                            <option <?php if (isset($categoryName) && $categoryName == "tablets") {
+                                        echo "selected";
+                                    } ?> value="tablets">Tablets</option>
+                            <option <?php if (isset($categoryName) && $categoryName == "laptop") {
+                                        echo "selected";
+                                    } ?> value="laptop">Laptop</option>
+                            <option <?php if (isset($categoryName) && $categoryName == "mobile devices") {
+                                        echo "selected";
+                                    } ?> value="mobile devices">Mobile Devices</option>
+                            <option <?php if (isset($categoryName) && $categoryName == "computing") {
+                                        echo "selected";
+                                    } ?> value="computing">Computing</option>
+                            <option <?php if (isset($categoryName) && $categoryName == "home appliance") {
+                                        echo "selected";
+                                    } ?> value="home appliance">Home Appliances</option>
+                        </select>
                     </div>
                     <div class="mb-3">
                         <label for="brand_name"
@@ -228,11 +252,19 @@ if ((isset(($_POST['productSubmit'])) && isset($_FILES['mainImage']) && $_FILES[
                     <div class="mb-3">
                         <label for="is_featured"
                             class="form-label d-block">Allow Featured</label>
-                        <input type="checkbox" value="1" <?php (isset($isFeatured) == "1") ? "checked" : ""; ?> class="form-check-input rounded-0" id="yes_featured" name="is_featured">
+                        <input type="radio" value="1" <?php if (isset($isFeatured) == "1") {
+                                                            echo "checked";
+                                                        } else {
+                                                            echo "";
+                                                        } ?> class="form-check-input rounded-0" id="yes_featured" name="is_featured">
                         <label class="form-check-label me-4" for="yes_featured">
                             Yes
                         </label>
-                        <input type="checkbox" value="0" <?php (isset($isFeatured) == "0") ? "checked" : ""; ?> class="form-check-input rounded-0" id="no_featured" name="is_featured">
+                        <input type="radio" value="0" <?php if (isset($isFeatured) == "0") {
+                                                            echo "checked";
+                                                        } else {
+                                                            echo "";
+                                                        } ?> class="form-check-input rounded-0" id="no_featured" name="is_featured">
                         <label class="form-check-label" for="no_featured">
                             No
                         </label>
@@ -254,7 +286,7 @@ if ((isset(($_POST['productSubmit'])) && isset($_FILES['mainImage']) && $_FILES[
                         <input style="  border: 1px solid #001e2f; " type="file" class="form-control rounded-0" id="featured_image_three" name="featuredImage3" required>
                     </div>
 
-                    <div class="row d-flex justify-content-between mt-5 px-4">
+                    <div class="row d-flex justify-content-between my-5 px-4">
                         <a href="./dashboard.php" class="link-underline link-underline-opacity-0 btn btn-dark col-3 rounded-0"> Cancel</a>
                         <button type="submit" name="productSubmit" class="bte col-3">Create</button>
                     </div>

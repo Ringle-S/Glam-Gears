@@ -55,7 +55,7 @@
                     </ul>
 
                     <div class="d-flex gap-3 position-relative">
-                        <button id="searchBtn" class="w-100 bg-transparent border-0 p-0 ">
+                        <button id="searchBtn" class="w-100 bg-transparent d-none border-0 p-0 ">
                             <img class="img-fluid" src="./assets/icon/Search.svg" alt="searcico" />
                         </button>
                         <a class="d-lg-block d-none w-100" href="./wishlist.php">

@@ -22,10 +22,30 @@ if (isset($_POST['updateBlog'])) {
     $blogDescription = filter_var($_POST['blog_description'], FILTER_SANITIZE_STRING);
     $blogText = filter_var($_POST['blog_text'], FILTER_SANITIZE_STRING);
     $blogcategory = filter_var($_POST['category'], FILTER_SANITIZE_STRING);
-    $filename = $_POST['blogImage'];
+
+
+
+    $sql = "UPDATE blogs SET title = ?, blog_desc = ?, blog_text = ?, category = ? WHERE blog_id = ?";
+    include_once('./config.php');
+    $stmt = $config->prepare($sql);
+    $stmt->bind_param("sssss",  $blogName, $blogDescription, $blogText, $blogcategory, $id);
+
+    if ($stmt->execute()) {
+        $_SESSION['message'] = "Blog data updated successfully!";
+        header('Location: editblog.php?blogid=' . $id);
+        exit();
+    } else {
+        $errors = mysqli_error($config);
+        $_SESSION['message'] = "Error updating blog data:" . $stmt->error;
+        header('Location: editblog.php?blogid=' . $id);
+        exit();
+    }
+}
+
+if (isset($_POST['updateBlogImg'])) {
+
     if (isset($_FILES['blogImage']) && $_FILES['blogImage']['error'] == 0) {
-
-
+        $filename = $_POST['blogImage'];
 
         $fileName = $_FILES["blogImage"]["name"];
         $image_name = pathinfo($fileName, PATHINFO_FILENAME);
@@ -35,19 +55,19 @@ if (isset($_POST['updateBlog'])) {
         $targetPath = "../uploads/" . $fileName;
         if (in_array($image_extension, $allowedTypes)) {
             if (move_uploaded_file($tempName, $targetPath)) {
-                $sql = "UPDATE blogs SET title = ?, img_name = ?, blog_desc = ?, blog_text = ?, category = ? WHERE blog_id = ?";
+                $sql = "UPDATE blogs SET img_name = ? WHERE blog_id = ?";
                 include_once('./config.php');
                 $stmt = $config->prepare($sql);
-                $stmt->bind_param("ssssss",  $blogName, $fileName, $blogDescription, $blogText, $blogcategory, $id);
+                $stmt->bind_param("ss", $fileName, $id);
 
                 if ($stmt->execute()) {
-                    $_SESSION['message'] = "Blog created successfully!";
-                    header('Location: dashboard.php');
+                    $_SESSION['message'] = "Blog Image updated successfully!";
+                    header('Location: editblog.php?blogid=' . $id);
                     exit();
                 } else {
                     $errors = mysqli_error($config);
-                    $_SESSION['message'] = "Error inserting blog data:" . $stmt->error;
-                    header('Location: createblog.php');
+                    $_SESSION['message'] = "Error updating blog image :" . $stmt->error;
+                    header('Location: editblog.php?blogid=' . $id);
                     exit();
                 }
             } else {
@@ -60,8 +80,6 @@ if (isset($_POST['updateBlog'])) {
         $errors .= "Error uploading image.";
     }
 }
-
-
 
 ?>
 
@@ -101,10 +119,18 @@ if (isset($_POST['updateBlog'])) {
                 $result = mysqli_query($config, $sql);
                 $row = mysqli_fetch_assoc($result);
                 ?>
-                <div class="mb-3 d-flex flex-column align-items-center">
-                    <label for="blog_name" class="form-label text-center row ms-2">Old Image</label>
-                    <img width="200px" height="150px" src="../uploads/<?php echo $row["img_name"]; ?>" alt="">
+                <div class="img-container mb-4 d-flex flex-column justify-content-center align-items-center">
+                    <div class="mb-3 d-flex flex-column align-items-center">
+                        <label for="blog_name" class="form-label text-center row ms-2">Old Image</label>
+                        <img width="200px" height="150px" src="../uploads/<?php echo $row["img_name"]; ?>" alt="">
+                    </div>
+                    <div class="mb-3">
+
+                        <input style="  border: 1px solid #001e2f; " type="file" class="form-control rounded-0" id="blog_image" name="blogImage">
+                    </div>
+                    <button type="submit" name="updateBlogImg" class="bte col-3">Update Image</button>
                 </div>
+
                 <div class="mb-3">
                     <label for="blog_name" class="form-label">Blog Title</label>
                     <input style="  border: 1px solid #001e2f; " type="text" class="form-control rounded-0" id="blog_name" placeholder="Blog Name" name="blog_name" value="<?php echo $row["title"]; ?>" required>
@@ -121,10 +147,6 @@ if (isset($_POST['updateBlog'])) {
                 <div class="mb-3">
                     <label for="blog_category" class="form-label">Blog Category</label>
                     <input style="  border: 1px solid #001e2f; " type="text" class="form-control rounded-0" id="blog_description" placeholder="Blog category" name="category" value="<?php echo $row["category"]; ?>" required>
-                </div>
-                <div class="mb-3">
-                    <label for="blog_image" class="form-label">Blog Image</label>
-                    <input style="  border: 1px solid #001e2f; " type="file" class="form-control rounded-0" id="blog_image" name="blogImage">
                 </div>
 
                 <div class="row d-flex justify-content-between mt-5 px-4">

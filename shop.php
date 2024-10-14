@@ -51,7 +51,7 @@ include_once('./header.php');
   <div class="product-filter d-flex flex-column gap-3 col-12 col-lg-3 d-none d-lg-block">
     <?php
     require_once "./config.php";
-    $sql = " SELECT COUNT(*) AS total_rows FROM products WHERE product_status='active'";
+    $sql = " SELECT COUNT(*) AS total_rows FROM products WHERE product_status='active' AND product_quantity>0 AND is_featured=1";
     $stmt = $config->prepare($sql);
 
     $stmt->execute();

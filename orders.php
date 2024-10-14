@@ -43,14 +43,14 @@ include_once('./header.php');
     <div class="row">
         <?php
         require_once "./config.php";
-        $sql = " SELECT COUNT(*) AS total_rows FROM orders   WHERE `user_id` = ?";
+        $sql = "SELECT COUNT(*) AS total_ordered_items FROM order_items JOIN orders ON order_items.order_id = orders.order_id WHERE orders.user_id = ?";
         $stmt = $config->prepare($sql);
         $stmt->bind_param("s", $userId);
         $stmt->execute();
         $result = $stmt->get_result();
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
-            $totalRows = $row['total_rows'];
+            $totalRows = $row['total_ordered_items'];
         }
         ?>
         <h5>Orders (<?php echo $totalRows; ?> item)</h5>
@@ -83,7 +83,7 @@ include_once('./header.php');
                 <?php
                 include('./config.php');
 
-                $productSql = "SELECT *, CASE WHEN EXISTS ( SELECT 1 FROM order_items oi WHERE oi.order_id = o.order_id AND oi.order_status <> 'completed' ) THEN FALSE ELSE TRUE END AS all_items_completed FROM orders o JOIN order_items oi ON o.order_id = oi.order_id WHERE o.user_id= ? ORDER BY oi.ordered_at     DESC";
+                $productSql = "SELECT * FROM order_items oi INNER JOIN products p ON oi.product_id = p.product_id JOIN orders o ON o.order_id =oi.order_id  WHERE o.user_id = ? GROUP BY oi.order_item_id ORDER BY oi.ordered_at DESC";
                 $productStmt = $config->prepare($productSql);
                 $productStmt->bind_param("i", $userId);
                 $productStmt->execute();
@@ -114,7 +114,7 @@ include_once('./header.php');
                             </div>
                             <div class="col-12 col-lg-1 d-flex d-lg-block align-items-center ">
                                 <p class="mb-0 text-start d-lg-none">Amount:</p>
-                                <p class="mb-0 fw-medium text-dark ms-2 ms-lg-0 text-center"><?php echo $productRow['price'];  ?></p>
+                                <p class="mb-0 fw-medium text-dark ms-2 ms-lg-0 text-center"><?php echo ($productRow['price'] * (1 - $productRow['discount_percent'])) * $productRow['quantity'];  ?></p>
                             </div>
                             <div class="col-12 col-lg-2 d-flex d-lg-block align-items-center ">
                                 <p class="mb-0 text-start d-lg-none">Ordered at:</p>
@@ -126,7 +126,7 @@ include_once('./header.php');
                             </div>
                             <div class="col-12 col-lg-2 d-flex d-lg-block align-items-center ">
                                 <p class="mb-0 text-start d-lg-none">Status:</p>
-                                <p class="mb-0 fw-medium text-dark ms-2 ms-lg-0 text-center py-lg-3 <?php if ($productRow['order_status'] == "completed") {
+                                <p class="mb-0 fw-medium text-dark ms-2 ms-lg-0 text-center py-lg-3 <?php if ($productRow['order_status'] == "Completed") {
                                                                                                         echo "text-bg-success text-white";
                                                                                                     } else {
                                                                                                         echo "text-bg-warning";

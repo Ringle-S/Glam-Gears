@@ -7,6 +7,15 @@ if (isset($_SESSION['user'])) {
   // echo $userId;
 }
 
+// buy now
+if (isset($_POST['buyNow'])) {
+  $productid = $_GET["productID"];
+  $quantity = $_POST['quantity'];
+  header('Location: ./shipping.php?product_id=' . $productid . '&quantity=' . $quantity);
+}
+
+
+
 // add to cart
 
 if (isset($_POST['addcart'])) {
@@ -234,7 +243,7 @@ include_once('./header.php');
         Stock: <span style="<?php if ($productQuantity == 0) {
                               echo 'color: red ';
                             } else {
-                              echo "color: #f79e1b ";
+                              echo "color: green ";
                             } ?>"> <?php if ($productQuantity == 0) {
                                       echo 'Out of stock';
                                     } else {
@@ -247,21 +256,41 @@ include_once('./header.php');
       <div class="product-btn mt-5">
         <form action="" method="post">
           <div class="row d-flex align-items-center">
-            <div class="col-3">
+            <div class="col-3  ">
               <div style="border: 1px solid #0f6290" class="quantityContainer d-flex justify-content-between px-3 py-2">
-                <i onclick="decrement()" class="bi bi-dash-lg" style="color: #0f6290; cursor: pointer"></i>
-                <input id="counter" class="bg-transparent border-0 w-50 text-center" style="color: #0f6290" type="number" name="quantity" value="1" />
+                <i <?php if ($productQuantity != 0) {
+                      echo ' ';
+                    } else {
+                      echo "disabled";
+                    } ?> onclick="decrement()" class="bi bi-dash-lg" style="color: #0f6290; cursor: pointer"></i>
+                <input <?php if ($productQuantity != 0) {
+                          echo ' ';
+                        } else {
+                          echo "disabled";
+                        } ?> id="counter" class="bg-transparent border-0 w-50 text-center" style="color: #0f6290" type="number" name="quantity" value="1" />
 
-                <i onclick="increment()" class="bi bi-plus-lg" style="color: #0f6290; cursor: pointer"></i>
+                <i <?php if ($productQuantity != 0) {
+                      echo ' ';
+                    } else {
+                      echo "disabled";
+                    } ?> onclick="increment()" class="bi bi-plus-lg" style="color: #0f6290; cursor: pointer"></i>
               </div>
             </div>
             <div class="col-9">
-              <button type="submit" name="addcart" class="bte link-underline link-underline-opacity-0 w-100 py-4">ADD TO CART</button>
+              <button <?php if ($productQuantity != 0) {
+                        echo ' ';
+                      } else {
+                        echo "disabled";
+                      } ?> type="submit" name="addcart" class="bte link-underline link-underline-opacity-0 w-100 py-4">ADD TO CART</button>
             </div>
           </div>
           <div class="row mt-4 d-flex align-items-center">
-            <div class="col-11">
-              <a href="./shipping.php?product_id=<?php echo $productid ?>" style="border: 1px soild #0f6290" class="bto bg-transparent link-underline link-underline-opacity-0 w-100 py-4">BUY NOW</a>
+            <div class="col-11 ">
+              <button <?php if ($productQuantity != 0) {
+                        echo ' ';
+                      } else {
+                        echo "disabled";
+                      } ?> type="submit" name="buyNow" style="border: 1px soild #0f6290" class=" bto bg-transparent link-underline link-underline-opacity-0 w-100 py-4">BUY NOW</button>
             </div>
             <div class="col-1 p-0">
               <button type="submit" name="addWish" class="bto w-100 py-4"><i class="bi bi-heart"></i></button>
@@ -345,7 +374,19 @@ include_once('./header.php');
                 <p style="height: 35px; overflow: hidden;" class="fw-medium fs-5 text-black"><?php echo $row['product_name']; ?></p>
               </div>
               <div class="row">
-                <h5 style="color: #0f6290;" class=" fs-3">&#8377;<?php echo $row['product_price'] * (1 - $row['discount_percent']); ?> <del class="text-black ms-3 fs-5">&#8377;<?php echo $row['product_price']; ?></del></h5>
+                <h5 style="color: <?php if ($row['product_quantity'] != 0) {
+                                    echo '#0f6290';
+                                  } else {
+                                    echo "red";
+                                  } ?>" class=" fs-3"> <?php if ($row['product_quantity'] != 0) {
+                                                          echo '&#8377;';
+                                                        } else {
+                                                          echo "";
+                                                        } ?><?php if ($row['product_quantity'] != 0) {
+                                                              echo $row['product_price'] * (1 - $row['discount_percent']);
+                                                            } else {
+                                                              echo "Out of stock";
+                                                            } ?> <del class="text-black ms-3 fs-5">&#8377;<?php echo $row['product_price']; ?></del></h5>
               </div>
               <div class="row">
                 <p style="height: 50px; overflow: hidden;" class="productDesc text-secondary">

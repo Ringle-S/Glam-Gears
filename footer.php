@@ -105,12 +105,65 @@ use PHPMailer\PHPMailer\Exception;
                         //Recipients
                         $mail->setFrom('starkringle@gmail.com', 'Glam Gears');
                         $mail->addAddress($smail, 'subscriber');                    //Add a recipient
-                        $mail->addAttachment('./assets/img/Thank-you.png', 'image.png');
+
 
                         //Content
                         $mail->isHTML(true);                                        //Set email format to HTML
                         $mail->Subject = 'Subscribed For Glam Gears';
-                        $mail->Body    = '<h3>You will receive an newsletters</h3>';
+                        $mail->Body    = '<!DOCTYPE html>
+<html>
+<head>
+<title>Thank You for Subscribing</title>
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+h1 {
+    text-align: center;
+    color: #0f6290;
+}
+
+p {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+button {
+    display: block;
+    margin: 0 auto;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+
+    cursor: pointer;
+}
+</style>
+</head>
+<body>
+<div class="container"> 
+
+    <h1>THANK YOU FOR SUBSCRIBING</h1>
+
+    <p>Hi,</p>
+    <p>We are incredibly excited to have you here.</p>
+    <p>You have been added to our list and you will hear from us soon.</p>
+    
+</div>
+</body>
+</html>';
 
                         $mail->send();
                     } catch (Exception $e) {

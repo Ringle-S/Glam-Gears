@@ -291,7 +291,7 @@ if (!empty($userId)) {
                                                 </div>
                                                 <div class="col-6 d-flex flex-column justify-content-center align-items-center gap-2 py-5">
                                                     <p class="mb-0 fs-4">Income</p>
-                                                    <h5 class="fs-3 fw-medium">&#8377;<?php echo $amount; ?></h5>
+                                                    <h5 class="fs-3 fw-medium">&#8377;<?php echo number_format($amount, 0); ?></h5>
                                                 </div>
                                             </div>
                                         </div>
@@ -304,13 +304,13 @@ if (!empty($userId)) {
                                 <div class="col-12">
                                     <h5 class="mb-0 mt-4">Your Product</h5>
                                     <div class="row  ">
-                                        <div class="row g-3 d-flex  w-100 gap-2 overflow-x-scroll">
+                                        <div class=" d-flex overflow-x-scroll">
                                             <?php
                                             $sql = "SELECT * FROM products WHERE merchant_id=$userId AND product_status='active';";
                                             $result = mysqli_query($config, $sql);
                                             while ($row = mysqli_fetch_array($result)) {
                                             ?>
-                                                <form method="post" class=" col-3  mt-0">
+                                                <form method="post" class=" col-3 px-2 py-3 mt-0">
                                                     <a href="./editproduct.php?id=<?php echo $row['product_id']; ?>" class="link-underline d-flex flex-column gap-1 justify-content-center link-underline-opacity-0 card-seller">
                                                         <div class="row">
                                                             <img height="220px" class=" object-fit-cover" src="../uploads/<?php echo $row['main_image_name'] ?>" alt="" />
@@ -597,7 +597,7 @@ if (!empty($userId)) {
                                                 </div>
                                                 <div class="col-12 col-lg-1 d-flex d-lg-block align-items-center ">
                                                     <p class="mb-0 text-start d-lg-none">Amount:</p>
-                                                    <p class="mb-0 fw-medium text-dark ms-2 ms-lg-0 text-center"><?php echo $productRow['price'];  ?></p>
+                                                    <p class="mb-0 fw-medium text-dark ms-2 ms-lg-0 text-center"><?php echo ($productRow['price'] * (1 - $productRow['discount_percent'])) * $productRow['quantity'];  ?></p>
                                                 </div>
                                                 <div class="col-12 col-lg-2 d-flex d-lg-block align-items-center ">
                                                     <p class="mb-0 text-start d-lg-none">Ordered at:</p>
@@ -609,7 +609,7 @@ if (!empty($userId)) {
                                                 </div>
                                                 <div class="col-12 col-lg-2 d-flex d-lg-flex justify-content-center align-items-center ">
                                                     <p class="mb-0 text-start d-lg-none">Status:</p>
-                                                    <p class="mb-0 fw-medium text-dark ms-2 w-50 ms-lg-0 text-center py-lg-2 <?php if ($productRow['order_status'] == "completed") {
+                                                    <p class="mb-0 fw-medium text-dark ms-2 w-50 ms-lg-0 text-center py-lg-2 <?php if ($productRow['order_status'] == "Completed") {
                                                                                                                                     echo "text-bg-success text-white";
                                                                                                                                 } else {
                                                                                                                                     echo "text-bg-warning";
@@ -618,7 +618,7 @@ if (!empty($userId)) {
                                                 <div class="col-12 col-lg-2 d-flex d-lg-block align-items-center justify-content-center">
                                                     <div class="row">
                                                         <div class="col-12 d-flex justify-content-center">
-                                                            <?php if ($productRow['order_status'] == "completed") {
+                                                            <?php if ($productRow['order_status'] == "Completed") {
                                                                 echo "<a class='link-underline link-underline-opacity-0 text-white btn btn-danger w-100' href='./denyorder.php?trackno=" . $productRow['order_item_id'] . " '>Deny</a>";
                                                             } else {
                                                                 echo "<a class='link-underline link-underline-opacity-0 text-white btn btn-success w-100' href='./confirmorder.php?trackno=" . $productRow['order_item_id'] . " '>Confirm</a>";
@@ -769,7 +769,7 @@ if (!empty($userId)) {
                         <h3 class="mb-3">Your blogs</h3>
                         <?php
                         require_once "../config.php";
-                        $sql = " SELECT COUNT(*) AS total_rows FROM blogs  WHERE `user_id` = ?";
+                        $sql = " SELECT COUNT(*) AS total_rows FROM blogs WHERE `user_id` = ? AND `status`='active'";
                         $stmt = $config->prepare($sql);
                         $stmt->bind_param("s", $userId);
                         $stmt->execute();
@@ -961,7 +961,10 @@ if (!empty($userId)) {
                 <!-- Admin dash -->
                 <div id="dashAdmin" style="background-color: #F5F5F5;" class="displayDash col-12 px-5 pb-2 h-auto  d-none">
                     <div class="row mt-5">
-                        <h3 class="mb-3">Merchants list</h3>
+                        <div class="d-flex align-items-center justify-content-between">
+                            <h3 class="mb-3">Admin list</h3>
+                            <a href="./createAdmin.php" style="background-color: #0f6290;" class="link-underline link-underline-opacity-0 border-0 fs-5 fw-medium py-2 px-3 text-white">New Admin</a>
+                        </div>
                         <?php
                         require_once "../config.php";
                         $sql = " SELECT COUNT(*) AS total_rows FROM merchants WHERE merchant_id !=$userId AND merchant_status='1'";
@@ -1079,13 +1082,14 @@ if (!empty($userId)) {
                             while ($row = $result->fetch_assoc()) {
 
                                 $name = $row['contact_name'];
+                                $email = $row['contact_email'];
                                 $message = $row['contact_message'];
                         ?>
                                 <div class=" py-4 bg-body-secondary my-3">
 
                                     <div class="d-flex align-items-center gap-3 py-2">
                                         <img src="../assets/icon/Avatar.svg" alt="" />
-                                        <p class="mb-0 "><?php echo $name ?></p>
+                                        <p class="mb-0 "><?php echo $email ?></p>
                                     </div>
                                     <p class="mt-2"><?php echo $message ?></p>
                                     <div class="row d-flex justify-content-end px-3">

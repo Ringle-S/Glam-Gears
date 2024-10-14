@@ -29,7 +29,7 @@ if (isset($_POST['addcart'])) {
 include('./config.php');
 
 if (isset($_POST["action"])) {
-  $query = "SELECT * FROM products WHERE product_status = 'active'";
+  $query = "SELECT * FROM products WHERE product_status = 'active' AND product_quantity > 0 AND is_featured=1 ";
   if (isset($_POST["minimum_price"], $_POST["maximum_price"]) && !empty($_POST["minimum_price"]) && !empty($_POST["maximum_price"])) {
     $query .= "AND product_price BETWEEN '" . $_POST["minimum_price"] . "' AND '" . $_POST["maximum_price"] . "'";
   }

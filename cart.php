@@ -117,7 +117,7 @@ include_once('./header.php');
                 </div>
               </div>
               <div class="col-12 col-lg-1">
-                <div class="d-flex align-items-center justify-content-between justify-content-lg-center">
+                <div class="d-flex align-items-center justify-content-between justify-content-lg-center gap-5 gap-md-0">
                   <p class="mb-0 d-lg-none">QUANTITY:</p>
                   <div style="border: 1px solid #0f6290" class="quantityContainer d-flex justify-content-between px-3 py-2">
                     <i class="cartItemDecre bi bi-dash-lg" style="color: #0f6290; cursor: pointer"></i>
@@ -130,7 +130,7 @@ include_once('./header.php');
               <div class=" col-12 col-lg-2">
                 <div class="d-flex align-items-center justify-content-between justify-content-lg-center">
                   <p class="mb-0 d-lg-none">DISCOUNT:</p>
-                  <p class="mb-0 text-center"><?php echo $productRow['discountpercent'] * 100; ?></p>
+                  <p class="mb-0  ms-5 ms-lg-0 text-center"><?php echo $productRow['discountpercent'] * 100; ?></p>
                 </div>
               </div>
               <div class="col-12 col-lg-2">
@@ -151,12 +151,70 @@ include_once('./header.php');
           </div>';
         }
         ?>
-        <div class="row couponrow mt-5 d-flex justify-content-end">
-          <div class="col-12 col-lg-4">
-            <button type="submit" name="updatesubmit" class="bte fw-normal w-100">
-              UPDATE SUBMIT
-            </button>
-          </div>
+
+        <?php
+        include('./config.php');
+
+        $productSql = "SELECT SUM(products.product_price*products.discount_percent * cart.quantity) AS total_price FROM cart INNER JOIN products ON cart.product_id = products.product_id WHERE cart.user_id = ?";
+        $productStmt = $config->prepare($productSql);
+        $productStmt->bind_param("i", $userId);
+        $productStmt->execute();
+        $productResult = $productStmt->get_result();
+
+        if ($productResult->num_rows > 0) {
+          $productRow = $productResult->fetch_assoc();
+          // $totalCart = round_to_2dp($productRow['total_price']);
+          $totalCart = round($productRow['total_price'], 2);
+          // echo $totalCart . "<br>";
+        }
+
+        $productStmt->close();
+
+        // 
+        $productSql = "SELECT SUM(products.product_price* cart.quantity) AS total_price FROM cart INNER JOIN products ON cart.product_id = products.product_id WHERE cart.user_id = ?";
+        $productStmt = $config->prepare($productSql);
+        $productStmt->bind_param("i", $userId);
+        $productStmt->execute();
+        $productResult = $productStmt->get_result();
+
+        if ($productResult->num_rows > 0) {
+          $productRow = $productResult->fetch_assoc();
+          // $totalCart = round_to_2dp($productRow['total_price']);
+          $subTotal = round($productRow['total_price'], 2);
+          // echo $totalCart . "<br>";
+        }
+
+        $productStmt->close();
+
+        // 
+        $productSql = "SELECT SUM(products.product_price* cart.quantity - products.product_price*products.discount_percent * cart.quantity) AS total_price1 FROM cart INNER JOIN products ON cart.product_id = products.product_id WHERE cart.user_id = ?";
+        $productStmt = $config->prepare($productSql);
+        $productStmt->bind_param("i", $userId);
+        $productStmt->execute();
+        $productResult = $productStmt->get_result();
+
+        if ($productResult->num_rows > 0) {
+          $productRow = $productResult->fetch_assoc();
+          // $totalCart = round_to_2dp($productRow['total_price']);
+          $disTotal = round($productRow['total_price1'], 2);
+          $discount = $subTotal - $disTotal;
+        }
+
+        $productStmt->close();
+
+
+
+        ?>
+        <?php
+        if ($totalCart > 0) {
+
+        ?>
+          <div class="row couponrow mt-5 d-flex justify-content-end">
+            <div class="col-12 col-lg-4">
+              <button type="submit" name="updatesubmit" class="bte fw-normal w-100">
+                UPDATE SUBMIT
+              </button>
+            </div>
       </form>
     </div>
   </div>
@@ -167,100 +225,43 @@ include_once('./header.php');
 <div class="totalamount-cart mt-5">
   <div class="row d-flex justify-content-end">
 
-    <?php
-    include('./config.php');
-
-    $productSql = "SELECT SUM(products.product_price*products.discount_percent * cart.quantity) AS total_price FROM cart INNER JOIN products ON cart.product_id = products.product_id WHERE cart.user_id = ?";
-    $productStmt = $config->prepare($productSql);
-    $productStmt->bind_param("i", $userId);
-    $productStmt->execute();
-    $productResult = $productStmt->get_result();
-
-    if ($productResult->num_rows > 0) {
-      $productRow = $productResult->fetch_assoc();
-      // $totalCart = round_to_2dp($productRow['total_price']);
-      $totalCart = round($productRow['total_price'], 2);
-      // echo $totalCart . "<br>";
-    }
-
-    $productStmt->close();
-
-    // 
-    $productSql = "SELECT SUM(products.product_price* cart.quantity) AS total_price FROM cart INNER JOIN products ON cart.product_id = products.product_id WHERE cart.user_id = ?";
-    $productStmt = $config->prepare($productSql);
-    $productStmt->bind_param("i", $userId);
-    $productStmt->execute();
-    $productResult = $productStmt->get_result();
-
-    if ($productResult->num_rows > 0) {
-      $productRow = $productResult->fetch_assoc();
-      // $totalCart = round_to_2dp($productRow['total_price']);
-      $subTotal = round($productRow['total_price'], 2);
-      // echo $totalCart . "<br>";
-    }
-
-    $productStmt->close();
-
-    // 
-    $productSql = "SELECT SUM(products.product_price* cart.quantity - products.product_price*products.discount_percent * cart.quantity) AS total_price1 FROM cart INNER JOIN products ON cart.product_id = products.product_id WHERE cart.user_id = ?";
-    $productStmt = $config->prepare($productSql);
-    $productStmt->bind_param("i", $userId);
-    $productStmt->execute();
-    $productResult = $productStmt->get_result();
-
-    if ($productResult->num_rows > 0) {
-      $productRow = $productResult->fetch_assoc();
-      // $totalCart = round_to_2dp($productRow['total_price']);
-      $disTotal = round($productRow['total_price1'], 2);
-      $discount = $subTotal - $disTotal;
-    }
-
-    $productStmt->close();
-
-
-
-    ?>
-    <?php
-    if ($totalCart > 0) {
-
-    ?>
-      <div style="background-color: #001e2f" class="amountCard col-lg-4 col-12 text-white p-3 p-md-5">
-        <h4>Cart totals</h4>
-        <form action="" method="post">
-          <div class="row mt-3">
-            <div class="d-flex justify-content-between align-items-center">
-              <p class="mb-0">Subtotal</p>
-              <div class=" d-flex align-items-center w-25">
-                &#8377;<input type="number" class="form-control bg-transparent border-0 text-white text-end" value="<?php echo $subTotal; ?>" />
-              </div>
-            </div>
-            <div class="d-flex justify-content-between align-items-center">
-              <p class="mb-0">Discount</p>
-              <div class=" d-flex align-items-center w-25">
-                &#8377;<input type="number" class="form-control bg-transparent border-0 text-white text-end" value="<?php echo $totalCart; ?>" />
-              </div>
-            </div>
-            <div class="d-flex justify-content-between align-items-center">
-              <p class="mb-0">Total Amount</p>
-              <div class=" d-flex align-items-center w-25">
-                &#8377;<input type="number" class="form-control bg-transparent border-0 text-white text-end" value="<?php echo $disTotal; ?>" />
-              </div>
+    <div style="background-color: #001e2f" class="amountCard col-lg-4 col-12 text-white p-3 p-md-5">
+      <h4>Cart totals</h4>
+      <form action="" method="post">
+        <div class="row mt-3">
+          <div class="d-flex justify-content-between align-items-center">
+            <p class="mb-0">Subtotal</p>
+            <div class=" d-flex align-items-center w-25 px-0">
+              &#8377;<input type="number" class="form-control p-0 bg-transparent border-0 text-white text-end" value="<?php echo $subTotal; ?>" />
             </div>
           </div>
-
-          <div class="col-12 mt-4 d-flex justify-content-center">
-
-
-
-            <a href="./shipping.php" class="border bg-transparent py-2 border-1 border-light text-light link-underline text-center link-underline-opacity-0 w-100">PROCEED TO CHECKOUT</a>
-
-
+          <div class="d-flex justify-content-between align-items-center">
+            <p class="mb-0">Discount</p>
+            <div class=" d-flex align-items-center w-25 px-0">
+              &#8377;<input type="number" class="form-control p-0 bg-transparent border-0 text-white text-end" value="<?php echo $totalCart; ?>" />
+            </div>
           </div>
-        </form>
-      <?php
-    }
-      ?>
-      </div>
+          <div class="d-flex justify-content-between align-items-center">
+            <p class="mb-0">Total Amount</p>
+            <div class=" d-flex align-items-center w-25 px-0">
+              &#8377;<input type="number" class="form-control p-0 bg-transparent border-0 text-white text-end" value="<?php echo $disTotal; ?>" />
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 mt-4 d-flex justify-content-center">
+
+
+
+          <a href="./shipping.php" class="border bg-transparent py-2 border-1 border-light text-light link-underline text-center link-underline-opacity-0 w-100">PROCEED TO CHECKOUT</a>
+
+
+        </div>
+      </form>
+    <?php
+        }
+    ?>
+    </div>
   </div>
 </div>
 </div>

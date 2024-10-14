@@ -46,47 +46,46 @@ if (isset($_GET['id'])) {
     $errors = '';
     if (isset($_POST['updateProduct'])) {
 
+
         $productName = $_POST["product_name"];
+
         $productDescription = $_POST["product_description"];
+
         $productPrice = $_POST['product_price'];
+
         $discount = $_POST['discount_percent'];
+
         $discountPercent = intval($discount) / 100;
+
         $productQuantity = $_POST['product_quantity'];
+
         $categoryName = $_POST['category_name'];
+
         $brandName = $_POST['brand_name'];
+
         $isFeatured = $_POST['is_featured'];
 
-        // $target_dir = "C:\xampp\htdocs\GlamGears\assets\products";
-        $fileName = $_FILES["mainImage"]["name"];
-        $image_name = pathinfo($fileName, PATHINFO_FILENAME);
-        $image_extension = pathinfo($fileName, PATHINFO_EXTENSION);
-        $allowedTypes = array("jpg", "jpeg", "png", "gif");
-        $tempName = $_FILES["mainImage"]["tmp_name"];
-        $targetPath = "../uploads/" . $fileName;
-        if (in_array($image_extension, $allowedTypes)) {
-            if (move_uploaded_file($tempName, $targetPath)) {
-                $sql = "UPDATE `products` SET `product_name`='$productName',`product_description`='$productDescription',`product_price`='$productPrice',`discount_percent`='$discountPercent',`product_quantity`='$productQuantity',`category_name`='$categoryName',`brand_name`='$brandName',`main_image_name`='$fileName',`is_featured`='$isFeatured' WHERE `product_id` = $itemId";
-                include_once('./config.php');
-                $stmt = $config->prepare($sql);
 
-                // Assuming you have validated the input data and have values for each variable
+        $sql = "UPDATE `products` SET `product_name`='$productName',`product_description`='$productDescription',`product_price`='$productPrice',`discount_percent`='$discountPercent',`product_quantity`='$productQuantity',`category_name`='$categoryName',`brand_name`='$brandName',`is_featured`='$isFeatured' WHERE `product_id` = '$itemId'";
+        include_once('../config.php');
 
-                if ($stmt->execute()) {
-                    $_SESSION['message'] = "Product Updated successfully!";
-                    header('Location: dashboard.php');
-                    exit();
-                } else {
-                    $errors = mysqli_error($config);
-                    $_SESSION['message'] = "Error: " . $stmt->error;
-                    header('Location: editProduct.php');
-                    exit();
-                }
-            } else {
-                echo "File is not uploaded";
-            }
-        } else {
-            echo "Your files are not allowed";
+        $stmt = $config->prepare($sql);
+        if (!$stmt) {
+            throw new Exception("Failed to prepare statement: " . $config->error);
         }
+        // Assuming you have validated the input data and have values for each variable
+
+        if ($stmt->execute()) {
+            $_SESSION['message'] = "Product Updated successfully!";
+            header('Location: dashboard.php');
+            exit();
+        } else {
+            $errors = mysqli_error($config);
+            $_SESSION['message'] = "Error: " . $stmt->error;
+            header('Location: editProduct.php');
+            exit();
+        }
+
 
 
         // // Insert into database
@@ -100,6 +99,62 @@ if (isset($_GET['id'])) {
 
 
     // image featured
+
+    if (isset($_POST['MainImgSubmit1'])) {
+
+        if (!isset($_FILES['MainImage1'])) {
+            $_SESSION['message'] = "Please select Main images 1.";
+            header('Location: editProduct.php');
+            exit();
+        }
+        $mainerr1 = $_FILES["MainImage1"];
+        $main1 = $_FILES["MainImage1"]["name"];
+        $mainpicName1 = $_FILES["MainImage1"]["tmp_name"];
+
+
+
+        // echo $file;
+        $main_name1 = pathinfo($main1, PATHINFO_FILENAME);
+        $main_extension1 = pathinfo($main1, PATHINFO_EXTENSION);
+
+
+        $allowedTypes = array("jpg", "jpeg", "png", "gif");
+        $tempName1 = $_FILES["MainImage1"]["tmp_name"];
+
+
+
+        $targetPath1 = "../uploads/" . $main1;
+
+        if ($mainerr1["error"] === UPLOAD_ERR_OK) {
+            // Check if the file uploaded successfully
+            if (in_array($main_extension1, $allowedTypes)) {
+                if (move_uploaded_file($tempName1, $targetPath1)) {
+                    include_once('../config.php');
+                    $stmt = $config->prepare("UPDATE products SET  main_image_name=? WHERE product_id=?");
+                    $stmt->bind_param("si",  $main1, $id);
+
+                    if ($stmt->execute()) {
+                        $_SESSION['message'] = "Image uploaded successfully!";
+                        header('Location: dashboard.php');
+                        exit();
+                    } else {
+                        $errors = mysqli_error($config);
+                        $_SESSION['message'] = "Error inserting Image upload :" . $stmt->error;
+                        header('Location: editProduct.php');
+                        exit();
+                    }
+                } else {
+                    echo "File is not uploaded";
+                }
+            } else {
+                echo "Your files are not allowed";
+            }
+        } else {
+            echo "Error uploading file  : " . $mainerr1["error"] . "<br>";
+        }
+    }
+
+
     if (isset($_POST['productImgSubmit1'])) {
 
         if (!isset($_FILES['featuredImage1'])) {
@@ -345,12 +400,34 @@ if (isset($_GET['id'])) {
                                                                                                                                                                                                     } ?>" required>
                     </div>
                     <div class="mb-3">
-
                         <label for="category_name" class="form-label">Category Name</label>
-                        <input style="  border: 1px solid #001e2f; " type="text" placeholder="Category" class="form-control rounded-0" id="category_name"
-                            name="category_name" value="<?php if (isset($categoryName)) {
-                                                            echo $categoryName;
-                                                        } ?>" required>
+                        <select style="  border: 1px solid #001e2f; " class="form-select rounded-0" id="category_name" name="category_name" required>
+                            <option value="" selected disabled>Select Category</option>
+                            <option <?php if (isset($categoryName) && $categoryName == "televisions") {
+                                        echo "selected";
+                                    } ?> value="televisions">Televisions</option>
+                            <option <?php if (isset($categoryName) && $categoryName == "gaming") {
+                                        echo "selected";
+                                    } ?> value="gaming">Gaming</option>
+                            <option <?php if (isset($categoryName) && $categoryName == "smartPhones") {
+                                        echo "selected";
+                                    } ?> value="smartPhones">Computing</option>
+                            <option <?php if (isset($categoryName) && $categoryName == "tablets") {
+                                        echo "selected";
+                                    } ?> value="tablets">Tablets</option>
+                            <option <?php if (isset($categoryName) && $categoryName == "laptop") {
+                                        echo "selected";
+                                    } ?> value="laptop">Laptop</option>
+                            <option <?php if (isset($categoryName) && $categoryName == "mobile devices") {
+                                        echo "selected";
+                                    } ?> value="mobile devices">Mobile Devices</option>
+                            <option <?php if (isset($categoryName) && $categoryName == "computing") {
+                                        echo "selected";
+                                    } ?> value="computing">Computing</option>
+                            <option <?php if (isset($categoryName) && $categoryName == "home appliance") {
+                                        echo "selected";
+                                    } ?> value="home appliance">Home Appliances</option>
+                        </select>
                     </div>
                     <div class="mb-3">
                         <label for="brand_name"
@@ -362,23 +439,20 @@ if (isset($_GET['id'])) {
                     <div class="mb-3">
                         <label for="is_featured"
                             class="form-label d-block">Allow Featured</label>
-                        <input type="checkbox" value="1" <?php if ($isFeatured === "1") {
-                                                                echo "checked";
-                                                            }  ?> class="form-check-input rounded-0" id="yes_featured" name="is_featured">
+                        <input type="radio" value="1" <?php if ($isFeatured === "1") {
+                                                            echo "checked";
+                                                        }  ?> class="form-check-input rounded-0" id="yes_featured" name="is_featured">
                         <label class="form-check-label me-4" for="yes_featured">
                             Yes
                         </label>
-                        <input type="checkbox" value="0" <?php if ($isFeatured === "0") {
-                                                                echo "checked";
-                                                            } ?> class="form-check-input rounded-0" id="no_featured" name="is_featured">
+                        <input type="radio" value="0" <?php if ($isFeatured === "0") {
+                                                            echo "checked";
+                                                        } ?> class="form-check-input rounded-0" id="no_featured" name="is_featured">
                         <label class="form-check-label" for="no_featured">
                             No
                         </label>
                     </div>
-                    <div class="mb-3">
-                        <label for="main_image" class="form-label">Main Image</label>
-                        <input style="  border: 1px solid #001e2f; " type="file" class="form-control rounded-0" id="main_image" name="mainImage" required>
-                    </div>
+
                     <div class="row d-flex justify-content-between mt-5 px-4">
                         <a href="./dashboard.php" class="link-underline link-underline-opacity-0 btn btn-dark col-3 rounded-0"> Cancel</a>
                         <button type="submit" name="updateProduct" class="bte col-3">Update</button>
@@ -390,6 +464,39 @@ if (isset($_GET['id'])) {
         </div>
         <div class="col-5">
             <div class="row d-flex justify-content-center vh-100 my-5 px-5">
+                <h3 style="color: #001e2f;" class=" display-6 fw-medium text-center">Main Image Update</h3>
+                <form class="col-12 px-5 d-flex flex-column my-5" action="" method="post" enctype="multipart/form-data">
+                    <?php
+                    $sql = "SELECT * FROM product_images WHERE  product_id = ?";
+                    $stmt = $config->prepare($sql);
+                    $stmt->bind_param("s", $itemId);
+                    $stmt->execute();
+                    $result = $stmt->get_result();
+                    $row = mysqli_fetch_array($result)
+
+
+                    ?>
+                    <div class="row">
+                        <div class="col-12 mb-2 pe-4 d-flex align-items-center gap-3">
+                            <div class="my-3  d-flex flex-column align-items-center">
+                                <label for="blog_name" class="form-label text-center row ms-2">Main Image</label>
+                                <img width="200px" height="200px" class=" shadow-sm" src="../uploads/<?php echo  $imgName  ?>">
+                            </div>
+                            <div class=" ">
+                                <!-- <label for="featuredImage<?php echo $i; ?>" class="form-label text-center row ms-2">Featured Image<?php echo $i; ?></label> -->
+                                <input style="  border: 1px solid #001e2f; " type="file" class="form-control rounded-0" id="MainImage1" name="MainImage1" required>
+                                <div class="row d-flex justify-content-center mt-3 px-4">
+
+                                    <button type="submit" name="MainImgSubmit1" class="bte col-3">Upload</button>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+
+                </form>
                 <h3 style="color: #001e2f;" class=" display-6 fw-medium text-center">Featured Images Upload</h3>
                 <form class="col-12 px-5 d-flex flex-column my-5" action="" method="post" enctype="multipart/form-data">
                     <?php

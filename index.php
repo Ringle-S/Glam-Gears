@@ -119,7 +119,7 @@ include_once('./header.php');
   </div>
 </section>
 <!-- christmas container -->
-<section class="christmas row">
+<section class="christmas row d-flex flex-column-reverse flex-lg-row">
   <div style="background-color: #f7f6f5" class="col-12 col-lg-6 p-2 p-md-5 d-flex flex-column gap-3 text-center justify-content-center">
     <h2 class="fs-1">Up to 40% off our Christmas collection</h2>
     <p class="fs-5">
@@ -140,7 +140,7 @@ include_once('./header.php');
     <div class="row sellers-card p-0 p-md-0 g-0">
       <div class="row  gap-3 gap-md-0 g-0 g-md-5">
         <?php
-        $sql = "SELECT p.product_id,p.main_image_name,p.discount_percent,p.product_description,p.category_name, p.product_name, p.product_price,(p.product_price*oi.quantity) AS total_amt FROM order_items oi INNER JOIN products p ON oi.product_id = p.product_id GROUP BY p.product_id ORDER BY total_amt DESC LIMIT 8;";
+        $sql = "SELECT p.product_id,p.main_image_name,p.discount_percent,p.product_description,p.category_name, p.product_name, p.product_price, p.product_quantity,(p.product_price*oi.quantity) AS total_amt FROM order_items oi INNER JOIN products p ON oi.product_id = p.product_id WHERE is_featured='1' GROUP BY p.product_id ORDER BY total_amt DESC LIMIT 8;";
         $result = mysqli_query($config, $sql);
         while ($row = mysqli_fetch_array($result)) {
         ?>
@@ -154,7 +154,20 @@ include_once('./header.php');
                 <p style="height: 35px; overflow: hidden;" class="fw-medium fs-5 text-black"><?php echo $row['product_name']; ?></p>
               </div>
               <div class="row">
-                <h5 style="color: #0f6290;" class=" fs-3">&#8377;<?php echo $row['product_price'] * (1 - $row['discount_percent']); ?> <del class="text-black ms-3 fs-5">&#8377;<?php echo $row['product_price']; ?></del></h5>
+
+                <h5 style="color: <?php if ($row['product_quantity'] != 0) {
+                                    echo '#0f6290';
+                                  } else {
+                                    echo "red";
+                                  } ?>" class=" fs-3"> <?php if ($row['product_quantity'] != 0) {
+                                                          echo '&#8377;';
+                                                        } else {
+                                                          echo "";
+                                                        } ?><?php if ($row['product_quantity'] != 0) {
+                                                              echo $row['product_price'] * (1 - $row['discount_percent']);
+                                                            } else {
+                                                              echo "Out of stock";
+                                                            } ?> <del class="text-black ms-3 fs-5">&#8377;<?php echo $row['product_price']; ?></del></h5>
               </div>
               <div class="row">
                 <p style="height: 50px; overflow: hidden;" class="productDesc text-secondary">
@@ -230,7 +243,19 @@ include_once('./header.php');
                 <p style="height: 35px; overflow: hidden;" class="fw-medium fs-5 text-black"><?php echo $row['product_name']; ?></p>
               </div>
               <div class="row">
-                <h5 style="color: #0f6290;" class=" fs-3">&#8377;<?php echo $row['product_price'] * (1 - $row['discount_percent']); ?> <del class="text-black ms-3 fs-5">&#8377;<?php echo $row['product_price']; ?></del></h5>
+                <h5 style="color: <?php if ($row['product_quantity'] != 0) {
+                                    echo '#0f6290';
+                                  } else {
+                                    echo "red";
+                                  } ?>" class=" fs-3"> <?php if ($row['product_quantity'] != 0) {
+                                                          echo '&#8377;';
+                                                        } else {
+                                                          echo "";
+                                                        } ?><?php if ($row['product_quantity'] != 0) {
+                                                              echo $row['product_price'] * (1 - $row['discount_percent']);
+                                                            } else {
+                                                              echo "Out of stock";
+                                                            } ?> <del class="text-black ms-3 fs-5">&#8377;<?php echo $row['product_price']; ?></del></h5>
               </div>
               <div class="row">
                 <p style="height: 50px; overflow: hidden;" class="productDesc text-secondary">

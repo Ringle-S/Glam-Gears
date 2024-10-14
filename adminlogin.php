@@ -48,7 +48,7 @@ if (isset($_POST["logsubmit"])) {
 
 
                     $_SESSION['user'] = $merchantId;
-                    echo $_SESSION['user'];
+                    // echo $_SESSION['user'];
                     echo "<script> window.location.href = './admin/dashboard.php'</script>";
                 } else {
                     $errorMsg = 'Your account was inactive.(Send a request to glamgears@gmail.com to activate)';

@@ -47,7 +47,7 @@ include_once('./header.php');
 
 
 <!-- product container -->
-<section class="product-container d-flex row position-relative">
+<section class="product-container d-flex row position-relative ">
   <div class="product-filter d-flex flex-column gap-3 col-12 col-lg-3 d-none d-lg-block">
     <?php
     require_once "./config.php";
@@ -68,11 +68,12 @@ include_once('./header.php');
         <h5>Sort by</h5>
 
         <div class="row d-flex  gap-3">
-          <label><input type="radio" name="price" class="common_selector sort" value="ASC"> Price Low - High</label>
-          <label><input type="radio" name="price" class="common_selector sort" value="DESC"> Price High - Low</label>
+          <label><input type="radio" name="price" class="common_selector sort" value="ASC"> Price low to high</label>
+          <label><input type="radio" name="price" class="common_selector sort" value="DESC"> Price high to low</label>
         </div>
 
       </div>
+      <div class="line my-3"></div>
       <div class="list-group row">
         <div class="col-8">
           <h5>Price Range</h5>
@@ -82,7 +83,7 @@ include_once('./header.php');
           <div id="price_range" class=""></div>
         </div>
       </div>
-
+      <div class="line my-3"></div>
       <div class="list-group d-flex flex-column gap-2 mt-3">
         <h4>Categories</h4>
         <?php
@@ -110,7 +111,7 @@ include_once('./header.php');
 
         ?>
       </div>
-
+      <div class="line my-3"></div>
       <div class="list-group d-flex flex-column gap-2 mt-3">
         <h4>Brands</h4>
         <?php
@@ -128,6 +129,7 @@ include_once('./header.php');
         }
         ?>
       </div>
+      <div class="line my-3"></div>
     </form>
   </div>
   </div>

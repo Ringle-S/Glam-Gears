@@ -11,9 +11,10 @@ button {
   z-index: 100 !important;
 }
 .line {
-  width: 200px;
+  width: 90%;
   height: 1px;
-  background-color: #3329028b;
+  /* padding-right: 0%; */
+  background-color: #807f86;
 }
 
 input[type="number"]::-webkit-inner-spin-button {

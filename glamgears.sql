@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 14, 2024 at 08:13 AM
+-- Generation Time: Oct 22, 2024 at 08:04 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -46,9 +46,7 @@ CREATE TABLE `blogs` (
 INSERT INTO `blogs` (`blog_id`, `user_id`, `title`, `img_name`, `blog_desc`, `blog_text`, `category`, `status`, `created_at`) VALUES
 (1, 45291, 'The Future of Gaming: Console Wars or Cloud Gaming?', 'blog5.png', ' Discuss the latest trends in the gaming industry, including the battle between consoles and cloud gaming platforms.', 'The gaming industry is undergoing a significant transformation. Traditional console gaming is facing competition from cloud gaming services that offer on-demand access to games without the need for powerful hardware. As technology progresses, the line between console and cloud gaming is becoming increasingly blurred. The future of gaming will likely involve a combination of both platforms, catering to different player preferences and technological advancements.', 'console', 'active', '2024-08-16 15:52:37'),
 (2, 45291, 'Virtual Reality: Immerse Yourself in New Worlds', 'blog6.png', 'Delve into the world of virtual reality and explore its potential to revolutionize entertainment, gaming, and education.', 'Virtual reality (VR) is redefining the way we experience digital content. By creating immersive environments that simulate real-world experiences, VR has captured the imagination of people worldwide. From gaming and entertainment to education and training, VR offers endless possibilities. As technology advances, we can expect even more realistic and interactive VR experiences that blur the lines between the virtual and physical worlds.', 'vr', 'active', '2024-08-16 16:13:35'),
-(3, 10031, 'The Internet of Things (IoT): A Connected World', 'blog4.png', ' Understand the concept of IoT and its potential to revolutionize various industries and daily life.', 'Virtual reality (VR) is redefining the way we experience digital content. By creating immersive environments that simulate real-world experiences, VR has captured the imagination of people worldwide. From gaming and entertainment to education and training, VR offers endless possibilities. As technology advances, we can expect even more realistic and interactive VR experiences that blur the lines between the virtual and physical worlds.', 'iot', 'active', '2024-08-16 16:16:02'),
-(4, 52895, 'The Next Generation of Smartphones: What to Expect', 'Group 42.png', 'Stay updated on the latest trends in smartphone technology and what to look for in your next device', 'Smartphones continue to evolve at a rapid pace, with new features and innovations emerging every year. In this blog post, we&#39;ll discuss the key trends shaping the smartphone market, including foldable phones, advanced cameras, and improved battery life.', 'smartphone', 'inactive', '2024-08-27 04:51:37'),
-(6, 52895, 'The Future of Gaming: Console Wars or Cloud Gaming?', 'adapter3.png', 'efwfefef', 'efegrgvfdgvdf', 'console', 'active', '2024-10-14 06:05:59');
+(3, 10031, 'The Internet of Things (IoT): A Connected World', 'blog4.png', ' Understand the concept of IoT and its potential to revolutionize various industries and daily life.', 'Virtual reality (VR) is redefining the way we experience digital content. By creating immersive environments that simulate real-world experiences, VR has captured the imagination of people worldwide. From gaming and entertainment to education and training, VR offers endless possibilities. As technology advances, we can expect even more realistic and interactive VR experiences that blur the lines between the virtual and physical worlds.', 'iot', 'active', '2024-08-16 16:16:02');
 
 -- --------------------------------------------------------
 
@@ -73,7 +71,8 @@ INSERT INTO `cart` (`cart_id`, `user_id`, `product_id`, `quantity`, `added_on`) 
 (40, 45291, 72211, 1, '2024-09-15 09:06:42'),
 (69, 5, 76227, 1, '2024-10-12 06:45:40'),
 (72, 1, 0, 1, '2024-10-12 09:47:58'),
-(79, 1, 76227, 6, '2024-10-13 16:09:02');
+(80, 1, 67208, 2, '2024-10-22 04:55:34'),
+(81, 1, 70023, 4, '2024-10-22 05:00:43');
 
 -- --------------------------------------------------------
 
@@ -95,8 +94,9 @@ CREATE TABLE `contacts_queries` (
 --
 
 INSERT INTO `contacts_queries` (`contact_id`, `contact_name`, `contact_email`, `contact_message`, `status`, `created_at`) VALUES
-(1, 'Karthick Raj', 'karthick@gmail.com', 'Many users already have downloaded jQuery from Google when visiting another site. As a result, it will be loaded from cache when they visit your site, which leads to faster loading time. Also, most CDN\'s will make sure that once a user requests a file fro', 'unread', '2024-08-14 14:07:34'),
-(2, 'Karthick Raj', 'karthick@gmail.com', 'Many users already have downloaded jQuery from Google when visiting another site. As a result, it will be loaded from cache when they visit your site, which leads to faster loading time. Also, most CDN\'s will make sure that once a user requests a file fro', 'unread', '2024-08-14 14:07:34');
+(1, 'Karthick Raj', 'karthick@gmail.com', 'Many users already have downloaded jQuery from Google when visiting another site. As a result, it will be loaded from cache when they visit your site, which leads to faster loading time. Also, most CDN\'s will make sure that once a user requests a file fro', 'read', '2024-08-14 14:07:34'),
+(2, 'Karthick Raj', 'karthick@gmail.com', 'Many users already have downloaded jQuery from Google when visiting another site. As a result, it will be loaded from cache when they visit your site, which leads to faster loading time. Also, most CDN\'s will make sure that once a user requests a file fro', 'unread', '2024-08-14 14:07:34'),
+(3, 'HEllo', 'manna@gmail.com', 'gergergregg', 'unread', '2024-10-22 04:54:03');
 
 -- --------------------------------------------------------
 
@@ -223,7 +223,8 @@ INSERT INTO `orders` (`order_id`, `tracking_no`, `user_id`, `confirmation`, `fna
 (66, 91255, 2, 'Pending', 'Karthi', 'kannan', 'manna@gmail.com', '446e,valluvar nagar, kovilpatti', 'ML', 'Tuticorin', 628501, 2147483647, 245, '', 'COD', '2024-10-13 07:15:43', '2024-10-13 07:15:43'),
 (67, 87265, 10031, 'Pending', 'Karthi', 'kannan', 'manna@gmail.com', '446e,valluvar nagar, kovilpatti', 'ML', 'Tuticorin', 628501, 685215984, 980, '', 'COD', '2024-10-13 14:25:57', '2024-10-13 14:25:57'),
 (68, 89532, 10031, 'Pending', 'aathi', 'velu', 'aathi@gmail.com', '446e,valluvar nagar, kovilpatti', 'ML', 'Tuticorin', 628501, 2147483647, 2535, '', 'COD', '2024-10-13 14:40:35', '2024-10-13 14:40:35'),
-(72, 94870, 2, 'Pending', 'Karthi', 'kannan', 'manna@gmail.com', '446e,valluvar nagar, kovilpatti', 'TN', 'Tuticorin', 628501, 2147483647, 5120, 'MEGAOFF20', 'card', '2024-10-14 05:07:03', '2024-10-14 05:07:03');
+(72, 94870, 2, 'Pending', 'Karthi', 'kannan', 'manna@gmail.com', '446e,valluvar nagar, kovilpatti', 'TN', 'Tuticorin', 628501, 2147483647, 5120, 'MEGAOFF20', 'card', '2024-10-14 05:07:03', '2024-10-14 05:07:03'),
+(73, 85733, 2, 'Pending', 'Karthi', 'kannan', 'manna@gmail.com', '446e,valluvar nagar, kovilpatti', 'ML', 'Tuticorin', 628501, 2147483647, 245, '', 'COD', '2024-10-19 06:51:39', '2024-10-19 06:51:39');
 
 -- --------------------------------------------------------
 
@@ -267,7 +268,8 @@ INSERT INTO `order_items` (`order_item_id`, `product_id`, `order_id`, `quantity`
 (72, 32523, 66, 1, 350, 'X Gamer Game Console ', 'Pending', '2024-10-13 07:15:43'),
 (73, 32523, 67, 4, 350, 'X Gamer Game Console ', 'Pending', '2024-10-13 14:25:57'),
 (74, 76227, 68, 5, 845, 'AirHead Ultimate 131Hz DeadHeardZ', 'Pending', '2024-10-13 14:40:35'),
-(78, 67208, 72, 4, 2000, 'SoundWave Pro Wireless Headphones', 'Pending', '2024-10-14 05:07:03');
+(78, 67208, 72, 4, 2000, 'SoundWave Pro Wireless Headphones', 'Pending', '2024-10-14 05:07:03'),
+(79, 32523, 73, 1, 350, 'X Gamer Game Console ', 'Pending', '2024-10-19 06:51:39');
 
 -- --------------------------------------------------------
 
@@ -328,13 +330,13 @@ CREATE TABLE `products` (
 
 INSERT INTO `products` (`id`, `product_id`, `product_name`, `product_description`, `product_price`, `discount_percent`, `product_quantity`, `category_name`, `brand_name`, `product_status`, `merchant_id`, `main_image_name`, `is_featured`, `created_at`, `updated_at`) VALUES
 (1, 76227, 'AirHead Ultimate 131Hz DeadHeardZ', 'Headphones are electronic audio device that people wear over their ears. They let people hear sounds on a walkman, MP3 player, mobile phone or computer.                             ', 845.00, 0.40, 79, 'Headphone', 'Oppo', 'active', 10031, 'Blackhead1.png', '1', '2024-10-14 05:03:33', '2024-08-11 15:05:38'),
-(2, 32523, 'X Gamer Game Console ', 'CPU: Handles game logic and calculations.   \r\nGPU: Renders graphics and visuals for the game.\r\nMemory: Stores game data, system software, and temporary information.\r\nStorage: Holds game installations and saved data (internal or external).\r\nInput devices: Controllers for player interaction.   \r\nOutput devices: Connect to a television or monitor to display the game.                            ', 350.00, 0.30, 26, 'Joystick', 'Sony', 'active', 10031, 'joystick1.png', '1', '2024-10-13 14:25:57', '2024-08-12 04:57:07'),
+(2, 32523, 'X Gamer Game Console ', 'CPU: Handles game logic and calculations.   \r\nGPU: Renders graphics and visuals for the game.\r\nMemory: Stores game data, system software, and temporary information.\r\nStorage: Holds game installations and saved data (internal or external).\r\nInput devices: Controllers for player interaction.   \r\nOutput devices: Connect to a television or monitor to display the game.                            ', 350.00, 0.30, 25, 'Joystick', 'Sony', 'active', 10031, 'joystick1.png', '1', '2024-10-19 06:51:39', '2024-08-12 04:57:07'),
 (3, 72211, 'Smart Android Television Genz', 'Smart TVs: Internet-connected TVs offering streaming services and apps.   \r\n4K and 8K resolution: Higher pixel counts for sharper images.   \r\nHDR (High Dynamic Range): Improved contrast and color for a more realistic picture.   \r\nTelevision has evolved from a simple entertainment device to a multimedia hub, offering a wide range of content and interactive features.Type the description', 35000.00, 0.30, 29, 'Television', 'Samsung', 'active', 10031, 'TV3.png', '1', '2024-09-30 16:39:06', '2024-08-12 07:37:51'),
 (4, 57705, 'PowerSurge high-capacity power', 'Conversion: Translates data or signals from one format to another.   \r\nCompatibility: Ensures seamless operation between different devices or systems.   \r\nInterface: Provides a connection point for two or more components.\r\nIn essence, an adapter is a versatile tool that facilitates connectivity and interoperability in the world of technology.', 354.00, 0.27, 99, 'mobile devices', 'Nokia', 'active', 52895, 'adapter1.png', '1', '2024-10-14 05:11:17', '2024-08-12 15:04:59'),
 (5, 54522, 'Crazy Wheels for PS5', 'Smartwatches have revolutionized the way we interact with technology. Once limited to displaying time and date, these wearable devices have evolved into sophisticated companions that track fitness goals', 3025.00, 0.20, 30, 'console', 'Sony', 'active', 45291, 'Carconsole1.png', '1', '2024-10-12 05:59:34', '2024-08-16 15:47:15'),
 (6, 94083, 'Vehicle @MOBILE HOLDER 2xx', 'smartwatches have become indispensable for many. As technology continues to advance, we can expect even more innovative features and functionalities to emerge in the smartwatch market.', 355.00, 0.10, 0, 'accessories', 'Nokia', 'active', 45291, 'mobilestand1.png', '1', '2024-10-12 06:41:11', '2024-08-16 15:49:44'),
 (8, 87002, 'Smart watch 121z ', 'Smartwatches are more than just timekeepers; they\'re compact computers that fit on your wrist', 699.00, 0.15, 45, 'smart watch', 'Oppo', 'active', 52895, 'whitewatch1.png', '1', '2024-10-11 15:07:49', '2024-08-27 04:32:49'),
-(11, 70023, 'HP Victus Lap', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.', 3000.00, 0.10, 15, 'laptop', 'Oppo', 'active', 45291, 'image-on.jpg', '1', '2024-10-13 13:42:03', '2024-10-12 06:16:19'),
+(11, 70023, 'HP Victus Laptop', 'This is a High quality Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.', 3000.00, 0.10, 16, 'laptop', 'hp', 'active', 45291, 'image-on.jpg', '1', '2024-10-22 05:49:48', '2024-10-12 06:16:19'),
 (12, 67208, 'SoundWave Pro Wireless Headphones', 'Experience immersive audio with the SoundWave Pro Wireless Headphones. These premium headphones feature advanced noise-canceling technology, long-lasting battery ', 2000.00, 0.20, 21, 'mobile devices', 'Apple', 'active', 10031, 'Simple-Product-1.png', '1', '2024-10-14 05:07:03', '2024-10-13 13:15:14'),
 (13, 15084, 'Android Watch DeadHeardZ', 'Print the SQL query: Before executing the prepare() method, print the SQL query to inspect it for any errors.\r\nCheck for database errors: If the error persists, consult the database server logs for any specific error messages or warnings.\r\nUse a debugger: If you have a debugger available, step through the code to inspect the values of the variables used in the SQL query.\r\nSimplify the query: Try simplifying the query by removing unnecessary columns or conditions to isolate the\r\n', 49999.00, 0.20, 10, 'tablets', 'Oppo', 'active', 10031, 'Simple-Product-Watch-6.png', '1', '2024-10-13 13:48:09', '2024-10-13 13:37:10'),
 (14, 55651, 'Forw Ultimate 131Hz Dead', 'This is new product for electronic', 1500.00, 0.10, 20, 'computing', 'hp', 'inactive', 52895, 'image-four.jpg', '1', '2024-10-14 06:09:03', '2024-10-14 05:53:31'),
@@ -421,8 +423,6 @@ CREATE TABLE `wishlist` (
 INSERT INTO `wishlist` (`wishlist_id`, `user_id`, `product_id`, `added_on`) VALUES
 (7, 10031, 57705, '2024-08-13 06:36:47'),
 (8, 10031, 32523, '2024-08-13 07:00:21'),
-(9, 1, 76227, '2024-09-14 08:05:02'),
-(10, 1, 32523, '2024-09-14 08:06:03'),
 (11, 2, 54522, '2024-09-30 14:31:10'),
 (12, 4, 32523, '2024-10-11 15:09:35'),
 (13, 4, 72211, '2024-10-11 15:09:41'),
@@ -524,13 +524,13 @@ ALTER TABLE `blogs`
 -- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=80;
+  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=82;
 
 --
 -- AUTO_INCREMENT for table `contacts_queries`
 --
 ALTER TABLE `contacts_queries`
-  MODIFY `contact_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `contact_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `coupons`
@@ -542,7 +542,7 @@ ALTER TABLE `coupons`
 -- AUTO_INCREMENT for table `merchants`
 --
 ALTER TABLE `merchants`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `newsletter`
@@ -554,13 +554,13 @@ ALTER TABLE `newsletter`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `order_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=79;
+  MODIFY `order_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=80;
 
 --
 -- AUTO_INCREMENT for table `payments`

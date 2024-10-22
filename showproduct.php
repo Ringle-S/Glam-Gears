@@ -18,8 +18,8 @@ if (isset($_POST['buyNow'])) {
 
 // add to cart
 
+// $productid =  $_GET["productid"];
 if (isset($_POST['addcart'])) {
-  $productid = $_POST["productid"];
 
   if ($_SESSION['user']) {
     $userId = $_SESSION['user'];
@@ -34,7 +34,8 @@ if (isset($_POST['addcart'])) {
       $query = mysqli_query($config, "INSERT INTO cart (`user_id`,`product_id`) VALUES('$userId','$productid')");
       header("Location: cart.php?productID=" . $productid);
     } else {
-      $errorMsg = 'Already Waiting on your Cart';
+      header("Location: cart.php?msg='Already Waiting in your Cart'&productID=" . $productid);
+      // $errorMsg = '';
     }
   } else {
     header("Location: login.php?msg='You haven't logged in yet'&productID=" . $productid);

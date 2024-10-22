@@ -306,7 +306,7 @@ if (!empty($userId)) {
                                     <div class="row  ">
                                         <div class=" d-flex overflow-x-scroll">
                                             <?php
-                                            $sql = "SELECT * FROM products WHERE merchant_id=$userId AND product_status='active';";
+                                            $sql = "SELECT * FROM products WHERE merchant_id=$userId AND product_status='active' ORDER BY id DESC;";
                                             $result = mysqli_query($config, $sql);
                                             while ($row = mysqli_fetch_array($result)) {
                                             ?>

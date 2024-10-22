@@ -85,7 +85,7 @@ include_once('./header.php');
       </div>
       <div class="line my-3"></div>
       <div class="list-group d-flex flex-column gap-2 mt-3">
-        <h4>Categories</h4>
+        <h5>Categories</h5>
         <?php
         include_once('./config.php');
         $query = "SELECT DISTINCT(category_name) FROM products WHERE product_status = 'active' ORDER BY category_name DESC";
@@ -113,7 +113,7 @@ include_once('./header.php');
       </div>
       <div class="line my-3"></div>
       <div class="list-group d-flex flex-column gap-2 mt-3">
-        <h4>Brands</h4>
+        <h5>Brands</h5>
         <?php
         $query = "SELECT DISTINCT(brand_name) FROM products WHERE product_status = 'active' ORDER BY brand_name DESC";
         $stmt = $config->prepare($query);

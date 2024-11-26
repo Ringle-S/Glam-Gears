@@ -75,9 +75,16 @@ include_once('./header.php');
 
 
       ?>
+            <style>
+              .blog-img {
+                width: 100%;
+                height: 300px !important;
+
+              }
+            </style>
 
             <div class="blog-card col-12 col-md-7 col-lg-7 col-xl-5">
-              <img height="290px" class="img-fluid object-fit-contain" src="./uploads/<?php echo $productRow['img_name']; ?>" alt="" />
+              <img height="290px" class="blog-img img-fluid object-fit-cover" src="./uploads/<?php echo $productRow['img_name']; ?>" alt="" />
               <div class="d-flex align-items-center gap-3 py-2">
                 <img src="./assets/icon/Avatar.svg" alt="" />
                 <p class="mb-0"><?php echo $name; ?></p>
@@ -153,8 +160,15 @@ include_once('./header.php');
         if ($result->num_rows > 0) {
           while ($row = $result->fetch_assoc()) {
       ?>
-            <div class="d-flex gap-3 align-items-center">
-              <img class=" object-fit-contain" height="101px" src=" ./uploads/<?php echo $row['img_name']; ?>" alt="" />
+            <style>
+              .search-blog {
+                /* width: 100%; */
+                height: 101px !important;
+              }
+            </style>
+
+            <div class="d-flex gap-3 align-items-center my-2">
+              <img class="search-blog object-fit-cover" height="101px" src=" ./uploads/<?php echo $row['img_name']; ?>" alt="" />
               <h3 class="fs-4"><?php echo $row['title']; ?></h3>
             </div>
       <?php

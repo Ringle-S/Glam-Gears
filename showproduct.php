@@ -201,10 +201,16 @@ include_once('./header.php');
             ?>
           </div>
         </div>
-        <div class="img-select">
-          <div class="img-item">
+        <style>
+          .show-img {
+            width: 100% !important;
+            height: max-content !important;
+          }
+        </style>
+        <div class="img-select row mt-3">
+          <div class="img-item col">
             <a href="#" data-id="1">
-              <img src="./uploads/<?php echo  $imgName ?>" alt="<?php echo $imgName ?>" />
+              <img class="show-img" src="./uploads/<?php echo  $imgName ?>" alt="<?php echo $imgName ?>" />
             </a>
           </div>
           <?php
@@ -214,19 +220,19 @@ include_once('./header.php');
 
           while ($row = mysqli_fetch_array($result)) {
           ?>
-            <div class="img-item">
+            <div class="img-item col">
               <a href="#" data-id="2">
-                <img src="./uploads/<?php echo $row['img_name1']; ?>" alt="<?php echo $row['img_name1'] ?>" />
+                <img class="show-img" src="./uploads/<?php echo $row['img_name1']; ?>" alt="<?php echo $row['img_name1'] ?>" />
               </a>
             </div>
-            <div class="img-item">
+            <div class="img-item col">
               <a href="#" data-id="3">
-                <img src="./uploads/<?php echo $row['img_name2']; ?>" alt="<?php echo $row['img_name2'] ?>" />
+                <img class="show-img" src="./uploads/<?php echo $row['img_name2']; ?>" alt="<?php echo $row['img_name2'] ?>" />
               </a>
             </div>
-            <div class="img-item">
+            <div class="img-item col">
               <a href="#" data-id="4">
-                <img src="./uploads/<?php echo $row['img_name3']; ?>" alt="<?php echo $row['img_name3'] ?>" />
+                <img class="show-img" src="./uploads/<?php echo $row['img_name3']; ?>" alt="<?php echo $row['img_name3'] ?>" />
               </a>
             </div>
 

@@ -41,7 +41,7 @@ include_once('./header.php');
   <div class="contactban-contact col-12 col-lg-6 d-flex gap-3 flex-column justify-content-center align-items-center text-light">
     <img src="./assets/icon/logowhite.png" alt="" />
     <h1 class="display-3 fw-semibold">CONTACT US</h1>
-    <div class="line"></div>
+    <!-- <div class="line"></div> -->
     <p>FOLLOW US ON SOCIAL MEDIA</p>
     <div class="mediarow d-flex gap-3">
       <a href="https://www.facebook.com/login/" target="_blank">

@@ -75,7 +75,7 @@ if (isset($_POST["action"])) {
                   <p style='height: 35px; overflow: hidden;' class='fw-medium fs-5 text-black'>" . $row['product_name'] . "</p>
                    </div>
                    <div class='row'>
-                     <h5 style='color: #0f6290;' class=' fs-3'>&#8377;" . $row['product_price'] * (1 - $row['discount_percent']) . "<del class='text-black ms-3      fs-5'>&#8377;" . $row['product_price'] . "</del></h5>
+                     <h5 style='color: #0f6290;' class=' fs-3'>&#8377;" . $row['product_price'] * (1 - $row['discount_percent']) . "<del class='text-black ms-3 fs-5'>&#8377;" . $row['product_price'] . "</del></h5>
                    </div>
                    <div class='row'>
                      <p style='height: 50px; overflow: hidden;' class='productDesc text-secondary'>

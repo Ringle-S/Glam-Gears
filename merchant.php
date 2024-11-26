@@ -45,7 +45,7 @@ include_once('./header.php');
             $errors = array();
 
             require_once "./config.php";
-            $sql = "SELECT * FROM merchants WHERE merchant_email = '$merchantEmail'";
+            $sql = "SELECT * FROM merchants WHERE merchant_email = '$merchantEmail' ";
             $result = mysqli_query($config, $sql);
             $rowCount = mysqli_num_rows($result);
 
